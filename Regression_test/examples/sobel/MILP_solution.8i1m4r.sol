@@ -1,0 +1,25 @@
+# Objective value = 30
+NxS_e0 0
+NxS_e1 0
+NxS_e3 15
+NxS_e11 15
+NxS_e12 0
+NxS_e14 0
+S_BB_1 0
+S_e_0 0
+S_BB_2 0
+S_e_1 0
+S_BB_3 1
+S_e_3 1
+S_e_11 1
+S_BB_4 0
+S_BB_5 0
+S_BB_6 0
+S_BB_7 0
+S_BB_8 0
+S_BB_9 1
+S_e_12 0
+S_BB_10 0
+S_e_14 0
+S_BB_11 0
+N 15

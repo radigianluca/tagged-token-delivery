@@ -1,0 +1,35 @@
+
+BB number bbID= 1
+It is not a loop latch!
+It is not a loop exiting!
+It is not a loop header!
+
+BB number bbID= 2
+It is not a loop latch!
+It is not a loop exiting!
+It is a loop header!
+
+BB number bbID= 3
+It is not a loop latch!
+It is not a loop exiting!
+It is a loop header!
+
+BB number bbID= 4
+It is a loop latch!
+It is a loop exiting!
+It is a loop header!
+
+BB number bbID= 5
+It is a loop latch!
+It is a loop exiting!
+It is not a loop header!
+
+BB number bbID= 6
+It is a loop latch!
+It is a loop exiting!
+It is not a loop header!
+
+BB number bbID= 7
+It is not a loop latch!
+It is not a loop exiting!
+It is not a loop header!

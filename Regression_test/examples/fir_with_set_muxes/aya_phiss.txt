@@ -1,0 +1,2 @@
+Phi name is  "phiC_0", BBnode is bbID= 1
+Phi name is  "phiC_1", BBnode is bbID= 1

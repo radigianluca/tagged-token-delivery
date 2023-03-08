@@ -1,0 +1,135 @@
+
+-------------------------------------
+
+ For (Producer,Consumer) = ("phiC_1"in BB bbID= 2, "cst_1"in BB bbID= 2):  
+Printing Path number 0:
+2, 
+Printing bridges_indices:
+No Bridges for this pair!!
+
+
+-------------------------------------
+
+ For (Producer,Consumer) = ("phiC_1"in BB bbID= 2, "cst_2"in BB bbID= 2):  
+Printing Path number 0:
+2, 
+Printing bridges_indices:
+No Bridges for this pair!!
+
+
+-------------------------------------
+
+ For (Producer,Consumer) = ("start_0"in BB bbID= 1, "cst_3"in BB bbID= 3):  
+Printing Path number 0:
+3, 2, 1, 
+Printing bridges_indices:
+No Bridges for this pair!!
+
+
+-------------------------------------
+
+ For (Producer,Consumer) = ("phiC_3"in BB bbID= 4, "cst_4"in BB bbID= 4):  
+Printing Path number 0:
+4, 
+Printing bridges_indices:
+No Bridges for this pair!!
+
+
+-------------------------------------
+
+ For (Producer,Consumer) = ("phiC_3"in BB bbID= 4, "cst_5"in BB bbID= 4):  
+Printing Path number 0:
+4, 
+Printing bridges_indices:
+No Bridges for this pair!!
+
+
+-------------------------------------
+
+ For (Producer,Consumer) = ("start_0"in BB bbID= 1, "cst_6"in BB bbID= 5):  
+Printing Path number 0:
+5, 4, 3, 2, 1, 
+Printing bridges_indices:
+No Bridges for this pair!!
+
+
+-------------------------------------
+
+ For (Producer,Consumer) = ("start_0"in BB bbID= 1, "cst_7"in BB bbID= 6):  
+Printing Path number 0:
+6, 5, 4, 3, 2, 1, 
+Printing bridges_indices:
+5, 4, 2, 
+
+
+-------------------------------------
+
+ For (Producer,Consumer) = ("phiC_5"in BB bbID= 7, "cst_8"in BB bbID= 7):  
+Printing Path number 0:
+7, 
+Printing bridges_indices:
+No Bridges for this pair!!
+
+
+-------------------------------------
+
+ For (Producer,Consumer) = ("phiC_5"in BB bbID= 7, "cst_9"in BB bbID= 7):  
+Printing Path number 0:
+7, 
+Printing bridges_indices:
+No Bridges for this pair!!
+
+
+-------------------------------------
+
+ For (Producer,Consumer) = ("start_0"in BB bbID= 1, "phiC_1"in BB bbID= 2):  
+Printing Path number 0:
+2, 1, 
+Printing bridges_indices:
+No Bridges for this pair!!
+
+
+-------------------------------------
+
+ For (Producer,Consumer) = ("phiC_1"in BB bbID= 2, "phiC_1"in BB bbID= 2):  
+Printing Path number 0:
+2, 
+Printing bridges_indices:
+2, 
+
+
+-------------------------------------
+
+ For (Producer,Consumer) = ("start_0"in BB bbID= 1, "phiC_3"in BB bbID= 4):  
+Printing Path number 0:
+4, 3, 2, 1, 
+Printing bridges_indices:
+No Bridges for this pair!!
+
+
+-------------------------------------
+
+ For (Producer,Consumer) = ("phiC_3"in BB bbID= 4, "phiC_3"in BB bbID= 4):  
+Printing Path number 0:
+4, 
+Printing bridges_indices:
+4, 
+
+
+-------------------------------------
+
+ For (Producer,Consumer) = ("start_0"in BB bbID= 1, "phiC_5"in BB bbID= 7):  
+Printing Path number 0:
+7, 6, 5, 4, 3, 2, 1, 
+Printing bridges_indices:
+5, 4, 2, 
+
+
+-------------------------------------
+
+ For (Producer,Consumer) = ("phiC_5"in BB bbID= 7, "phiC_5"in BB bbID= 7):  
+Printing Path number 0:
+7, 
+Printing bridges_indices:
+7, 
+

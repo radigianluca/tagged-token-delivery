@@ -1,0 +1,428 @@
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB4)
+
+Consumer of type type = "Constant!!
+
+
+
+Considering f_prod =  1 
+
+
+
+And f_cons =  C3 &  + 
+
+The outcome of negating the product number 0is: 	 not C3 +  & 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB4)
+
+Consumer of type type = "Constant!!
+
+
+
+Considering f_prod =  1 
+
+
+
+And f_cons =  C3 &  + 
+
+The outcome of negating the product number 0is: 	 not C3 +  & 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB4)
+
+Consumer of type type = "Constant!!
+
+
+
+Considering f_prod =  1 
+
+
+
+And f_cons =  C3 &  + 
+
+The outcome of negating the product number 0is: 	 not C3 +  & 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB5, BB7)
+
+Consumer of type type = "Constant!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB5, BB7)
+
+Consumer of type type = "Constant!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB8)
+
+Consumer of type type = "Constant!!
+
+
+
+Considering f_prod =  1 
+
+
+
+And f_cons =  C3 &  + 
+
+The outcome of negating the product number 0is: 	 not C3 +  & 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB8)
+
+Consumer of type type = "Constant!!
+
+
+
+Considering f_prod =  1 
+
+
+
+And f_cons =  C3 &  + 
+
+The outcome of negating the product number 0is: 	 not C3 +  & 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB8)
+
+Consumer of type type = "Constant!!
+
+
+
+Considering f_prod =  1 
+
+
+
+And f_cons =  C3 &  + 
+
+The outcome of negating the product number 0is: 	 not C3 +  & 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB8)
+
+Consumer of type type = "Constant!!
+
+
+
+Considering f_prod =  1 
+
+
+
+And f_cons =  C3 &  + 
+
+The outcome of negating the product number 0is: 	 not C3 +  & 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB8)
+
+Consumer of type type = "Constant!!
+
+
+
+Considering f_prod =  1 
+
+
+
+And f_cons =  C3 &  + 
+
+The outcome of negating the product number 0is: 	 not C3 +  & 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB8)
+
+Consumer of type type = "Constant!!
+
+
+
+Considering f_prod =  1 
+
+
+
+And f_cons =  C3 &  + 
+
+The outcome of negating the product number 0is: 	 not C3 +  & 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB8)
+
+Consumer of type type = "Constant!!
+
+
+
+Considering f_prod =  1 
+
+
+
+And f_cons =  C3 &  + 
+
+The outcome of negating the product number 0is: 	 not C3 +  & 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB8)
+
+Consumer of type type = "Constant!!
+
+
+
+Considering f_prod =  1 
+
+
+
+And f_cons =  C3 &  + 
+
+The outcome of negating the product number 0is: 	 not C3 +  & 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB9)
+
+Consumer of type type = "Constant!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB9)
+
+Consumer of type type = "Constant!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB9)
+
+Consumer of type type = "Constant!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB9)
+
+Consumer of type type = "Constant!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB10)
+
+Consumer of type type = "Constant!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB10)
+
+Consumer of type type = "Constant!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB9)
+
+Consumer of type type = "Constant!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB1, BB2)
+
+Consumer of type type = "Merge!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB2)
+
+Consumer of type type = "Merge!!
+
+
+		 Triggering the producer == consumer case!!!!
+
+	 NEW DEUBUG INFO: The original producer is in BB1
+
+
+Considering f_prod =  1 
+
+
+
+And f_cons =  C10 &  + 
+
+The outcome of negating the product number 0is: 	 not C10 +  & 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB3)
+
+Consumer of type type = "Merge!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB3)
+
+Consumer of type type = "Merge!!
+
+
+		 Triggering the producer == consumer case!!!!
+
+	 NEW DEUBUG INFO: The original producer is in BB1
+
+
+Considering f_prod =  1 
+
+
+
+And f_cons =  C9 &  + 
+
+The outcome of negating the product number 0is: 	 not C9 +  & 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB5)
+
+Consumer of type type = "Merge!!
+
+
+
+Considering f_prod =  1 
+
+
+
+And f_cons =  C3 &  + 
+
+The outcome of negating the product number 0is: 	 not C3 +  & 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB5, BB5)
+
+Consumer of type type = "Merge!!
+
+
+		 Triggering the producer == consumer case!!!!
+
+	 NEW DEUBUG INFO: The original producer is in BB1
+
+
+Considering f_prod =  1 
+
+
+
+And f_cons =  C7 &  + 
+
+The outcome of negating the product number 0is: 	 not C7 +  & 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB5, BB6)
+
+Consumer of type type = "Merge!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB6, BB6)
+
+Consumer of type type = "Merge!!
+
+
+		 Triggering the producer == consumer case!!!!
+
+	 NEW DEUBUG INFO: The original producer is in BB1
+
+
+Considering f_prod =  1 
+
+
+
+And f_cons =  C6 &  + 
+
+The outcome of negating the product number 0is: 	 not C6 +  & 
+

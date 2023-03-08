@@ -1,0 +1,32 @@
+
+-------------------------------------
+Bridges for (Producer,Consumer) = ("cst_9"in BB bbID= 3, "getelementptr_6"in BB bbID= 3):  No Bridges for this pair!!
+
+
+-------------------------------------
+Bridges for (Producer,Consumer) = ("cst_10"in BB bbID= 4, "getelementptr_14"in BB bbID= 4):  No Bridges for this pair!!
+
+
+-------------------------------------
+Bridges for (Producer,Consumer) = ("cst_11"in BB bbID= 4, "getelementptr_19"in BB bbID= 4):  No Bridges for this pair!!
+
+
+-------------------------------------
+Bridges for (Producer,Consumer) = ("phiC_16"in BB bbID= 3, "cst_16"in BB bbID= 5):  No Bridges for this pair!!
+
+
+-------------------------------------
+Bridges for (Producer,Consumer) = ("phiC_17"in BB bbID= 2, "phiC_16"in BB bbID= 3):  No Bridges for this pair!!
+
+
+-------------------------------------
+Bridges for (Producer,Consumer) = ("phiC_16"in BB bbID= 3, "phiC_16"in BB bbID= 3):  5, 
+
+
+-------------------------------------
+Bridges for (Producer,Consumer) = ("start_0"in BB bbID= 1, "phiC_17"in BB bbID= 2):  No Bridges for this pair!!
+
+
+-------------------------------------
+Bridges for (Producer,Consumer) = ("phiC_17"in BB bbID= 2, "phiC_17"in BB bbID= 2):  6, 
+

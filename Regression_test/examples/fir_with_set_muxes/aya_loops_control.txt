@@ -1,0 +1,12 @@
+
+For Producer enode name "start_0", with type type = "Entry", control= "true, in BBnode bbID= 0
+And Consumer enode name "cst_1", with type type = "Constant, in BBnode bbID= 1
+Consumer is in a loop that the producer is not in and the Loop Header is BBNode number: block2
+
+A Phi should be inserted in the Loop Header!!
+
+For Producer enode name "start_0", with type type = "Entry", control= "true, in BBnode bbID= 0
+And Consumer enode name "cst_2", with type type = "Constant, in BBnode bbID= 1
+Consumer is in a loop that the producer is not in and the Loop Header is BBNode number: block2
+
+A Phi should be inserted in the Loop Header!!

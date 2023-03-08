@@ -1,0 +1,28 @@
+
+-------------------------------------
+Bridges for (Producer,Consumer) = (bbID= 2, bbID= 2):  No Bridges for this pair!!
+
+
+-------------------------------------
+Bridges for (Producer,Consumer) = (bbID= 2, bbID= 3):  2, 
+
+
+-------------------------------------
+Bridges for (Producer,Consumer) = (bbID= 2, bbID= 3):  2, 
+
+
+-------------------------------------
+Bridges for (Producer,Consumer) = (bbID= 2, bbID= 4):  No Bridges for this pair!!
+
+
+-------------------------------------
+Bridges for (Producer,Consumer) = (bbID= 2, bbID= 4):  No Bridges for this pair!!
+
+
+-------------------------------------
+Bridges for (Producer,Consumer) = (bbID= 1, bbID= 2):  No Bridges for this pair!!
+
+
+-------------------------------------
+Bridges for (Producer,Consumer) = (bbID= 2, bbID= 2):  4, 
+
