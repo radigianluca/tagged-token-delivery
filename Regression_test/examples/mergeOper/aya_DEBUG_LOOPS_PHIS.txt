@@ -1,0 +1,161 @@
+
+
+For(Producer, Consumer) ( "start_0" in BB bbID= 1, "cst_1" in BB bbID= 2):
+
+*************************************************
+
+Before adding any Phis:
+
+Content of Succs array of the producer:  "cst_0", "cst_1", "cst_2", "cst_3", "cst_4", "cst_5", "cst_6", "cst_7", "cst_8", "cst_9", 
+*************************************************
+Added a new Phi in loop_header BB with BB ID 1 and name "phiC_1"
+
+*************************************************
+
+After possibly adding any Phis:
+
+Content of Succs array of the producer:  "cst_0", "phiC_1", "cst_2", "cst_3", "cst_4", "cst_5", "cst_6", "cst_7", "cst_8", "cst_9", 
+*************************************************
+
+
+For(Producer, Consumer) ( "start_0" in BB bbID= 1, "cst_2" in BB bbID= 2):
+
+*************************************************
+
+Before adding any Phis:
+
+Content of Succs array of the producer:  "cst_0", "phiC_1", "cst_2", "cst_3", "cst_4", "cst_5", "cst_6", "cst_7", "cst_8", "cst_9", 
+*************************************************
+Added a new Phi in loop_header BB with BB ID 1 and name "phiC_2"
+
+*************************************************
+
+After possibly adding any Phis:
+
+Content of Succs array of the producer:  "cst_0", "phiC_1", "phiC_2", "cst_3", "cst_4", "cst_5", "cst_6", "cst_7", "cst_8", "cst_9", 
+*************************************************
+
+
+For(Producer, Consumer) ( "start_0" in BB bbID= 1, "cst_3" in BB bbID= 3):
+
+*************************************************
+
+Before adding any Phis:
+
+Content of Succs array of the producer:  "cst_0", "phiC_1", "phiC_2", "cst_3", "cst_4", "cst_5", "cst_6", "cst_7", "cst_8", "cst_9", 
+*************************************************
+
+*************************************************
+
+After possibly adding any Phis:
+
+Content of Succs array of the producer:  "cst_0", "phiC_1", "phiC_2", "cst_3", "cst_4", "cst_5", "cst_6", "cst_7", "cst_8", "cst_9", 
+*************************************************
+
+
+For(Producer, Consumer) ( "start_0" in BB bbID= 1, "cst_4" in BB bbID= 4):
+
+*************************************************
+
+Before adding any Phis:
+
+Content of Succs array of the producer:  "cst_0", "phiC_1", "phiC_2", "cst_3", "cst_4", "cst_5", "cst_6", "cst_7", "cst_8", "cst_9", 
+*************************************************
+Added a new Phi in loop_header BB with BB ID 3 and name "phiC_3"
+
+*************************************************
+
+After possibly adding any Phis:
+
+Content of Succs array of the producer:  "cst_0", "phiC_1", "phiC_2", "cst_3", "phiC_3", "cst_5", "cst_6", "cst_7", "cst_8", "cst_9", 
+*************************************************
+
+
+For(Producer, Consumer) ( "start_0" in BB bbID= 1, "cst_5" in BB bbID= 4):
+
+*************************************************
+
+Before adding any Phis:
+
+Content of Succs array of the producer:  "cst_0", "phiC_1", "phiC_2", "cst_3", "phiC_3", "cst_5", "cst_6", "cst_7", "cst_8", "cst_9", 
+*************************************************
+Added a new Phi in loop_header BB with BB ID 3 and name "phiC_4"
+
+*************************************************
+
+After possibly adding any Phis:
+
+Content of Succs array of the producer:  "cst_0", "phiC_1", "phiC_2", "cst_3", "phiC_3", "phiC_4", "cst_6", "cst_7", "cst_8", "cst_9", 
+*************************************************
+
+
+For(Producer, Consumer) ( "start_0" in BB bbID= 1, "cst_6" in BB bbID= 5):
+
+*************************************************
+
+Before adding any Phis:
+
+Content of Succs array of the producer:  "cst_0", "phiC_1", "phiC_2", "cst_3", "phiC_3", "phiC_4", "cst_6", "cst_7", "cst_8", "cst_9", 
+*************************************************
+
+*************************************************
+
+After possibly adding any Phis:
+
+Content of Succs array of the producer:  "cst_0", "phiC_1", "phiC_2", "cst_3", "phiC_3", "phiC_4", "cst_6", "cst_7", "cst_8", "cst_9", 
+*************************************************
+
+
+For(Producer, Consumer) ( "start_0" in BB bbID= 1, "cst_7" in BB bbID= 6):
+
+*************************************************
+
+Before adding any Phis:
+
+Content of Succs array of the producer:  "cst_0", "phiC_1", "phiC_2", "cst_3", "phiC_3", "phiC_4", "cst_6", "cst_7", "cst_8", "cst_9", 
+*************************************************
+
+*************************************************
+
+After possibly adding any Phis:
+
+Content of Succs array of the producer:  "cst_0", "phiC_1", "phiC_2", "cst_3", "phiC_3", "phiC_4", "cst_6", "cst_7", "cst_8", "cst_9", 
+*************************************************
+
+
+For(Producer, Consumer) ( "start_0" in BB bbID= 1, "cst_8" in BB bbID= 7):
+
+*************************************************
+
+Before adding any Phis:
+
+Content of Succs array of the producer:  "cst_0", "phiC_1", "phiC_2", "cst_3", "phiC_3", "phiC_4", "cst_6", "cst_7", "cst_8", "cst_9", 
+*************************************************
+Added a new Phi in loop_header BB with BB ID 6 and name "phiC_5"
+
+*************************************************
+
+After possibly adding any Phis:
+
+Content of Succs array of the producer:  "cst_0", "phiC_1", "phiC_2", "cst_3", "phiC_3", "phiC_4", "cst_6", "cst_7", "phiC_5", "cst_9", 
+*************************************************
+
+
+For(Producer, Consumer) ( "start_0" in BB bbID= 1, "cst_9" in BB bbID= 7):
+
+*************************************************
+
+Before adding any Phis:
+
+Content of Succs array of the producer:  "cst_0", "phiC_1", "phiC_2", "cst_3", "phiC_3", "phiC_4", "cst_6", "cst_7", "phiC_5", "cst_9", 
+*************************************************
+Added a new Phi in loop_header BB with BB ID 6 and name "phiC_6"
+
+*************************************************
+
+After possibly adding any Phis:
+
+Content of Succs array of the producer:  "cst_0", "phiC_1", "phiC_2", "cst_3", "phiC_3", "phiC_4", "cst_6", "cst_7", "phiC_5", "phiC_6", 
+*************************************************
+
+FInished looping over Data pairs!!!!!

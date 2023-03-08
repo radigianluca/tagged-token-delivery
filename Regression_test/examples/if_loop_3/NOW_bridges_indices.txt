@@ -1,0 +1,24 @@
+
+-------------------------------------
+Bridges for (Producer,Consumer) = ("start_0"in BB bbID= 1, "cst_1"in BB bbID= 2):  1, 
+
+
+-------------------------------------
+Bridges for (Producer,Consumer) = ("start_0"in BB bbID= 1, "cst_2"in BB bbID= 2):  1, 
+
+
+-------------------------------------
+Bridges for (Producer,Consumer) = ("phiC_6"in BB bbID= 3, "cst_3"in BB bbID= 3):  No Bridges for this pair!!
+
+
+-------------------------------------
+Bridges for (Producer,Consumer) = ("phiC_6"in BB bbID= 3, "cst_4"in BB bbID= 5):  No Bridges for this pair!!
+
+
+-------------------------------------
+Bridges for (Producer,Consumer) = ("start_0"in BB bbID= 1, "phiC_6"in BB bbID= 3):  1, 
+
+
+-------------------------------------
+Bridges for (Producer,Consumer) = ("phiC_6"in BB bbID= 3, "phiC_6"in BB bbID= 3):  5, 
+

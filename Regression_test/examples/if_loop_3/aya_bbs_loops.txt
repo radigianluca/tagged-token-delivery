@@ -1,0 +1,18 @@
+
+BB number bbID= 1
+ is not inside any loop!!!!
+
+BB number bbID= 2
+ is not inside any loop!!!!
+
+BB number bbID= 3
+ is inside loop that has loop header BB number bbID= 3 and loop tail BB number bbID= 5
+
+BB number bbID= 4
+ is inside loop that has loop header BB number bbID= 3 and loop tail BB number bbID= 5
+
+BB number bbID= 5
+ is inside loop that has loop header BB number bbID= 3 and loop tail BB number bbID= 5
+
+BB number bbID= 6
+ is not inside any loop!!!!

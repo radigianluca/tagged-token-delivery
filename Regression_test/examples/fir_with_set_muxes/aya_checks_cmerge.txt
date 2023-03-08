@@ -1,0 +1,2 @@
+ENode of name:"phi_1"in BB numberbbID= 1 is Mux!!!!
+ENode of name:"phiC_1"in BB numberbbID= 1 is Control Merge!!!!

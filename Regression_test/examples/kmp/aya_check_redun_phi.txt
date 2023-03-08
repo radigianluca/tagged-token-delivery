@@ -1,0 +1,96 @@
+
+NEWW ENode 1 called: "phiC_17"
+
+ENode 1 called: "phiC_17" has producer called "start_0"
+
+ENode 2 called: "phiC_18" has producer called "start_0"
+
+ENode 2 called: "phiC_19" has producer called "start_0"
+
+ENode 2 called: "phiC_20" has producer called "start_0"
+
+ENode 2 called: "phiC_21" has producer called "start_0"
+
+ENode 2 called: "phiC_22" has producer called "start_0"
+
+ENode 2 called: "phiC_23" has producer called "start_0"
+
+ENode 2 called: "phiC_24" has producer called "start_0"
+
+ENode 2 called: "phiC_25" has producer called "start_0"
+
+ENode 2 called: "phiC_26" has producer called "start_0"
+
+ENode 2 called: "phiC_27" has producer called "start_0"
+
+ENode 2 called: "phiC_28" has producer called "start_0"
+
+NEWW ENode 1 called: "phiC_18"
+
+ENode 1 called: "phiC_18" has producer called "start_0"
+
+ENode 2 called: "phiC_19" has producer called "start_0"
+
+REDUN ENode 2 called: "phiC_19"
+
+ENode 2 called: "phiC_20" has producer called "start_0"
+
+REDUN ENode 2 called: "phiC_20"
+
+ENode 2 called: "phiC_21" has producer called "start_0"
+
+ENode 2 called: "phiC_22" has producer called "start_0"
+
+ENode 2 called: "phiC_23" has producer called "start_0"
+
+ENode 2 called: "phiC_24" has producer called "start_0"
+
+ENode 2 called: "phiC_25" has producer called "start_0"
+
+ENode 2 called: "phiC_26" has producer called "start_0"
+
+ENode 2 called: "phiC_27" has producer called "start_0"
+
+ENode 2 called: "phiC_28" has producer called "start_0"
+
+REDUN ENode 2 called: "phiC_28"
+
+NEWW ENode 1 called: "phiC_21"
+
+ENode 1 called: "phiC_21" has producer called "start_0"
+
+ENode 2 called: "phiC_22" has producer called "start_0"
+
+ENode 2 called: "phiC_23" has producer called "start_0"
+
+ENode 2 called: "phiC_24" has producer called "start_0"
+
+ENode 2 called: "phiC_25" has producer called "start_0"
+
+ENode 2 called: "phiC_26" has producer called "start_0"
+
+ENode 2 called: "phiC_27" has producer called "start_0"
+
+NEWW ENode 1 called: "phiC_22"
+
+ENode 1 called: "phiC_22" has producer called "start_0"
+
+ENode 2 called: "phiC_23" has producer called "start_0"
+
+REDUN ENode 2 called: "phiC_23"
+
+ENode 2 called: "phiC_24" has producer called "start_0"
+
+REDUN ENode 2 called: "phiC_24"
+
+ENode 2 called: "phiC_25" has producer called "start_0"
+
+REDUN ENode 2 called: "phiC_25"
+
+ENode 2 called: "phiC_26" has producer called "start_0"
+
+REDUN ENode 2 called: "phiC_26"
+
+ENode 2 called: "phiC_27" has producer called "start_0"
+
+REDUN ENode 2 called: "phiC_27"

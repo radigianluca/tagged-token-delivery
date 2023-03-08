@@ -1,0 +1,12 @@
+
+NEWW ENode 1 called: "phiC_4"
+
+ENode 1 called: "phiC_4" has producer called "start_0"
+
+ENode 2 called: "phiC_5" has producer called "start_0"
+
+REDUN ENode 2 called: "phiC_5"
+
+ENode 2 called: "phiC_6" has producer called "start_0"
+
+REDUN ENode 2 called: "phiC_6"

@@ -1,0 +1,34 @@
+
+
+*******************************************************
+	Starting a new LSQ!!!!
+
+
+
+	Inside is_common_loop with BB1 and BB4!
+
+One of the two groups (or both) is not in any loop!
+
+Printing the predecessors of a LSQ enode:	0 in BB1, 0 in BB4, 
+
+***********************************************************
+
+Printing the details of all Groups in the G graph
+
+
+***********************************************************
+
+	 For Group with first_bb_idx = 1
+
+The first_bb_idx of Predecessor Groups are:   NOTHING!
+The first_bb_idx of Successor Groups are:  4, 
+
+
+
+***********************************************************
+
+	 For Group with first_bb_idx = 4
+
+The first_bb_idx of Predecessor Groups are:  1, 
+
+The first_bb_idx of Successor Groups are:   NOTHING!

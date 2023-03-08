@@ -1,0 +1,12 @@
+#!/bin/sh
+#Author: Andrea Guerrieri - EPFL-LAP email:andrea.guerrieri@epfl.ch
+#Dynamatic Update Script
+#ver.1.0
+
+
+
+wget https://dynamatic.epfl.ch/downloads/tutorial_update.tar.gz
+tar -zxf tutorial_update.tar.gz 2>/dev/null
+sh tutorial_update/tutorial_update.sh
+rm -r tutorial_update
+rm tutorial_update.tar.gz

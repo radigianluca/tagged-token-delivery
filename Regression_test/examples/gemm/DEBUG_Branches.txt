@@ -1,0 +1,22 @@
+
+ For (Producer,Consumer) = ("cst_9"in BB bbID= 3, "getelementptr_6"in BB bbID= 3):  
+
+ For (Producer,Consumer) = ("cst_10"in BB bbID= 4, "getelementptr_14"in BB bbID= 4):  
+
+ For (Producer,Consumer) = ("cst_11"in BB bbID= 4, "getelementptr_19"in BB bbID= 4):  
+
+ For (Producer,Consumer) = ("phiC_16"in BB bbID= 3, "cst_16"in BB bbID= 5):  
+
+ For (Producer,Consumer) = ("phiC_17"in BB bbID= 2, "phiC_16"in BB bbID= 3):  
+
+ For (Producer,Consumer) = ("phiC_16"in BB bbID= 3, "phiC_16"in BB bbID= 3):  
+
+ Added a Branch in BB number 5
+
+ For (Producer,Consumer) = ("start_0"in BB bbID= 1, "phiC_17"in BB bbID= 2):  
+
+ For (Producer,Consumer) = ("phiC_17"in BB bbID= 2, "phiC_17"in BB bbID= 2):  
+
+ Added a Branch in BB number 6
+
+ Finished looping over all pairs of prods, cons!!!!

@@ -1,0 +1,577 @@
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB1, BB2)
+
+Consumer of type type = "Merge!!
+
+
+	 The finalized f_prod =  1 
+
+
+	 The finalized f_cons =  1 
+
+
+	 Don't need to add a SUPPRESS!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB6, BB2)
+
+Consumer of type type = "Merge!!
+
+
+	Inside applyShannon
+
+	Printing the f_supp after converting it to string
+1 + 
+
+
+F_SUPP is a single condition!!
+	The condition is not inverted!!
+
+	 The finalized f_prod =  1 
+
+
+	 The finalized f_cons =  1 
+
+
+	 Don't need to add a SUPPRESS!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB1, BB2)
+
+Consumer of type type = "Mux!!
+
+
+	 The finalized f_prod =  1 
+
+
+	 The finalized f_cons =  1 
+
+
+	 Don't need to add a SUPPRESS!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB3)
+
+Consumer of type type = "Merge!!
+
+
+	 The finalized f_prod =  1 
+
+
+	 The finalized f_cons =  1 
+
+
+	 Don't need to add a SUPPRESS!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB5, BB3)
+
+Consumer of type type = "Merge!!
+
+
+	Inside applyShannon
+
+	Printing the f_supp after converting it to string
+1 + 
+
+
+F_SUPP is a single condition!!
+	The condition is not inverted!!
+
+	 The finalized f_prod =  1 
+
+
+	 The finalized f_cons =  1 
+
+
+	 Don't need to add a SUPPRESS!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB3)
+
+Consumer of type type = "Mux!!
+
+
+	 The finalized f_prod =  1 
+
+
+	 The finalized f_cons =  1 
+
+
+	 Don't need to add a SUPPRESS!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB4)
+
+Consumer of type type = "Operator!!
+
+
+	 The finalized f_prod =  1 
+
+
+	 The finalized f_cons =  C3 &  + 
+
+
+	 Add a SUPPRESS with f_supp = 
+ not C3 &  + 
+
+
+	Right before calling applyShannon, the size of f_supp is: 1
+
+	Inside applyShannon
+
+	Printing the f_supp after converting it to string
+0 + 
+
+
+F_SUPP is a single condition!!
+	The condition is inverted!!
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB4)
+
+Consumer of type type = "Operator!!
+
+
+	 The finalized f_prod =  1 
+
+
+	 The finalized f_cons =  C3 &  + 
+
+
+	 Add a SUPPRESS with f_supp = 
+ not C3 &  + 
+
+
+	Right before calling applyShannon, the size of f_supp is: 1
+
+	Inside applyShannon
+
+	Printing the f_supp after converting it to string
+0 + 
+
+
+F_SUPP is a single condition!!
+	The condition is inverted!!
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB5)
+
+Consumer of type type = "Operator!!
+
+
+	 The finalized f_prod =  1 
+
+
+	 The finalized f_cons =  C3 &  C4 &  + 
+
+
+	 Add a SUPPRESS with f_supp = 
+ not C4 &  +  not C3 &  + 
+
+
+	Right before calling applyShannon, the size of f_supp is: 2
+
+	Inside applyShannon
+
+	Printing the f_supp after converting it to string
+x0 + 0x + 
+
+
+F_SUPP is a big condition!!
+
+************ About to print the details of a MUX ***********
+	The MUX has non-MUX inputs!!!
+	The SEL of the MUX is: 3
+
+	The size of in0 of the MUX is: 1 and the expressions are 
+
+1 &  + 
+
+	The size of in1 of the MUX is: 1 and the expressions are 
+
+not C4 &  + 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB5)
+
+Consumer of type type = "Operator!!
+
+
+	 The finalized f_prod =  1 
+
+
+	 The finalized f_cons =  C3 &  C4 &  + 
+
+
+	 Add a SUPPRESS with f_supp = 
+ not C4 &  +  not C3 &  + 
+
+
+	Right before calling applyShannon, the size of f_supp is: 2
+
+	Inside applyShannon
+
+	Printing the f_supp after converting it to string
+x0 + 0x + 
+
+
+F_SUPP is a big condition!!
+
+************ About to print the details of a MUX ***********
+	The MUX has non-MUX inputs!!!
+	The SEL of the MUX is: 3
+
+	The size of in0 of the MUX is: 1 and the expressions are 
+
+1 &  + 
+
+	The size of in1 of the MUX is: 1 and the expressions are 
+
+not C4 &  + 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB5)
+
+Consumer of type type = "Operator!!
+
+
+	 The finalized f_prod =  1 
+
+
+	 The finalized f_cons =  C3 &  C4 &  + 
+
+
+	 Add a SUPPRESS with f_supp = 
+ not C4 &  +  not C3 &  + 
+
+
+	Right before calling applyShannon, the size of f_supp is: 2
+
+	Inside applyShannon
+
+	Printing the f_supp after converting it to string
+x0 + 0x + 
+
+
+F_SUPP is a big condition!!
+
+************ About to print the details of a MUX ***********
+	The MUX has non-MUX inputs!!!
+	The SEL of the MUX is: 3
+
+	The size of in0 of the MUX is: 1 and the expressions are 
+
+1 &  + 
+
+	The size of in1 of the MUX is: 1 and the expressions are 
+
+not C4 &  + 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB6)
+
+Consumer of type type = "Operator!!
+
+
+	 The finalized f_prod =  1 
+
+
+	 The finalized f_cons =  1 
+
+
+	 Don't need to add a SUPPRESS!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB6)
+
+Consumer of type type = "Operator!!
+
+
+	 The finalized f_prod =  1 
+
+
+	 The finalized f_cons =  1 
+
+
+	 Don't need to add a SUPPRESS!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB6)
+
+Consumer of type type = "Operator!!
+
+
+	The consumer deps before calling addLoopsExitstoDeps_ProdInConsOut are: 
+****************Inside FindLoopExits_ProdInConsOut*********
+
+	Starting a new loop in the loop nest containing the producerBB!!
+
+	The consumer is not inside this loop!!
+
+	The loop exits of this loop are: BB3 , BB4 , 
+
+
+	Starting a new loop in the loop nest containing the producerBB!!
+
+	The consumer is inside this loop!!
+
+	 The finalized f_prod =  1 
+
+
+	 The finalized f_cons =  not C3 &  +  C3 &  not C4 &  + 
+
+
+	 Add a SUPPRESS with f_supp = 
+ C3 &  C4 &  + 
+
+
+	Right before calling applyShannon, the size of f_supp is: 1
+
+	Inside applyShannon
+
+	Printing the f_supp after converting it to string
+11 + 
+
+
+F_SUPP is a big condition!!
+
+************ About to print the details of a MUX ***********
+	The MUX has non-MUX inputs!!!
+	The SEL of the MUX is: 3
+
+	The size of in0 of the MUX is: 1 and the expressions are 
+
+0 &  + 
+
+	The size of in1 of the MUX is: 1 and the expressions are 
+
+C4 &  + 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB6)
+
+Consumer of type type = "Operator!!
+
+
+	 The finalized f_prod =  1 
+
+
+	 The finalized f_cons =  1 
+
+
+	 Don't need to add a SUPPRESS!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB7)
+
+Consumer of type type = "Operator!!
+
+
+	The consumer deps before calling addLoopsExitstoDeps_ProdInConsOut are: 
+****************Inside FindLoopExits_ProdInConsOut*********
+
+	Starting a new loop in the loop nest containing the producerBB!!
+
+	The consumer is not inside this loop!!
+
+	The loop exits of this loop are: BB3 , BB4 , 
+
+
+	Starting a new loop in the loop nest containing the producerBB!!
+
+	The consumer is not inside this loop!!
+
+	The loop exits of this loop are: BB6 , 
+
+
+	 The finalized f_prod =  1 
+
+
+	 The finalized f_cons =  not C3 &  not C6 &  +  C3 &  not C4 &  not C6 &  + 
+
+
+	 Add a SUPPRESS with f_supp = 
+ C6 &  +  C3 &  C4 &  + 
+
+
+	Right before calling applyShannon, the size of f_supp is: 2
+
+	Inside applyShannon
+
+	Printing the f_supp after converting it to string
+xx1 + 11x + 
+
+
+F_SUPP is a big condition!!
+
+************ About to print the details of a MUX ***********
+	The MUX has MUX inputs!!!
+	The SEL of the MUX is: 3
+
+	The size of in0 of the MUX is: 1 and the expressions are 
+
+C6 &  + 
+
+	The size of in1 of the MUX is: 2 and the expressions are 
+
+C6 &  + C4 &  + 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB1, BB7)
+
+Consumer of type type = "Operator!!
+
+
+	 The finalized f_prod =  1 
+
+
+	 The finalized f_cons =  1 
+
+
+	 Don't need to add a SUPPRESS!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB3)
+
+Consumer of type type = "Merge!!
+
+
+	 The finalized f_prod =  1 
+
+
+	 The finalized f_cons =  1 
+
+
+	 Don't need to add a SUPPRESS!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB3)
+
+Consumer of type type = "Merge!!
+
+
+	 The finalized f_prod =  1 
+
+
+	 The finalized f_cons =  C3 &  C4 &  + 
+
+
+	 Add a SUPPRESS with f_supp = 
+ not C4 &  +  not C3 &  + 
+
+
+	Right before calling applyShannon, the size of f_supp is: 2
+
+	Inside applyShannon
+
+	Printing the f_supp after converting it to string
+x0 + 0x + 
+
+
+F_SUPP is a big condition!!
+
+************ About to print the details of a MUX ***********
+	The MUX has non-MUX inputs!!!
+	The SEL of the MUX is: 3
+
+	The size of in0 of the MUX is: 1 and the expressions are 
+
+1 &  + 
+
+	The size of in1 of the MUX is: 1 and the expressions are 
+
+not C4 &  + 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB3)
+
+Consumer of type type = "Mux!!
+
+
+	 The finalized f_prod =  1 
+
+
+	 The finalized f_cons =  1 
+
+
+	 Don't need to add a SUPPRESS!!
+

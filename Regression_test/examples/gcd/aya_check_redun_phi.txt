@@ -1,0 +1,28 @@
+
+NEWW ENode 1 called: "phiC_1"
+
+ENode 1 called: "phiC_1" has producer called "start_0"
+
+ENode 2 called: "phiC_6" has producer called "start_0"
+
+ENode 2 called: "phiC_9" has producer called "start_0"
+
+ENode 2 called: "phiC_12" has producer called "start_0"
+
+NEWW ENode 1 called: "phiC_6"
+
+ENode 1 called: "phiC_6" has producer called "start_0"
+
+ENode 2 called: "phiC_9" has producer called "start_0"
+
+ENode 2 called: "phiC_12" has producer called "start_0"
+
+NEWW ENode 1 called: "phiC_9"
+
+ENode 1 called: "phiC_9" has producer called "start_0"
+
+ENode 2 called: "phiC_12" has producer called "start_0"
+
+NEWW ENode 1 called: "phiC_12"
+
+ENode 1 called: "phiC_12" has producer called "start_0"
