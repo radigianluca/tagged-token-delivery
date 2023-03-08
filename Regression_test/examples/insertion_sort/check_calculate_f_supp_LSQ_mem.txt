@@ -1,9 +1,0 @@
-
-
-======================================================
-
-
-New (Producer,Consumer) pair: (BB1, BB4)
-
-Consumer of type type = "Fork!!
-

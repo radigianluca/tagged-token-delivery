@@ -1,9 +1,0 @@
-
-BB number bbID= 1
- is not inside any loop!!!!
-
-BB number bbID= 2
- is inside loop that has loop header BB number bbID= 2 and loop tail BB number bbID= 2
-
-BB number bbID= 3
- is not inside any loop!!!!

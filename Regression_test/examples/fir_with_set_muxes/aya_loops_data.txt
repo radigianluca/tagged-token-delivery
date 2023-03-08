@@ -1,4 +1,0 @@
-
-For Producer enode name "cst_0", with type type = "Constant, in BBnode bbID= 0
-And Consumer enode name "phi_1", with type type = "Merge, in BBnode bbID= 1
-Consumer is in a loop that the producer is not in and the Loop Header is BBNode number: block2

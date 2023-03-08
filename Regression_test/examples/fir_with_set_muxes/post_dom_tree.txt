@@ -1,6 +1,0 @@
-BB_1 doesn't post dominate BB_1
-BB_1 doesn't post dominate BB_2
-BB_2 doesn't post dominate BB_2
-BB_1 doesn't post dominate BB_3
-BB_2 doesn't post dominate BB_3
-BB_3 doesn't post dominate BB_3

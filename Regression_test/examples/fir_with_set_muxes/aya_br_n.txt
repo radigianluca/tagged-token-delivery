@@ -1,4 +1,0 @@
-Branch name is  "branchC_2", Branch type is type = "Branch, Branch BBnode is bbID= 1
-Size of trueSuccs is 1
-Size of falseSuccs is 0
-Size of Predecessors is 2

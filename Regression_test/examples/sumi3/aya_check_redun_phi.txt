@@ -1,8 +1,0 @@
-
-NEWW ENode 1 called: "phiC_2"
-
-ENode 1 called: "phiC_2" has producer called "start_0"
-
-ENode 2 called: "phiC_3" has producer called "start_0"
-
-REDUN ENode 2 called: "phiC_3"
