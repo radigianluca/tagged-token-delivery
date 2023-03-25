@@ -1,0 +1,32 @@
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB1, BB2)
+
+Consumer of type type = "Merge!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB2)
+
+Consumer of type type = "Merge!!
+
+
+		 Triggering the producer == consumer case!!!!
+
+	 NEW DEUBUG INFO: The original producer is in BB1
+
+
+Considering f_prod =  1 
+
+
+
+And f_cons =  C2 &  + 
+
+The outcome of negating the product number 0is: 	 not C2 +  & 
+

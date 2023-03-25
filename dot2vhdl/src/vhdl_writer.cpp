@@ -754,14 +754,17 @@ void write_connections (  int indx )
                 signal_1 += UNDERSCORE;
                 signal_1 += "0";
 
-            
+		        //decoupling start_valid and arg_valid
+             	if ( ! ( nodes[i].name.find("start") != std::string::npos ) ){ // If not start
                 //signal_2 = "ap_start";
                 
-//                 signal_2 = nodes[i].name;
-//                 signal_2 += UNDERSCORE;
-//                 signal_2 +="valid_in";
-
-                signal_2 = "start_valid";
+                 signal_2 = nodes[i].name;
+                 signal_2 += UNDERSCORE;
+                 signal_2 +="valid_in";
+		        }
+		        else{
+                	signal_2 = "start_valid";
+		        }
 
                 netlist << "\t"  << signal_1  << " <= " << signal_2 << SEMICOLOUMN << endl;
 
@@ -782,6 +785,21 @@ void write_connections (  int indx )
     //                 signal_2 +="valid_in";
 
                     signal_2 = "start_ready";
+
+                    netlist << "\t"  << signal_2  << " <= " << signal_1 << SEMICOLOUMN << endl;
+                }
+
+                //ready for arg
+                else{
+                    signal_1 = nodes[i].name;
+                    signal_1 += UNDERSCORE;
+                    signal_1 += READY_ARRAY;
+                    signal_1 += UNDERSCORE;
+                    signal_1 += "0";
+
+                    signal_2 = nodes[i].name;
+                    signal_2 += UNDERSCORE;
+                    signal_2 +="ready_out";
 
                     netlist << "\t"  << signal_2  << " <= " << signal_1 << SEMICOLOUMN << endl;
                 }

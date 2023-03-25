@@ -1,0 +1,207 @@
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB1, BB2)
+
+Consumer of type LLVM Phi!!
+
+
+#############################################
+Right before calling calculate_F_supp
+The f_cons is (not considering negations!!): 
+The f_prod is (not considering negations!!): 
+
+#############################################
+Right after returning from calculate_F_supp
+The f_supp is (not considering negations!!): 
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB2)
+
+Consumer of type LLVM Phi!!
+
+
+#############################################
+Inside applyShannon function
+The function before converting it to a string is (not considering negations!!): C2 &  + 
+
+#############################################
+Inside new_get_binary_string_minterms_Shannons function
+The function before converting it to a string is (not considering negations!!): C2 &  + 
+
+********* Inside get_binary_string_minterms *******************
+	Printing the minterms_only_in_binary with dontcare bits:
+1
+
+	Printing the f_supp after converting it to string
+1 + 
+
+
+**********************************************
+
+
+Printing the funct_vec of the expression initially
+C2 &  + 
+
+
+
+Inside hasMultipleVariables!
+
+The list of var_index of these variables is: 
+1, 
+The size of present_variables is: 1
+Leaving hasMultipleVariables!
+
+Not many variables to do Shannon's!
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB1, BB2)
+
+Consumer of type LLVM Phi!!
+
+
+#############################################
+Right before calling calculate_F_supp
+The f_cons is (not considering negations!!): 
+The f_prod is (not considering negations!!): 
+
+#############################################
+Right after returning from calculate_F_supp
+The f_supp is (not considering negations!!): 
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB1, BB2)
+
+Consumer of type LLVM Phi!!
+
+
+#############################################
+Right before calling calculate_F_supp
+The f_cons is (not considering negations!!): 
+The f_prod is (not considering negations!!): 
+
+#############################################
+Right after returning from calculate_F_supp
+The f_supp is (not considering negations!!): 
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB2)
+
+Consumer of type LLVM Phi!!
+
+
+#############################################
+Inside applyShannon function
+The function before converting it to a string is (not considering negations!!): C2 &  + 
+
+#############################################
+Inside new_get_binary_string_minterms_Shannons function
+The function before converting it to a string is (not considering negations!!): C2 &  + 
+
+********* Inside get_binary_string_minterms *******************
+	Printing the minterms_only_in_binary with dontcare bits:
+1
+
+	Printing the f_supp after converting it to string
+1 + 
+
+
+**********************************************
+
+
+Printing the funct_vec of the expression initially
+C2 &  + 
+
+
+
+Inside hasMultipleVariables!
+
+The list of var_index of these variables is: 
+1, 
+The size of present_variables is: 1
+Leaving hasMultipleVariables!
+
+Not many variables to do Shannon's!
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB1, BB2)
+
+Consumer of type LLVM Phi!!
+
+
+#############################################
+Right before calling calculate_F_supp
+The f_cons is (not considering negations!!): 
+The f_prod is (not considering negations!!): 
+
+#############################################
+Right after returning from calculate_F_supp
+The f_supp is (not considering negations!!): 
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB3)
+
+Consumer of type type = "Operator!!
+
+
+#############################################
+Right before calling calculate_F_supp
+The f_cons is (not considering negations!!): C2 &  + 
+The f_prod is (not considering negations!!): 
+
+#############################################
+Right after returning from calculate_F_supp
+The f_supp is (not considering negations!!): C2 &  + 
+
+#############################################
+Inside applyShannon function
+The function before converting it to a string is (not considering negations!!): C2 &  + 
+
+#############################################
+Inside new_get_binary_string_minterms_Shannons function
+The function before converting it to a string is (not considering negations!!): C2 &  + 
+
+********* Inside get_binary_string_minterms *******************
+	Printing the minterms_only_in_binary with dontcare bits:
+1
+
+	Printing the f_supp after converting it to string
+1 + 
+
+
+**********************************************
+
+
+Printing the funct_vec of the expression initially
+C2 &  + 
+
+
+
+Inside hasMultipleVariables!
+
+The list of var_index of these variables is: 
+1, 
+The size of present_variables is: 1
+Leaving hasMultipleVariables!
+
+Not many variables to do Shannon's!

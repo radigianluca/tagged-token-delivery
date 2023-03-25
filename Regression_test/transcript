@@ -1,0 +1,296 @@
+# Project file /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/HLS_VERIFY/fir_tb.mpf was not found.
+# Unable to open project.
+# reading modelsim.ini
+# Loading project simulation
+# Compile of delay_buffer.vhd was successful.
+# Compile of elastic_components.vhd was successful.
+# Compile of MemCont.vhd was successful with warnings.
+# Compile of multipliers.vhd was successful.
+# Compile of simpackage.vhd was successful.
+# Compile of two_port_RAM.vhd was successful with warnings.
+# Compile of single_argument.vhd was successful with warnings.
+# Compile of arithmetic_units.vhd was successful.
+# Compile of fir.vhd was successful.
+# Compile of sharing_components.vhd was successful.
+# Compile of mul_wrapper.vhd was successful.
+# Compile of hls_verify_fir_tb.vhd was successful with warnings.
+# 12 compiles, 0 failed with no errors.
+vsim work.fir_tb
+# vsim work.fir_tb 
+# Start time: 17:19:43 on Mar 09,2023
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.std_logic_arith(body)
+# Loading ieee.std_logic_unsigned(body)
+# Loading ieee.std_logic_textio(body)
+# Loading ieee.numeric_std(body)
+# Loading work.sim_package(body)
+# Loading work.customtypes
+# Loading work.fir_tb(behav)
+# Loading ieee.math_real(body)
+# Loading work.fir(behavioral)
+# Loading work.start_node(arch)
+# Loading work.elasticbuffer(arch)
+# Loading work.tehb(arch)
+# Loading work.oehb(arch)
+# Loading work.const(arch)
+# Loading work.fork(arch)
+# Loading work.orn(vanilla)
+# Loading work.eagerfork_registerblock(arch)
+# Loading work.loopmux(arch)
+# Loading work.mul_op(arch)
+# Loading work.join(arch)
+# Loading work.andn(vanilla)
+# Loading work.mul_4_stage(behav)
+# Loading work.delay_buffer(arch)
+# Loading work.add_op(arch)
+# Loading work.icmp_ult_op(arch)
+# Loading work.branch(arch)
+# Loading work.branchsimple(arch)
+# Loading work.ret_op(arch)
+# Loading work.sink(arch)
+# Loading work.end_node(arch)
+# Loading work.single_argument(behav)
+add wave -position insertpoint sim:/fir_tb/duv/*
+run -all
+# ** Warning: (vsim-3116) Problem reading symbols from linux-gate.so.1 : can not open ELF file.
+# ** Warning: NUMERIC_STD."<": metavalue detected, returning FALSE
+#    Time: 0 ps  Iteration: 0  Instance: /fir_tb/duv/icmp_5
+# ** Warning: NUMERIC_STD."<": metavalue detected, returning FALSE
+#    Time: 0 ps  Iteration: 3  Instance: /fir_tb/duv/icmp_5
+# ** Warning: NUMERIC_STD."<": metavalue detected, returning FALSE
+#    Time: 0 ps  Iteration: 4  Instance: /fir_tb/duv/icmp_5
+# ** Note: simulation done!
+#    Time: 250 ns  Iteration: 1  Instance: /fir_tb
+# ** Failure: NORMAL EXIT (note: failure is to force the simulator to stop)
+#    Time: 250 ns  Iteration: 1  Process: /fir_tb/generate_sim_done_proc File: /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/hls_verify_fir_tb.vhd
+# Break in Process generate_sim_done_proc at /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/hls_verify_fir_tb.vhd line 152
+quit -sim
+# End time: 19:30:10 on Mar 09,2023, Elapsed time: 2:10:27
+# Errors: 0, Warnings: 4
+# Compile of hls_verify_fir_tb.vhd was successful with warnings.
+vsim work.fir_tb
+# vsim work.fir_tb 
+# Start time: 19:30:27 on Mar 09,2023
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.std_logic_arith(body)
+# Loading ieee.std_logic_unsigned(body)
+# Loading ieee.std_logic_textio(body)
+# Loading ieee.numeric_std(body)
+# Loading work.sim_package(body)
+# Loading work.customtypes
+# Loading work.fir_tb(behav)
+# Loading ieee.math_real(body)
+# Loading work.fir(behavioral)
+# Loading work.start_node(arch)
+# Loading work.elasticbuffer(arch)
+# Loading work.tehb(arch)
+# Loading work.oehb(arch)
+# Loading work.const(arch)
+# Loading work.fork(arch)
+# Loading work.orn(vanilla)
+# Loading work.eagerfork_registerblock(arch)
+# Loading work.loopmux(arch)
+# Loading work.mul_op(arch)
+# Loading work.join(arch)
+# Loading work.andn(vanilla)
+# Loading work.mul_4_stage(behav)
+# Loading work.delay_buffer(arch)
+# Loading work.add_op(arch)
+# Loading work.icmp_ult_op(arch)
+# Loading work.branch(arch)
+# Loading work.branchsimple(arch)
+# Loading work.ret_op(arch)
+# Loading work.sink(arch)
+# Loading work.end_node(arch)
+# Loading work.single_argument(behav)
+add wave -position insertpoint sim:/fir_tb/duv/*
+run -all
+# ** Warning: (vsim-3116) Problem reading symbols from linux-gate.so.1 : can not open ELF file.
+# ** Warning: NUMERIC_STD."<": metavalue detected, returning FALSE
+#    Time: 0 ps  Iteration: 0  Instance: /fir_tb/duv/icmp_5
+# ** Warning: NUMERIC_STD."<": metavalue detected, returning FALSE
+#    Time: 0 ps  Iteration: 3  Instance: /fir_tb/duv/icmp_5
+# ** Warning: NUMERIC_STD."<": metavalue detected, returning FALSE
+#    Time: 0 ps  Iteration: 4  Instance: /fir_tb/duv/icmp_5
+quit -sim
+# End time: 19:47:55 on Mar 09,2023, Elapsed time: 0:17:28
+# Errors: 0, Warnings: 4
+# Compile of hls_verify_fir_tb.vhd was successful with warnings.
+vsim work.fir_tb
+# vsim work.fir_tb 
+# Start time: 19:48:17 on Mar 09,2023
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.std_logic_arith(body)
+# Loading ieee.std_logic_unsigned(body)
+# Loading ieee.std_logic_textio(body)
+# Loading ieee.numeric_std(body)
+# Loading work.sim_package(body)
+# Loading work.customtypes
+# Loading work.fir_tb(behav)
+# Loading ieee.math_real(body)
+# Loading work.fir(behavioral)
+# Loading work.start_node(arch)
+# Loading work.elasticbuffer(arch)
+# Loading work.tehb(arch)
+# Loading work.oehb(arch)
+# Loading work.const(arch)
+# Loading work.fork(arch)
+# Loading work.orn(vanilla)
+# Loading work.eagerfork_registerblock(arch)
+# Loading work.loopmux(arch)
+# Loading work.mul_op(arch)
+# Loading work.join(arch)
+# Loading work.andn(vanilla)
+# Loading work.mul_4_stage(behav)
+# Loading work.delay_buffer(arch)
+# Loading work.add_op(arch)
+# Loading work.icmp_ult_op(arch)
+# Loading work.branch(arch)
+# Loading work.branchsimple(arch)
+# Loading work.ret_op(arch)
+# Loading work.sink(arch)
+# Loading work.end_node(arch)
+# Loading work.single_argument(behav)
+add wave -position insertpoint sim:/fir_tb/duv/*
+run -all
+# ** Warning: (vsim-3116) Problem reading symbols from linux-gate.so.1 : can not open ELF file.
+# Compile of hls_verify_fir_tb.vhd was successful with warnings.
+# Compile of delay_buffer.vhd was successful.
+# Compile of elastic_components.vhd was successful.
+# Compile of MemCont.vhd was successful with warnings.
+# Compile of multipliers.vhd was successful.
+# Compile of simpackage.vhd was successful.
+# Compile of two_port_RAM.vhd was successful with warnings.
+# Compile of single_argument.vhd was successful with warnings.
+# Compile of arithmetic_units.vhd was successful.
+# Compile of fir.vhd was successful.
+# Compile of sharing_components.vhd was successful.
+# Compile of mul_wrapper.vhd was successful.
+# Compile of hls_verify_fir_tb.vhd was successful with warnings.
+# 12 compiles, 0 failed with no errors.
+add wave -position insertpoint sim:/fir_tb/duv/*
+# Break key hit
+# Break in Process generate_start_signal at /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/hls_verify_fir_tb.vhd line 203
+quit -sim
+
+
+
+
+
+
+quit -sim
+# End time: 19:52:12 on Mar 09,2023, Elapsed time: 0:03:55
+# Errors: 0, Warnings: 1
+
+
+
+
+
+
+
+quit -sim
+vsim work.fir_tb
+# vsim work.fir_tb 
+# Start time: 19:52:22 on Mar 09,2023
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.std_logic_arith(body)
+# Loading ieee.std_logic_unsigned(body)
+# Loading ieee.std_logic_textio(body)
+# Loading ieee.numeric_std(body)
+# Loading work.sim_package(body)
+# Loading work.customtypes
+# Loading work.fir_tb(behav)
+# Loading ieee.math_real(body)
+# Loading work.fir(behavioral)
+# Loading work.start_node(arch)
+# Loading work.elasticbuffer(arch)
+# Loading work.tehb(arch)
+# Loading work.oehb(arch)
+# Loading work.const(arch)
+# Loading work.fork(arch)
+# Loading work.orn(vanilla)
+# Loading work.eagerfork_registerblock(arch)
+# Loading work.loopmux(arch)
+# Loading work.mul_op(arch)
+# Loading work.join(arch)
+# Loading work.andn(vanilla)
+# Loading work.mul_4_stage(behav)
+# Loading work.delay_buffer(arch)
+# Loading work.add_op(arch)
+# Loading work.icmp_ult_op(arch)
+# Loading work.branch(arch)
+# Loading work.branchsimple(arch)
+# Loading work.ret_op(arch)
+# Loading work.sink(arch)
+# Loading work.end_node(arch)
+# Loading work.single_argument(behav)
+add wave -position insertpoint sim:/fir_tb/duv/*
+run -all
+# ** Warning: (vsim-3116) Problem reading symbols from linux-gate.so.1 : can not open ELF file.
+# Break key hit
+# Break in Process generate_start_signal at /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/hls_verify_fir_tb.vhd line 203
+# Compile of delay_buffer.vhd was successful.
+# Compile of elastic_components.vhd was successful.
+# Compile of MemCont.vhd was successful with warnings.
+# Compile of multipliers.vhd was successful.
+# Compile of simpackage.vhd was successful.
+# Compile of two_port_RAM.vhd was successful with warnings.
+# Compile of single_argument.vhd was successful with warnings.
+# Compile of arithmetic_units.vhd was successful.
+# Compile of fir.vhd was successful.
+# Compile of sharing_components.vhd was successful.
+# Compile of mul_wrapper.vhd was successful.
+# Compile of hls_verify_fir_tb.vhd was successful with warnings.
+# 12 compiles, 0 failed with no errors.
+vsim work.fir_tb
+# End time: 19:54:09 on Mar 09,2023, Elapsed time: 0:01:47
+# Errors: 0, Warnings: 1
+# vsim work.fir_tb 
+# Start time: 19:54:09 on Mar 09,2023
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.std_logic_arith(body)
+# Loading ieee.std_logic_unsigned(body)
+# Loading ieee.std_logic_textio(body)
+# Loading ieee.numeric_std(body)
+# Loading work.sim_package(body)
+# Loading work.customtypes
+# Loading work.fir_tb(behav)
+# Loading ieee.math_real(body)
+# Loading work.fir(behavioral)
+# Loading work.start_node(arch)
+# Loading work.elasticbuffer(arch)
+# Loading work.tehb(arch)
+# Loading work.oehb(arch)
+# Loading work.const(arch)
+# Loading work.fork(arch)
+# Loading work.orn(vanilla)
+# Loading work.eagerfork_registerblock(arch)
+# Loading work.loopmux(arch)
+# Loading work.mul_op(arch)
+# Loading work.join(arch)
+# Loading work.andn(vanilla)
+# Loading work.mul_4_stage(behav)
+# Loading work.delay_buffer(arch)
+# Loading work.add_op(arch)
+# Loading work.icmp_ult_op(arch)
+# Loading work.branch(arch)
+# Loading work.branchsimple(arch)
+# Loading work.ret_op(arch)
+# Loading work.sink(arch)
+# Loading work.end_node(arch)
+# Loading work.single_argument(behav)
+add wave -position insertpoint sim:/fir_tb/duv/*
+run -all
+# ** Warning: (vsim-3116) Problem reading symbols from linux-gate.so.1 : can not open ELF file.
+# Break key hit
+# Break in Process generate_start_signal at /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/hls_verify_fir_tb.vhd line 203
