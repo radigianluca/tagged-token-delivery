@@ -3732,8 +3732,21 @@ void CircuitGenerator::addSourceForConstants() {
 			assert(enode->CntrlSuccs->size() + enode->JustCntrlSuccs->size() + enode->CntrlOrderSuccs->size() == 1);
 
 			// AYA: 16/11/2021: replaced those conditions with fields to make sure that these constants are not feeding a branch condition or LSQ, MC.. ALSO, as an extra check, we eiliminate it if it's part of the redundant control network!!
-			if(!enode->is_const_br_condition && !enode->is_const_feed_memory && !enode->is_redunCntrlNet) {	
-				flag = true;
+			if(!enode->is_const_br_condition && !enode->is_const_feed_memory && !enode->is_redunCntrlNet) {
+				if(enode->CntrlSuccs->size() == 1) {
+					if(enode->CntrlSuccs->at(0)->type == Inst_)
+						flag = true;
+				} else {
+					if(enode->JustCntrlSuccs->size() == 1) {
+						if(enode->JustCntrlSuccs->at(0)->type == Inst_)
+							flag = true;
+					} else {
+						assert(enode->CntrlOrderSuccs->size() == 1);
+						if(enode->CntrlOrderSuccs->at(0)->type == Inst_)
+							flag = true;
+					}
+				}
+				// flag = true;
 			} 
 
 			// NOTE that I'm making sure that the successor isn't MC and not LSQ in all the three networks although the check needs to be done only in the CntrlOrder network!! But, I'm being extraaa safe
