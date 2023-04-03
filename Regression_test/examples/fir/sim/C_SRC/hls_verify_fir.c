@@ -1904,7 +1904,7 @@ int fir(in_int_t arg_1) {
 	fclose(hlsv_if_arg_1);
 
 
-    for(int i = 0; i < 2; i++)
+    for(int i = 0; i < 3; i++)
     {
      arg_1 = arg_1 * 5;
     }
@@ -1923,7 +1923,7 @@ int fir(in_int_t arg_1) {
 }
 
 int main(void) {
-    for(int i = 0; i < 10; ++i){
+    for(int i = 0; i < 5; ++i){
      fir(i+1);
     }
 }

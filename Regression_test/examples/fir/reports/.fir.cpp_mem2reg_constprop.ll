@@ -16,7 +16,7 @@ for.body:                                         ; preds = %entry, %for.inc
 
 for.inc:                                          ; preds = %for.body
   %inc = add nsw i32 %i.01, 1
-  %cmp = icmp slt i32 %inc, 2
+  %cmp = icmp slt i32 %inc, 3
   br i1 %cmp, label %for.body, label %for.end
 
 for.end:                                          ; preds = %for.inc
@@ -37,7 +37,7 @@ for.body:                                         ; preds = %entry, %for.inc
 
 for.inc:                                          ; preds = %for.body
   %inc = add nsw i32 %i.01, 1
-  %cmp = icmp slt i32 %inc, 10
+  %cmp = icmp slt i32 %inc, 5
   br i1 %cmp, label %for.body, label %for.end
 
 for.end:                                          ; preds = %for.inc

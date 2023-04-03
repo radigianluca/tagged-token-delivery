@@ -13,7 +13,7 @@ for.body:                                         ; preds = %for.body, %entry
   %i.01 = phi i32 [ 0, %entry ], [ %inc, %for.body ]
   %mul = mul nsw i32 %arg_1.addr.02, 5
   %inc = add nuw nsw i32 %i.01, 1
-  %cmp = icmp ult i32 %inc, 2
+  %cmp = icmp ult i32 %inc, 3
   br i1 %cmp, label %for.body, label %for.end
 
 for.end:                                          ; preds = %for.body
@@ -30,7 +30,7 @@ for.body:                                         ; preds = %for.body, %entry
   %add = add nuw nsw i32 %i.01, 1
   %call = call i32 @_Z3firi(i32 %add)
   %inc = add nuw nsw i32 %i.01, 1
-  %cmp = icmp ult i32 %inc, 10
+  %cmp = icmp ult i32 %inc, 5
   br i1 %cmp, label %for.body, label %for.end
 
 for.end:                                          ; preds = %for.body

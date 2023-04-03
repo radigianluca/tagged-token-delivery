@@ -21,7 +21,7 @@ Digraph G {
 		"mul_3" [type = "Operator", bbID= 2, op = "mul_op", in = "in1:32 in2:32 ", out = "out1:32 ", delay=0.000, latency=4, II=1];
 		"cst_2" [type = "Constant", bbID= 2, in = "in1:32", out = "out1:32", value = "0x00000001"];
 		"add_4" [type = "Operator", bbID= 2, op = "add_op", in = "in1:32 in2:32 ", out = "out1:32 ", delay=1.693, latency=0, II=1];
-		"cst_3" [type = "Constant", bbID= 2, in = "in1:32", out = "out1:32", value = "0x00000002"];
+		"cst_3" [type = "Constant", bbID= 2, in = "in1:32", out = "out1:32", value = "0x00000003"];
 		"icmp_5" [type = "Operator", bbID= 2, op = "icmp_ult_op", in = "in1:32 in2:32 ", out = "out1:1 ", delay=1.530, latency=0, II=1];
 		"phiC_2" [type = "LoopMux", bbID= 2, in = "in1?:1 in2:0 in3:0 ", out = "out1:0", delay=0.166];
 		"branch_0" [type = "Branch", bbID= 2,  in = "in1:32 in2?:1*i", out = "out1+:32 out2-:32"];

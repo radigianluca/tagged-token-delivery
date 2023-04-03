@@ -73,7 +73,6 @@ namespace hls_verify {
             "\n"
 
             "----------------------------------------------------------------------------\n"
-            "--tb_temp_idle is used to understand when one transaction\n"
             "generate_idle_signal: process(tb_clk,tb_rst)\n"
             "begin\n"
             "   if (tb_rst = '1') then\n"
@@ -84,71 +83,59 @@ namespace hls_verify {
             "end process generate_idle_signal;\n"
             "\n"
             "----------------------------------------------------------------------------\n"
-
-            "generate_trigger_signal: process(tb_clk,tb_rst)\n"
-            "variable first : integer := 0;\n"
-            "begin\n"
-            "   if (tb_rst = '1') then\n"
-            "        tb_arg_1_trigger <= '1';\n"
-            "    elsif rising_edge(tb_clk) then\n"
-            "        tb_arg_1_trigger <= tb_arg_1_trigger;\n"
-	        "        if(first = 0) then\n"
-			"           tb_arg_1_trigger <= '0';\n"
-			"           first := 1;\n"
-		    "        end if;\n"
-            "        if (tb_arg_valid = '1') then\n"
-            "           tb_arg_1_trigger <= '0';\n"
-            "        elsif(tb_arg_1_trigger = '0' and transaction_idx /= TRANSACTION_NUM and tb_arg_ready = '1' and tb_start_ready = '1') then\n"
-            "           tb_arg_1_trigger <= '1';\n"
-            "        end if;\n"
-            "    end if;\n"
-            "end process;\n"
-            "\n"
-            "----------------------------------------------------------------------------\n"
-
-            "generate_valid : process(tb_clk, tb_rst)\n"
-            "begin\n"
-	        "    if(tb_rst = '1') then\n"
-		    "        tb_start_valid <= '0';\n"
-		    "        tb_arg_valid <= '0';\n"
-	        "    elsif rising_edge(tb_clk) then\n"
-		    "        tb_start_valid <= temp_start_valid;\n"
-		    "        tb_arg_valid <= temp_arg_valid;\n"
-	        "    end if;\n"	
-            "end process;\n"
-            "\n"
-            "----------------------------------------------------------------------------\n"
-
             "generate_start_signal : process(tb_clk, tb_rst)\n"
             "variable count_start : integer := 0;\n"
             "begin\n"
             "    if (tb_rst = '1') then\n"
-	        "        temp_start_valid <= '0';\n"
-	        "        temp_arg_valid <= '0';\n"
+            "        temp_start_valid <= '0';\n"
+            "        temp_arg_valid <= '0';\n"
+            "        tb_start_valid <= '0';\n"
+            "        tb_arg_valid <= '0';\n"
+            "        count_start := 0;\n"
+            "        transaction_idx := 0;\n"
             "    elsif rising_edge(tb_clk) then\n"
-		    "        if(count_start < TRANSACTION_NUM) then\n"
-       		"            if (tb_start_ready = '1' and tb_arg_1_trigger = '0' and temp_start_valid = '0') then\n"
-			"	            temp_start_valid <= '1';\n"
-		   	"	            count_start := count_start + 1;\n"
-       		"            else\n"
-			"                temp_start_valid <= '0';\n"
-       		"            end if;\n"
-		    "        else\n"
-			"            temp_start_valid <= '0';\n"
-		    "        end if;\n"
-		    "        if(transaction_idx < TRANSACTION_NUM) then\n"
-       		"            if (tb_arg_ready = '1' and tb_arg_1_trigger = '0' and temp_arg_valid = '0') then\n"
-			"	            temp_arg_valid <= '1';\n"
-			"	            transaction_idx := transaction_idx + 1;\n"
-			"            else\n"
-			"	            temp_arg_valid <= '0';\n"
-			"            end if;\n"
-		    "        else\n"
-			"            temp_arg_valid <= '0';\n"
-       	    "        end if;\n"	   
+            "        if(count_start < TRANSACTION_NUM) then\n"
+            "            --count trans\n"
+            "            if(tb_start_valid = '1' and tb_start_ready = '1') then\n"
+            "                count_start := count_start + 1;\n"
+            "            end if;\n"
+            "            --generate start\n"
+            "            if (count_start < TRANSACTION_NUM) then\n"
+            "                temp_start_valid <= '1';\n"
+            "            else\n"
+            "                temp_start_valid <= '0';\n"
+            "            end if;\n"
+            "        else\n"
+            "            temp_start_valid <= '0';\n"
+            "        end if;\n"
+            "        if(transaction_idx < TRANSACTION_NUM) then\n"
+            "            --count trans\n"
+            "           if(tb_arg_valid = '1' and tb_arg_ready = '1') then\n"
+            "                transaction_idx := transaction_idx + 1;\n"
+            "            end if;\n"
+            "            --gen valid\n"
+            "            if (transaction_idx < TRANSACTION_NUM) then\n"
+            "                temp_arg_valid <= '1';\n"
+            "            else\n"
+            "                temp_arg_valid <= '0';\n"
+            "            end if;\n"
+            "        else\n"
+            "            temp_arg_valid <= '0';\n"
+            "        end if;\n"
+            "        if(count_start < TRANSACTION_NUM) then\n"
+            "            tb_start_valid <= temp_start_valid;\n"
+            "        else\n"
+            "            tb_start_valid <= '0';\n"
+            "        end if;\n"
+            "        if(transaction_idx < TRANSACTION_NUM) then\n"
+            "            tb_arg_valid <= temp_arg_valid;\n"
+            "        else\n"
+            "            tb_arg_valid <= '0';\n"
+            "        end if;\n"
             "    end if;\n"
-            "end process generate_start_signal;\n"
+            "end process;\n"
             "\n"
+            
             
             "----------------------------------------------------------------------------\n\n";
 
@@ -439,10 +426,10 @@ namespace hls_verify {
         code << "\tsignal tb_temp_idle : std_logic:= '1';" << endl;
         code << "\tshared variable transaction_idx : INTEGER := 0;" << endl;
         //signals for stream simulation
+        code << "\tshared variable count_start : INTEGER := 0;" << endl;
         code << "\tsignal tb_done : std_logic;" << endl;
         code << "\tsignal temp_start_valid : std_logic;" << endl;
         code << "\tsignal temp_arg_valid : std_logic;" << endl;
-        code << "\tsignal tb_arg_1_trigger : std_logic:= '1';" << endl;
 
         return code.str();
     }
@@ -493,7 +480,7 @@ namespace hls_verify {
                     code << "\t\t" << MemElem::we0PortName << " => " << "'0'" << "," << endl;
                     code << "\t\t" << MemElem::dOut0PortName << " => " << m.dOut0SignalName << "," << endl;
                     code << "\t\t" << MemElem::dIn0PortName << " => " << "(others => '0')" << "," << endl;
-                    code << "\t\t" << MemElem::donePortName << " => " << "tb_arg_1_trigger" << endl; //modified in argument
+                    code << "\t\t" << MemElem::donePortName << " => " << "(temp_arg_valid and tb_arg_ready)" << endl; //modified in argument
                     code << "\t);" << endl << endl;
 
 
@@ -668,7 +655,7 @@ namespace hls_verify {
 
         duvPortMap.push_back(pair<string, string>("start_in", "(others => '0')"));
         duvPortMap.push_back(pair<string, string>("start_ready", "tb_start_ready"));
-        duvPortMap.push_back(pair<string, string>("start_valid", "tb_start_valid"));
+        duvPortMap.push_back(pair<string, string>("start_valid", "(tb_start_valid and tb_start_ready)"));
         //new mapping for decoupled start and arg valid
         duvPortMap.push_back(pair<string, string>("arg_1_ready_out", "tb_arg_ready"));
 

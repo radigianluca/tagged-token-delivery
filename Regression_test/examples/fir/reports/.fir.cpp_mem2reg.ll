@@ -11,7 +11,7 @@ entry:
 for.cond:                                         ; preds = %for.inc, %entry
   %i.0 = phi i32 [ 0, %entry ], [ %inc, %for.inc ]
   %arg_1.addr.0 = phi i32 [ %arg_1, %entry ], [ %mul, %for.inc ]
-  %cmp = icmp slt i32 %i.0, 2
+  %cmp = icmp slt i32 %i.0, 3
   br i1 %cmp, label %for.body, label %for.end
 
 for.body:                                         ; preds = %for.cond
@@ -33,7 +33,7 @@ entry:
 
 for.cond:                                         ; preds = %for.inc, %entry
   %i.0 = phi i32 [ 0, %entry ], [ %inc, %for.inc ]
-  %cmp = icmp slt i32 %i.0, 10
+  %cmp = icmp slt i32 %i.0, 5
   br i1 %cmp, label %for.body, label %for.end
 
 for.body:                                         ; preds = %for.cond

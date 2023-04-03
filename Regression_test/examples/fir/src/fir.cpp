@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include "fir.h"
 
-#define AMOUNT_OF_TEST 10
+#define AMOUNT_OF_TEST 5
 
 /*int fir (in_int_t d_i[1000], in_int_t idx[1000] ) {
 	int i;
@@ -51,7 +51,7 @@ int main(void){
 }*/
 
 int fir(in_int_t arg_1) {
-    for(int i = 0; i < 2; i++) 
+    for(int i = 0; i < 3; i++) 
     {
     	arg_1 = arg_1 * 5;
     }

@@ -21,7 +21,7 @@ _Z3firi:                                # @_Z3firi
 	movl	-4(%rbp), %ecx          # 4-byte Reload
 	imull	$5, %ecx, %ecx
 	addl	$1, %eax
-	cmpl	$2, %eax
+	cmpl	$3, %eax
 	movl	%ecx, %edx
 	movl	%ecx, -12(%rbp)         # 4-byte Spill
 	movl	%edx, -4(%rbp)          # 4-byte Spill
@@ -60,7 +60,7 @@ main:                                   # @main
 	callq	_Z3firi
 	movl	-8(%rbp), %ecx          # 4-byte Reload
 	addl	$1, %ecx
-	cmpl	$10, %ecx
+	cmpl	$5, %ecx
 	movl	%eax, -12(%rbp)         # 4-byte Spill
 	movl	%ecx, -4(%rbp)          # 4-byte Spill
 	jb	.LBB1_1

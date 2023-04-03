@@ -19,7 +19,7 @@ architecture behav of fir_tb is
 	-- Constant declarations
 
 	constant HALF_CLK_PERIOD : TIME := 2.00 ns;
-	constant TRANSACTION_NUM : INTEGER := 10;
+	constant TRANSACTION_NUM : INTEGER := 100;
 	constant INPUT_end : STRING := "";
 	constant OUTPUT_end : STRING := "../VHDL_OUT/output_end.dat";
 	constant DATA_WIDTH_end : INTEGER := 32;
@@ -52,6 +52,7 @@ architecture behav of fir_tb is
 
 	signal tb_temp_idle : std_logic:= '1';
 	shared variable transaction_idx : INTEGER := 0;
+	shared variable count_start : INTEGER := 0;
 	signal tb_done : std_logic;
 	signal temp_start_valid : std_logic;
 	signal temp_arg_valid : std_logic;
@@ -71,7 +72,7 @@ duv: 	 entity work.fir
 			arg_1_din => arg_1_mem_dout0,
 			start_in => (others => '0'),
 			start_ready => tb_start_ready,
-			start_valid => tb_start_valid,
+			start_valid => (tb_start_valid and tb_start_ready),
 			arg_1_ready_out => tb_arg_ready
 		);
 
@@ -105,7 +106,7 @@ arg_inst_arg_1:	 entity work.single_argument
 		we0 => '0',
 		mem_dout0 => arg_1_mem_dout0,
 		mem_din0 => (others => '0'),
-		done => tb_arg_1_trigger
+		done => (temp_arg_valid and tb_arg_ready)
 	);
 
 
@@ -197,7 +198,6 @@ begin
 end process;
 
 ----------------------------------------------------------------------------
---tb_temp_idle is used to understand when one transaction
 generate_idle_signal: process(tb_clk,tb_rst)
 begin
    if (tb_rst = '1') then
@@ -208,49 +208,25 @@ begin
 end process generate_idle_signal;
 
 ----------------------------------------------------------------------------
-generate_trigger_signal: process(tb_clk,tb_rst)
-variable first : integer := 0;
-begin
-   if (tb_rst = '1') then
-        tb_arg_1_trigger <= '1';
-    elsif rising_edge(tb_clk) then
-        tb_arg_1_trigger <= tb_arg_1_trigger;
-        if(first = 0) then
-           tb_arg_1_trigger <= '0';
-           first := 1;
-        end if;
-        if (tb_arg_valid = '1') then
-           tb_arg_1_trigger <= '0';
-        elsif(tb_arg_1_trigger = '0' and transaction_idx /= TRANSACTION_NUM and tb_arg_ready = '1' and tb_start_ready = '1') then
-           tb_arg_1_trigger <= '1';
-        end if;
-    end if;
-end process;
-
-----------------------------------------------------------------------------
-generate_valid : process(tb_clk, tb_rst)
-begin
-    if(tb_rst = '1') then
-        tb_start_valid <= '0';
-        tb_arg_valid <= '0';
-    elsif rising_edge(tb_clk) then
-        tb_start_valid <= temp_start_valid;
-        tb_arg_valid <= temp_arg_valid;
-    end if;
-end process;
-
-----------------------------------------------------------------------------
 generate_start_signal : process(tb_clk, tb_rst)
 variable count_start : integer := 0;
 begin
     if (tb_rst = '1') then
         temp_start_valid <= '0';
         temp_arg_valid <= '0';
+        tb_start_valid <= '0';
+        tb_arg_valid <= '0';
+        count_start := 0;
+        transaction_idx := 0;
     elsif rising_edge(tb_clk) then
         if(count_start < TRANSACTION_NUM) then
-            if (tb_start_ready = '1' and tb_arg_1_trigger = '0' and temp_start_valid = '0') then
-	            temp_start_valid <= '1';
-	            count_start := count_start + 1;
+            --count trans
+            if(tb_start_valid = '1' and tb_start_ready = '1') then
+                count_start := count_start + 1;
+            end if;
+            --generate start
+            if (count_start < TRANSACTION_NUM) then
+                temp_start_valid <= '1';
             else
                 temp_start_valid <= '0';
             end if;
@@ -258,17 +234,31 @@ begin
             temp_start_valid <= '0';
         end if;
         if(transaction_idx < TRANSACTION_NUM) then
-            if (tb_arg_ready = '1' and tb_arg_1_trigger = '0' and temp_arg_valid = '0') then
-	            temp_arg_valid <= '1';
-	            transaction_idx := transaction_idx + 1;
+            --count trans
+           if(tb_arg_valid = '1' and tb_arg_ready = '1') then
+                transaction_idx := transaction_idx + 1;
+            end if;
+            --gen valid
+            if (transaction_idx < TRANSACTION_NUM) then
+                temp_arg_valid <= '1';
             else
-	            temp_arg_valid <= '0';
+                temp_arg_valid <= '0';
             end if;
         else
             temp_arg_valid <= '0';
         end if;
+        if(count_start < TRANSACTION_NUM) then
+            tb_start_valid <= temp_start_valid;
+        else
+            tb_start_valid <= '0';
+        end if;
+        if(transaction_idx < TRANSACTION_NUM) then
+            tb_arg_valid <= temp_arg_valid;
+        else
+            tb_arg_valid <= '0';
+        end if;
     end if;
-end process generate_start_signal;
+end process;
 
 ----------------------------------------------------------------------------
 

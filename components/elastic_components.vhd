@@ -2062,13 +2062,21 @@ end gian_mux;
 architecture arch of gian_mux is
 signal dataIn_0_buff : data_array(THRD_NUM - 1 downto 0)(DATA_SIZE_IN - 1 downto 0);
 signal dataIn_1_buff : data_array(THRD_NUM - 1 downto 0)(DATA_SIZE_IN - 1 downto 0);
+signal tehb_data_in  : std_logic_vector(DATA_SIZE_IN - 1 downto 0);
+signal tehb_pvalid : std_logic;
+signal tehb_ready : std_logic;
+shared variable index_0_buff : integer := 0;
+shared variable index_1_buff : integer := 0;
+shared variable index_cond_buff : integer := 0;
 
 begin
 
 horrible_mono_process: process(clk, rst)
-variable index_0_buff : integer := 0;
-variable index_1_buff : integer := 0;
-variable index_cond_buff : integer := 0;
+variable tmp_data_out  : unsigned(DATA_SIZE_IN - 1 downto 0);
+variable tmp_valid_out : std_logic;
+variable count : integer;
+variable accept_in0 : integer := 1;
+variable accept_in1 : integer := 0;
 begin
     if(rst = '1') then
         dataIn_0_buff <= (others => (others => '0'));
@@ -2076,21 +2084,29 @@ begin
         dataIn_1_buff <= (others => (others => '0'));
         index_1_buff := 0;
         index_cond_buff := 0;
+        count := 0;
     elsif rising_edge(clk) then
         --output
-        validArray(0) <= '0';
+        tmp_valid_out := '0';
+        tmp_data_out  := unsigned(dataInArray(0));
         if(nReadyArray(0) = '1') then
-            if(index_0_buff > 0) then --there is something stored in the in_0_buffer
-                dataOutArray(0) <= dataIn_0_buff(0);
-                validArray(0) <= '1';
+            if(index_0_buff > 0 and accept_in0 = 1) then --there is something stored in the in_0_buffer
+                tmp_data_out := unsigned(dataIn_0_buff(0));
+                tmp_valid_out := '1';
                 index_0_buff := index_0_buff - 1;
+                count := count + 1;
+                if(count = THRD_NUM) then
+                    count := 0;
+                    accept_in0 := 0;
+                    accept_in1 := 1;
+                end if;
                 for I in 0 to THRD_NUM - 2 loop --make the data slides in the buffer
                     dataIn_0_buff(I) <= dataIn_0_buff(I+1);
                 end loop;
                 dataIn_0_buff(THRD_NUM - 1) <= (others => '0');
-            elsif (index_1_buff > 0 and index_cond_buff > 0) then
-                dataOutArray(0) <= dataIn_1_buff(0);
-                validArray(0) <= '1';
+            elsif (index_1_buff > 0 and index_cond_buff > 0 and accept_in1 = 1) then
+                tmp_data_out := unsigned(dataIn_1_buff(0));
+                tmp_valid_out := '1';
                 index_1_buff := index_1_buff - 1;
                 index_cond_buff := index_cond_buff - 1;
                 for I in 0 to THRD_NUM - 2 loop --make the data slides in the buffer
@@ -2100,7 +2116,7 @@ begin
             end if;
         end if;
         --dataIn_0_buff
-        if(pValidArray(1) = '1' and index_0_buff < THRD_NUM) then  
+        if(pValidArray(1) = '1' and index_0_buff < THRD_NUM and readyArray(1) = '1') then  
             dataIn_0_buff(index_0_buff) <= dataInArray(0);
             index_0_buff := index_0_buff + 1;
         end if;
@@ -2110,13 +2126,44 @@ begin
             index_1_buff := index_1_buff + 1;
         end if;
         --cond_buff
-        if(pValidArray(0) = '1' and index_cond_buff < THRD_NUM and to_integer(unsigned(condition(0))) /= 0) then  --interested only in non-0 conditions
-            index_cond_buff := index_cond_buff + 1;
+        if(pValidArray(0) = '1' and index_cond_buff < THRD_NUM) then
+            if(to_integer(unsigned(condition(0))) = 0) then
+                count := count + 1;
+            else
+                index_cond_buff := index_cond_buff + 1;
+            end if;
+            if(count = THRD_NUM) then
+                count := 0;
+                accept_in0 := 1;
+                accept_in1 := 0;
+            end if;
         end if;
+    end if;
+    --tehb inputs
+    tehb_data_in <= std_logic_vector(resize(tmp_data_out,DATA_SIZE_OUT));
+    tehb_pvalid  <= tmp_valid_out;
+    --ready
+    if(index_0_buff = THRD_NUM) then
+        readyArray <= "101";
+    else
+        readyArray <= "111";
     end if;
 end process;
 
-readyArray <= "111"; --num of buffers is equal to number of threads
+
+tehb1: entity work.TEHB(arch) generic map (1, 1, DATA_SIZE_IN, DATA_SIZE_IN)
+        port map (
+        --inputspValidArray
+            clk => clk, 
+            rst => rst, 
+            pValidArray(0)  => tehb_pvalid, 
+            nReadyArray(0) => nReadyArray(0),    
+            validArray(0) => validArray(0), 
+        --outputs
+            readyArray(0) => tehb_ready,   
+            dataInArray(0) => tehb_data_in,
+            dataOutArray(0) => dataOutArray(0)
+        );
 
 end architecture;
 
