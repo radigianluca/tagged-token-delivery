@@ -117,7 +117,7 @@ public:
 			circuitGen->Fix_LLVM_PhiPreds();
 
 			// AYA: 21/10/2022: temporarily calling this function here to trigger all constants from source
-			//circuitGen->addSourceForConstants();
+			circuitGen->addSourceForConstants();
 
 	    	circuitGen->addStartC();
 
