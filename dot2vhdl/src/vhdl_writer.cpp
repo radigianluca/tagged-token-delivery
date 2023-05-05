@@ -57,7 +57,9 @@ string entity_name[] = {
     ENTITY_MC,
     ENTITY_DISTRIBUTOR,
     ENTITY_INJECTOR,
-    ENTITY_SELECTOR
+    ENTITY_SELECTOR,
+    ENTITY_TMFO,
+    ENTITY_SYNCH,
 };
 
 string component_types[] = {
@@ -90,7 +92,9 @@ string component_types[] = {
     COMPONENT_MC,
     COMPONENT_DISTRIBUTOR,
     COMPONENT_INJECTOR,
-    COMPONENT_SELECTOR
+    COMPONENT_SELECTOR, 
+    COMPONENT_TMFO,
+    COMPONENT_SYNCH,   // Aya: 29/04/2023: for the synchronizer that is needed at the in0 of the LoopMUX
 };
 
 string inputs_name[] = {
@@ -754,15 +758,17 @@ void write_connections (  int indx )
                 signal_1 += UNDERSCORE;
                 signal_1 += "0";
 
-		        //decoupling start_valid and arg_valid
+            
+                 //decoupling start_valid and arg_valid
              	if ( ! ( nodes[i].name.find("start") != std::string::npos ) ){ // If not start
                 //signal_2 = "ap_start";
                 
-                 signal_2 = nodes[i].name;
-                 signal_2 += UNDERSCORE;
-                 signal_2 +="valid_in";
+                    signal_2 = nodes[i].name;
+                    signal_2 += UNDERSCORE;
+                    signal_2 +="valid_in";
 		        }
-		        else{
+		        else
+                {
                 	signal_2 = "start_valid";
 		        }
 
@@ -1271,6 +1277,16 @@ string get_generic ( int node_id )
         generic += to_string(nodes[node_id].inputs.input[0].bit_size);
         generic += COMMA;
         generic += to_string(nodes[node_id].outputs.output[0].bit_size);
+    }  
+
+    // AYA: 29/04/2023: The following is needed if the specs of the LoopMUX requires synchronizing the in0 of all LoopMuxes inside 1 loop 
+    if ( nodes[node_id].type.find("Synch") != std::string::npos )
+    {
+        generic = to_string(nodes[node_id].inputs.size);
+        generic += COMMA;
+        generic += to_string(nodes[node_id].inputs.input[0].bit_size);
+        generic += COMMA;
+        generic += to_string(nodes[node_id].outputs.output[0].bit_size);
     }    
 
     if ( nodes[node_id].type.find("Constant") != std::string::npos )
@@ -1484,6 +1500,8 @@ string get_generic ( int node_id )
         generic += to_string(nodes[node_id].outputs.output[0].bit_size);
         generic += COMMA;
         generic += to_string(nodes[node_id].inputs.input[0].bit_size); // condition size inputs.input[input_indx].type
+        generic += COMMA;
+        generic += to_string(3); //  AYA: 03/04/2023: for now hardcoding the pragma that controls the number of threads running concurrently 
         /*
          *         
          * generic += COMMA;
@@ -1500,6 +1518,12 @@ string get_generic ( int node_id )
         */
         
     }     
+
+        // AYA: 27/03/2023: adding support for the new type of TMFO that is needed in the transformation from REGEN_SUPP to SUPP_REGEN
+    if ( nodes[node_id].type.find("TMFO") != std::string::npos )
+    {
+        generic += to_string(nodes[node_id].inputs.input[0].bit_size); // condition size inputs.input[input_indx].type  
+    }   
 
     if ( nodes[node_id].type.find("Inj") != std::string::npos )
     {
@@ -1650,6 +1674,10 @@ void write_components ( )
         {
             entity = "c_"+nodes[i].name + ":" + nodes[i].name;
         }
+        else if ( nodes[i].type == "Synch" )  // AYA: 29/04/2023
+        {
+            entity += "synch";
+        }
         else
         {
             entity += get_component_entity ( nodes[i].component_operator, i );
@@ -1676,23 +1704,24 @@ void write_components ( )
         
         netlist << "port map (" << endl;
 
-        if ( nodes[i].type != "LSQ" )
+        if ( nodes[i].type != "LSQ" && nodes[i].type != "Synch") // AYA: 30/04/2023: added gian Synch component to the if condition 
         {        
             netlist << "\t" << "clk => " << nodes[i].name << "_clk";
             netlist << COMMA << endl<< "\t" << "rst => " << nodes[i].name << "_rst";
         }
         else
         {
-            netlist << "\t" << "clock => " << nodes[i].name << "_clk";
-            netlist << COMMA << endl<< "\t" << "reset => " << nodes[i].name << "_rst";
-            
-            // Andrea 20200117 Added to be compatible with chisel LSQ
-            netlist << "," << endl;
-//            netlist << "\t" << "io_memIsReadyForLoads => '1' ," << endl;
-//            netlist << "\t" << "io_memIsReadyForStores => '1' ";
-            netlist << "\t" << "io_memIsReadyForLoads => " <<  nodes[i].name << "_load_ready" << COMMA << endl;
-            netlist << "\t" << "io_memIsReadyForStores => " <<  nodes[i].name << "_store_ready";
-            
+            if ( nodes[i].type != "Synch") {// AYA: 30/04/2023: added gian Synch component in an extra if condition
+                netlist << "\t" << "clock => " << nodes[i].name << "_clk";
+                netlist << COMMA << endl<< "\t" << "reset => " << nodes[i].name << "_rst";
+                
+                // Andrea 20200117 Added to be compatible with chisel LSQ
+                netlist << "," << endl;
+    //            netlist << "\t" << "io_memIsReadyForLoads => '1' ," << endl;
+    //            netlist << "\t" << "io_memIsReadyForStores => '1' ";
+                netlist << "\t" << "io_memIsReadyForLoads => " <<  nodes[i].name << "_load_ready" << COMMA << endl;
+                netlist << "\t" << "io_memIsReadyForStores => " <<  nodes[i].name << "_store_ready";
+            }
         }
         int indx = 0;
 
@@ -1838,6 +1867,7 @@ void write_components ( )
             string stDataReadyPrev = "";
             string stDataValidPrev = "";
             string stDataBitsPrev = "";
+
 
             netlist << COMMA << endl;
             for ( int lsq_indx = 0; lsq_indx < nodes[i].inputs.size; lsq_indx++ )
@@ -2941,7 +2971,10 @@ void write_components ( )
                     input_signal += UNDERSCORE;
                     input_signal += to_string( indx );
                     
-                    netlist << COMMA << endl << "\t" << input_port << " => " << input_signal;
+                    if(indx == 0 && nodes[i].type == "Synch")  // AYA: 29/04/2023: Added the following condition because we do not have clk and reset in our SYnch component, so we do not want to blindly print a comma in the very beginning 
+                        netlist << "\t" << input_port << " => " << input_signal;
+                    else
+                        netlist << COMMA << endl << "\t" << input_port << " => " << input_signal;
                 }
             }
             

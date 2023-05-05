@@ -6,6 +6,153 @@
 #include<iterator>
 #include<algorithm>
 
+
+ENode* CircuitGenerator::insert_LoopMux_synch(BBNode* bbnode) {
+    for(auto& enode: *enode_dag) {
+        if(enode->BB == bbnode->BB)
+            assert(enode->type != LoopMux_Synch);
+    }
+    ENode* synch = new ENode(LoopMux_Synch, "Synch", bbnode->BB);
+    synch->id = loop_mux_synch_id++;
+
+    enode_dag->push_back(synch);
+
+    return synch;
+}
+
+void CircuitGenerator::connect_synch_to_LoopMux(ENode* one_loop_mux, ENode* synch) {
+    if(one_loop_mux->type == Loop_Phi_n) {
+            assert(one_loop_mux->CntrlPreds->size() == 3);
+
+            synch->CntrlPreds->push_back(one_loop_mux->CntrlPreds->at(1));
+            // the in0 of the one_loop_mux can not be a data Branch but it could be a control Branch
+            assert(one_loop_mux->CntrlPreds->at(1)->type != Branch_c);
+            if(one_loop_mux->CntrlPreds->at(1)->type == Branch_n) {
+                // the one_loop_mux should be either in the true_succs or the false_succs
+                auto pos_true = std::find(one_loop_mux->CntrlPreds->at(1)->true_branch_succs->begin(), one_loop_mux->CntrlPreds->at(1)->true_branch_succs->end(), one_loop_mux);
+                if((pos_true != one_loop_mux->CntrlPreds->at(1)->true_branch_succs->end())) {
+                    int idx = pos_true - one_loop_mux->CntrlPreds->at(1)->true_branch_succs->begin();
+                    one_loop_mux->CntrlPreds->at(1)->true_branch_succs->at(idx) = synch;
+
+                } else {
+                    auto pos_false = std::find(one_loop_mux->CntrlPreds->at(1)->false_branch_succs->begin(), one_loop_mux->CntrlPreds->at(1)->false_branch_succs->end(), one_loop_mux);
+                    assert((pos_false != one_loop_mux->CntrlPreds->at(1)->false_branch_succs->end()));
+
+                    int idx = pos_false - one_loop_mux->CntrlPreds->at(1)->false_branch_succs->begin();
+                    one_loop_mux->CntrlPreds->at(1)->false_branch_succs->at(idx) = synch;
+                }
+            } else {
+                auto pos__ = std::find(one_loop_mux->CntrlPreds->at(1)->CntrlSuccs->begin(), one_loop_mux->CntrlPreds->at(1)->CntrlSuccs->end(), one_loop_mux);
+                assert(pos__ != one_loop_mux->CntrlPreds->at(1)->CntrlSuccs->end());
+                int idx = pos__ - one_loop_mux->CntrlPreds->at(1)->CntrlSuccs->begin();
+                one_loop_mux->CntrlPreds->at(1)->CntrlSuccs->at(idx) = synch;
+            }
+
+            synch->CntrlSuccs->push_back(one_loop_mux);
+            one_loop_mux->CntrlPreds->at(1) = synch;
+    } else {
+        assert(one_loop_mux->type == Loop_Phi_c);
+        std::vector<ENode*>* Preds;
+        std::vector<ENode*>* Succs_of_Preds;
+        std::vector<ENode*>* synch_Preds;
+        std::vector<ENode*>* synch_Succs;
+        if(one_loop_mux->JustCntrlPreds->size() > 0) {
+            Preds = one_loop_mux->JustCntrlPreds;
+
+            assert(Preds->at(0)->type != Branch_n);
+            if(Preds->at(0)->type == Branch_c) {
+                auto pos_true = std::find(Preds->at(0)->true_branch_succs_Ctrl->begin(), Preds->at(0)->true_branch_succs_Ctrl->end(), one_loop_mux);
+                if((pos_true != Preds->at(0)->true_branch_succs_Ctrl->end())) {
+                    Succs_of_Preds = Preds->at(0)->true_branch_succs_Ctrl;
+                } else {
+                    auto pos_false = std::find(Preds->at(0)->false_branch_succs_Ctrl->begin(), Preds->at(0)->false_branch_succs_Ctrl->end(), one_loop_mux);
+                    assert((pos_false != Preds->at(0)->false_branch_succs_Ctrl->end()));
+                    Succs_of_Preds = Preds->at(0)->false_branch_succs_Ctrl;
+                }
+            } else {
+                assert(Preds->at(0)->JustCntrlSuccs->size() > 0);
+                Succs_of_Preds = Preds->at(0)->JustCntrlSuccs;
+            }
+
+            synch_Preds = synch->JustCntrlPreds;
+            synch_Succs = synch->JustCntrlSuccs;
+        } else {
+            assert(one_loop_mux->CntrlOrderPreds->size() > 0);
+            Preds = one_loop_mux->CntrlOrderPreds;
+
+            assert(Preds->at(0)->type != Branch_n);
+            if(Preds->at(0)->type == Branch_c) {
+                auto pos_true = std::find(Preds->at(0)->true_branch_succs_Ctrl_lsq->begin(), Preds->at(0)->true_branch_succs_Ctrl_lsq->end(), one_loop_mux);
+                if((pos_true != Preds->at(0)->true_branch_succs_Ctrl_lsq->end())) {
+                    Succs_of_Preds = Preds->at(0)->true_branch_succs_Ctrl_lsq;
+                } else {
+                    auto pos_false = std::find(Preds->at(0)->false_branch_succs_Ctrl_lsq->begin(), Preds->at(0)->false_branch_succs_Ctrl_lsq->end(), one_loop_mux);
+                    assert((pos_false != Preds->at(0)->false_branch_succs_Ctrl_lsq->end()));
+                    Succs_of_Preds = Preds->at(0)->false_branch_succs_Ctrl_lsq;
+                }
+            } else {
+                assert(Preds->at(0)->CntrlOrderSuccs->size() > 0);
+                Succs_of_Preds = Preds->at(0)->CntrlOrderSuccs;
+            }
+
+            synch_Preds = synch->CntrlOrderPreds;
+            synch_Succs = synch->CntrlOrderSuccs;
+        }
+
+        synch_Preds->push_back(Preds->at(0));
+        //synch->CntrlPreds->push_back(Preds->at(0));
+        auto pos__ = std::find(Succs_of_Preds->begin(), Succs_of_Preds->end(), one_loop_mux);
+        assert(pos__ != Succs_of_Preds->end());
+        int idx = pos__ - Succs_of_Preds->begin();
+        Succs_of_Preds->at(idx) = synch;
+        //Succs_of_Preds->erase(pos__);
+        //Preds->at(0)->CntrlSuccs->push_back(synch);
+
+        synch_Succs->push_back(one_loop_mux);
+        //synch->CntrlSuccs->push_back(one_loop_mux);
+        Preds->at(0) = synch;
+    }
+}
+
+/**
+ * @brief This function inserts a Synchronizer component
+ * @param 
+ * @notes Note that it is needed ONLY if we will use the more flexible LoopMUX specifications that does not assume that the number of threads is divisible by the pragma N 
+ */
+void CircuitGenerator::synch_loopMux() {
+    for(auto& enode: *enode_dag) {
+        if(enode->type != Loop_Phi_n && enode->type != Loop_Phi_c)
+            continue;   // skip if the enode is not a LoopMUX
+
+        if(enode->is_loopMux_synchronized)
+            continue;  // skip if the enode has been already handled by inserting a synchronizer at its input
+
+        ENode* one_loop_mux = enode;
+
+        // first, insert a new synchronizer in the BB of the one_loop_mux (assert that it can not ever be the case that there is a synchronizer component already inserted  in this BB)
+        ENode* synch = insert_LoopMux_synch(BBMap->at(one_loop_mux->BB));
+
+        // second, insert this synch between the in0 of one_loop_mux and the original component that was feeding it
+        connect_synch_to_LoopMux(one_loop_mux, synch);
+        one_loop_mux->is_loopMux_synchronized = true;
+
+        for(auto& enode_2: *enode_dag) {
+            if(enode_2->type != Loop_Phi_n && enode_2->type != Loop_Phi_c)
+                continue;   // skip if the enode is not a LoopMUX 
+
+            if(BBMap->at(enode_2->BB)->loop != BBMap->at(one_loop_mux->BB)->loop) 
+                continue;  // skip if the LoopMUX is belonging to another loop (not the one of my one_Loop_mux)
+
+            if(enode_2->is_loopMux_synchronized)
+                continue;  // skip if the enode has been already handled by inserting a synchronizer at its input
+
+            connect_synch_to_LoopMux(enode_2, synch);
+            enode_2->is_loopMux_synchronized = true;
+        }
+    }
+}
+
+    
 /**
  * @brief This function loops over all phis that are at the loop headers and ensures that the 0th data input of the MUX comes from outside the loop and the 1st data input comes from inside the loop
  *          It will be called inside the function that converts to a special_mux_type
@@ -249,3 +396,549 @@ void CircuitGenerator::convert_to_special_mux(){
          
     }
 }
+
+// ON A SIDE NOTE, IN TERMS OF PRIORITIZING THE RULES OF TRANSFORMATIONS IN CASE SEVERAL OF THEM ARE APPLICABLE AT ONE POINT IN TIME, 
+    // I THINK THE LOWEST PRIORITY WOULD BE THE REGEN_SUPP TO SUPP_REGEN?????
+
+ // IMP note to self: A consumer can be fed with a Branch in cases of more consumed than produced, but in this case, there is no regenerate
+                // and the loop_mux never feeds this Branch directly (i.e., it has to be fed with an operation that produces a new value every iteration)
+void CircuitGenerator::apply_term_rewriting(networkType network_flag) {
+    node_type loop_mux_type;
+    node_type supp_type;
+   
+    switch(network_flag) {
+        case data:
+            loop_mux_type = Loop_Phi_n;
+            supp_type = Branch_n;
+        break;
+        case constCntrl:
+        case memDeps:
+            loop_mux_type = Loop_Phi_c;
+            supp_type = Branch_c;
+    }
+
+    // I'M NOT SURE THAT THIS IS NECESSARY THOUGH!!!!
+    // MAYBE LATER I CHANGE THIS TO CHECKING ANOTHER ARRAY THAT CONTAINS THE GLOBAL PRODUCERS AND CONSUMERS AND THIS WILL ALSO CHANGE THE SUCCS TO KEEP CHECKING UNTIL YOU FIND A SPECIFIC CONSUMER!!
+  
+    for(auto& enode: *enode_dag) { 
+        // 1st check for the transformation of REGEN_SUPP to SUPP_REGEN
+        if(!(enode->is_regen_mux && enode->type == loop_mux_type))
+            continue;
+        ENode* loop_mux = enode;
+        std::vector<ENode*>* loop_mux_succs;
+        switch(network_flag) {
+            case data:
+                loop_mux_succs = enode->CntrlSuccs;
+            break;
+
+            case constCntrl:
+                loop_mux_succs = enode->JustCntrlSuccs;
+            break;
+
+            case memDeps:
+                loop_mux_succs = enode->CntrlOrderSuccs;
+        }
+        assert(loop_mux_succs != nullptr);
+
+        // loop over the consumers of this regenerate loop_mux producer
+        for(int i = 0; i < loop_mux_succs->size(); i++) {
+            if(loop_mux_succs->at(i)->type != supp_type) 
+                continue;
+            ENode* supp = loop_mux_succs->at(i);
+            std::vector<ENode*>* supp_true_succs;
+            std::vector<ENode*>* supp_false_succs;
+            switch(network_flag) {
+                case data:
+                    supp_true_succs = supp->true_branch_succs;
+                    supp_false_succs = supp->false_branch_succs;
+                break;
+
+                case constCntrl:
+                    supp_true_succs = supp->true_branch_succs_Ctrl;
+                    supp_false_succs = supp->false_branch_succs_Ctrl;
+                break;
+
+                case memDeps:
+                    supp_true_succs = supp->true_branch_succs_Ctrl_lsq;
+                    supp_false_succs = supp->false_branch_succs_Ctrl_lsq;
+            }
+
+            // if the branch is not feeding the loop_mux enode (i.e., if it is not the Branch that is part of the regeneration)
+            auto pos_true = std::find(supp_true_succs->begin(), supp_true_succs->end(), loop_mux);
+            auto pos_false = std::find(supp_false_succs->begin(), supp_false_succs->end(), loop_mux);
+            if(pos_true == supp_true_succs->end() && pos_false == supp_false_succs->end()) {
+                // at this point we have a loopMux (representing REGENERATE) and SUPP and we would like to swap them and add a TMFO for their conditions
+                    // so we call the following function to do the job
+                convert_REGEN_SUPP(network_flag, loop_mux, supp, i);
+            }
+        }
+    }
+}
+
+// IMP NOTE: this function works only with LoopMUX because it assumes that the condition of the Regen MUX is the same as the condition of the Regen Branch!!
+    // To make it work with the old MUX + INIT, we need to see what to connect to TMFO between the loop condition and the INIT!!!
+        // Specifically, this can be fixed by passing the TMFO to the INIT input instead of directly to the MUX!!!!
+
+// ON A SIDE NOTE, FOR THE REMOVE_REDUN_BRANCH, I CAN TWEAK THE EXISTING ONE TO COMMENT EVEYRHTING EXCEPT THE CONDITION THAT COMBINES THE SUPPRESSES
+    // THAT ARE FED BY THE SAME PRODUCER AND HAVE THE SAME CONDITION.. ONYL ADD TO IT A CHECK THAT ALL OF ITS CONSUMERS ARE IN THE SAME BB (OTHERWISE DO NOT COMBINE THE SUPPRESSES FOR NOW)
+void CircuitGenerator::convert_REGEN_SUPP(networkType network_flag, ENode* loop_mux, ENode* supp, int idx_supp_in_mux_succs) {
+    // 1st identify the succs and preds arrays of each of the loop_mux and supp
+    std::vector<ENode*>* loop_mux_succs;
+    std::vector<ENode*>* loop_mux_preds;
+
+    std::vector<ENode*>* supp_true_succs;
+    std::vector<ENode*>* supp_false_succs;
+    std::vector<ENode*>* supp_preds;
+
+    switch(network_flag) {
+        case data:
+            loop_mux_succs = loop_mux->CntrlSuccs;
+            loop_mux_preds = loop_mux->CntrlPreds;
+            supp_true_succs = supp->true_branch_succs;
+            supp_false_succs = supp->false_branch_succs;
+            supp_preds = supp->CntrlPreds;
+        break;
+
+        case constCntrl:
+            loop_mux_succs = loop_mux->JustCntrlSuccs;
+            loop_mux_preds = loop_mux->JustCntrlPreds;
+            supp_true_succs = supp->true_branch_succs_Ctrl;
+            supp_false_succs = supp->false_branch_succs_Ctrl;
+            supp_preds = supp->JustCntrlPreds;
+        break;
+
+        case memDeps:
+            loop_mux_succs = loop_mux->CntrlOrderSuccs;
+            loop_mux_preds = loop_mux->CntrlOrderPreds;
+            supp_true_succs = supp->true_branch_succs_Ctrl_lsq;
+            supp_false_succs = supp->false_branch_succs_Ctrl_lsq;
+            supp_preds = supp->CntrlOrderPreds;
+    }
+
+    // IMP to note: I assume here that Branches are all SUPPRESSes meaning that they have succs either in the true array or the false array but never both
+    assert((supp_true_succs->size() > 0 && supp_false_succs->size() == 0) || (supp_true_succs->size() == 0 && supp_false_succs->size() > 0));
+
+    // given the above assumption, check if the succs of the supp are in the true side or the false side
+    std::vector<ENode*>* supp_succs;
+    if(supp_true_succs->size() > 0) {
+        supp_succs = supp_true_succs;
+    } else {
+        assert(supp_false_succs->size() > 0);
+        supp_succs = supp_false_succs;
+    }
+
+    // 2nd loop over the succs of the Branch and add them all to the succs of the enode such that the very first succ is put in place of the Branch
+    loop_mux_succs->at(idx_supp_in_mux_succs) = supp_succs->at(0);
+    for(int i = 1; i < supp_succs->size(); i++) {
+        loop_mux_succs->push_back(supp_succs->at(i));
+    }
+    // let the loop_mux enode replace the supp in the preds of each succ of the supp!!
+    for(int i = 0; i < supp_succs->size(); i++) {
+        std::vector<ENode*>* supp_succs_preds;
+        switch(network_flag) {
+            case data:
+                supp_succs_preds = supp_succs->at(i)->CntrlPreds;
+                break;
+
+            case constCntrl:
+                supp_succs_preds = supp_succs->at(i)->JustCntrlPreds;
+                break;
+
+            case memDeps:
+                supp_succs_preds = supp_succs->at(i)->CntrlOrderPreds;
+        }
+        auto pos = std::find(supp_succs_preds->begin(), supp_succs_preds->end(), supp);
+        assert(pos != supp_succs_preds->end());
+        int idx = pos - supp_succs_preds->begin();
+        supp_succs_preds->at(idx) = loop_mux;    
+    }
+
+    // 3rd the cons_branch should be placed between the loop_mux and its pred that comes from outside of the loop 
+                    // and the cons_branch should have the loop_mux as its only succ
+                // identify the loop_mux pred that comes from outside the loop
+    // making sure that in0 comes from outside
+
+    ENode* loop_mux_outside_pred;
+    std::vector<ENode*>* loop_mux_outside_pred_succs;
+
+    if(network_flag == data) {
+        assert(!BBMap->at(loop_mux->BB)->loop->contains(loop_mux_preds->at(1)->BB));  // (i.e., in0 of the Mux should come from outside the loop)
+        //assert(loop_mux_preds->at(1)->type != Branch_n && loop_mux_preds->at(1)->type != Branch_c);   // TEMPORARY ASSUMING THAT IT CAN NOT BE A BRANCH TO AVOID CHECKING THE SUCC ARRAYS OF A BRANCH...
+
+        loop_mux_outside_pred = loop_mux_preds->at(1);
+
+        if(loop_mux_preds->at(0)->type == Branch_n) {
+            // search for the loop_mux in its true succs
+            auto pos_ = std::find(loop_mux_preds->at(0)->true_branch_succs->begin(), loop_mux_preds->at(0)->true_branch_succs->end(), loop_mux);
+            if(pos_ != loop_mux_preds->at(0)->true_branch_succs->end()) {
+                loop_mux_outside_pred_succs = loop_mux_preds->at(0)->true_branch_succs;
+            } else {
+                // search for the loop_mux in its false succs
+                auto pos_ = std::find(loop_mux_preds->at(0)->false_branch_succs->begin(), loop_mux_preds->at(0)->false_branch_succs->end(), loop_mux);
+                assert(pos_ != loop_mux_preds->at(0)->false_branch_succs->end()); // it must be in the false succ
+                loop_mux_outside_pred_succs = loop_mux_preds->at(0)->false_branch_succs;
+            }
+        } else {
+            loop_mux_outside_pred_succs = loop_mux_outside_pred->CntrlSuccs;
+        }
+
+    } else {
+        assert(!BBMap->at(loop_mux->BB)->loop->contains(loop_mux_preds->at(0)->BB));  
+
+        loop_mux_outside_pred = loop_mux_preds->at(0);
+
+        if(network_flag == constCntrl) {
+            if(loop_mux_preds->at(0)->type == Branch_c) {
+                // search for the loop_mux in its true succs
+                auto pos_ = std::find(loop_mux_preds->at(0)->true_branch_succs_Ctrl->begin(), loop_mux_preds->at(0)->true_branch_succs_Ctrl->end(), loop_mux);
+                if(pos_ != loop_mux_preds->at(0)->true_branch_succs_Ctrl->end()) {
+                    loop_mux_outside_pred_succs = loop_mux_preds->at(0)->true_branch_succs_Ctrl;
+                } else {
+                    // search for the loop_mux in its false succs
+                    auto pos_ = std::find(loop_mux_preds->at(0)->false_branch_succs_Ctrl->begin(), loop_mux_preds->at(0)->false_branch_succs_Ctrl->end(), loop_mux);
+                    assert(pos_ != loop_mux_preds->at(0)->false_branch_succs_Ctrl->end()); // it must be in the false succ
+                    loop_mux_outside_pred_succs = loop_mux_preds->at(0)->false_branch_succs_Ctrl;
+                }
+            } else {
+                loop_mux_outside_pred_succs = loop_mux_outside_pred->JustCntrlSuccs;
+            }
+
+        } else {
+            if(loop_mux_preds->at(0)->type == Branch_c) {
+                // search for the loop_mux in its true succs
+                auto pos_ = std::find(loop_mux_preds->at(0)->true_branch_succs_Ctrl_lsq->begin(), loop_mux_preds->at(0)->true_branch_succs_Ctrl_lsq->end(), loop_mux);
+                if(pos_ != loop_mux_preds->at(0)->true_branch_succs_Ctrl_lsq->end()) {
+                    loop_mux_outside_pred_succs = loop_mux_preds->at(0)->true_branch_succs_Ctrl_lsq;
+                } else {
+                    // search for the loop_mux in its false succs
+                    auto pos_ = std::find(loop_mux_preds->at(0)->false_branch_succs_Ctrl_lsq->begin(), loop_mux_preds->at(0)->false_branch_succs_Ctrl_lsq->end(), loop_mux);
+                    assert(pos_ != loop_mux_preds->at(0)->false_branch_succs_Ctrl_lsq->end()); // it must be in the false succ
+                    loop_mux_outside_pred_succs = loop_mux_preds->at(0)->false_branch_succs_Ctrl_lsq;
+                }
+            } else {
+                loop_mux_outside_pred_succs = loop_mux_outside_pred->CntrlOrderSuccs;
+            }
+        }
+    }   
+
+    // search for the loop_mux in the succs of this pred
+    auto pos_ = std::find(loop_mux_outside_pred_succs->begin(), loop_mux_outside_pred_succs->end(), loop_mux);
+    assert(pos_ != loop_mux_outside_pred_succs->end());
+    int idx_ = pos_ - loop_mux_outside_pred_succs->begin();
+    loop_mux_outside_pred_succs->at(idx_) = supp;
+
+    // and this should overwrite the data feeding the Branch
+    assert(supp_preds->at(0) == loop_mux);
+    supp_preds->at(0) = loop_mux_outside_pred;
+
+    // the supp now should be seen to be outside of the loop so change its BB field to the BB of the preds that is coming from outside
+    supp->BB = loop_mux_outside_pred->BB;
+
+    // supp should now be the node feeding the loop_mux input from outside of the loop
+    if(network_flag == data) {
+        loop_mux_preds->at(1) = supp;
+    } else {
+        loop_mux_preds->at(0) = supp;
+    }
+
+    supp_succs->clear();
+    supp_succs->push_back(loop_mux);
+
+     // 4th ADjust the conditions and add TMFO!!! Do not forget to adhere with the convention of the TMFO!!
+        // the condition of the SUPPRESS is in its Cntrlpreds.at(1) if it's Branch_n or .at(0) if Branch_c and the condition of the LoopMux is in CntrlPreds.at(0)
+    ENode* tmfo = new ENode(TMFO, "tmfo");   // the TMFO is not inside any BB so I leave the BB field empty
+    tmfo->id = tmfo_id++;
+
+    // tmfo has 2 inputs (in0: cond of SUPP, in1: cond of REGEN) and 2 outputs (out0: to SUPP and out1: to REGEN(TAKE CARE: this means both to the loopMux and the Branch that feeds it!!!))
+        // they are all conditional inputs of 1 bit so should be connected over the data network!!
+    if(network_flag == data) {
+        assert(supp->type == Branch_n);
+        // in0 of tmfo is the condition of supp
+        tmfo->CntrlPreds->push_back(supp->CntrlPreds->at(1));  // pushing the condition of the Supp
+
+        // search for the supp in the succs of the supp->CntrlPreds->at(1)
+        auto pos_ = std::find(supp->CntrlPreds->at(1)->CntrlSuccs->begin(), supp->CntrlPreds->at(1)->CntrlSuccs->end(), supp);
+        assert(pos_ != supp->CntrlPreds->at(1)->CntrlSuccs->end());
+        int idx_ = pos_ - supp->CntrlPreds->at(1)->CntrlSuccs->begin();
+        supp->CntrlPreds->at(1)->CntrlSuccs->at(idx_) = tmfo;  // this should cut the connection between the supp and its condition and replace it with tmfo
+
+        // update the condition of the SUPP to be fed from tmfo
+        supp->CntrlPreds->at(1) = tmfo;
+    } else {
+        assert(supp->type == Branch_c);
+        // in0 of tmfo is the condition of supp
+        tmfo->CntrlPreds->push_back(supp->CntrlPreds->at(0));
+
+        // search for the supp in the succs of the supp->CntrlPreds->at(1)
+        auto pos_ = std::find(supp->CntrlPreds->at(0)->CntrlSuccs->begin(), supp->CntrlPreds->at(0)->CntrlSuccs->end(), supp);
+        assert(pos_ != supp->CntrlPreds->at(0)->CntrlSuccs->end());
+        int idx_ = pos_ - supp->CntrlPreds->at(0)->CntrlSuccs->begin();
+        supp->CntrlPreds->at(0)->CntrlSuccs->at(idx_) = tmfo;
+
+        // update the condition of the SUPP to be fed from tmfo
+        supp->CntrlPreds->at(0) = tmfo;
+    }
+    // in1 of tmfo is the condition of regenerate
+    tmfo->CntrlPreds->push_back(loop_mux->CntrlPreds->at(0));  // the condition of the LoopMux is always in .at(0) of the data network
+    // search for the loop_mux in the Succs of its condition and replace it with tmfo
+    auto pos__ = std::find(loop_mux->CntrlPreds->at(0)->CntrlSuccs->begin(), loop_mux->CntrlPreds->at(0)->CntrlSuccs->end(), loop_mux);
+    assert(pos__ != loop_mux->CntrlPreds->at(0)->CntrlSuccs->end());
+    int idx__ = pos__ - loop_mux->CntrlPreds->at(0)->CntrlSuccs->begin();
+    loop_mux->CntrlPreds->at(0)->CntrlSuccs->at(idx__) = tmfo;
+
+    // update the condition of the LoopMux of Regen to be fed from tmfo
+    loop_mux->CntrlPreds->at(0) = tmfo;
+
+    tmfo->tmfo_supp_succs = new std::vector<ENode*>;
+    tmfo->tmfo_regen_succs = new std::vector<ENode*>;
+    // update the condition of the Branch of Regen to be fed from tmfo
+    if(network_flag == data) {
+        assert(loop_mux->CntrlPreds->at(2)->type == Branch_n);  
+       
+        // search for the Regen Branch in the Succs of its condition to erase it from there.. (i.e., it is now an extra connection because that same condition is now already connected to the TMFO in replacement of the LoopMux condition)
+        auto pos___ = std::find(loop_mux->CntrlPreds->at(2)->CntrlPreds->at(1)->CntrlSuccs->begin(), loop_mux->CntrlPreds->at(2)->CntrlPreds->at(1)->CntrlSuccs->end(), loop_mux->CntrlPreds->at(2));
+        assert(pos___ != loop_mux->CntrlPreds->at(2)->CntrlPreds->at(1)->CntrlSuccs->end());
+        loop_mux->CntrlPreds->at(2)->CntrlPreds->at(1)->CntrlSuccs->erase(pos___);
+
+        loop_mux->CntrlPreds->at(2)->CntrlPreds->at(1) = tmfo;  // the condition of the Regen Branch should be tmfo
+
+        // out1 of tmfo should feed the Branch of Regen
+        tmfo->tmfo_regen_succs->push_back(loop_mux->CntrlPreds->at(2));
+    } else {
+        assert(loop_mux->JustCntrlPreds->at(1)->type == Branch_c);  
+       
+        // search for the Regen Branch in the Succs of its condition to erase it from there.. (i.e., it is now an extra connection because that same condition is now already connected to the TMFO in replacement of the LoopMux condition)
+        auto pos___ = std::find(loop_mux->JustCntrlPreds->at(1)->CntrlPreds->at(0)->CntrlSuccs->begin(), loop_mux->JustCntrlPreds->at(1)->CntrlPreds->at(0)->CntrlSuccs->end(), loop_mux->JustCntrlPreds->at(1));
+        assert(pos___ != loop_mux->JustCntrlPreds->at(1)->CntrlPreds->at(0)->CntrlSuccs->end());
+        loop_mux->JustCntrlPreds->at(1)->CntrlPreds->at(0)->CntrlSuccs->erase(pos___);
+
+        loop_mux->JustCntrlPreds->at(1)->CntrlPreds->at(0) = tmfo;  // the condition of the Regen Branch should be tmfo
+
+        // out1 of tmfo should feed the Branch of Regen
+        tmfo->tmfo_regen_succs->push_back(loop_mux->JustCntrlPreds->at(1));
+    }
+
+    // out0 should feed supp
+    tmfo->tmfo_supp_succs->push_back(supp);
+    // out1 should feed the LoopMux of Regen
+    tmfo->tmfo_regen_succs->push_back(loop_mux);
+
+    // WHILE THINKING OF THE BELOW POINT, THINK IF I EVER NEED TO NEGATE ANY OF THE INPUTS OF THE TMFO (I think I don't need to because the inputs of the original LoopMux and SUPP are already having their proper signs and the TMFO just bypasses the conditions)
+    // TODOOO: DO not forget to adjust the conventions of your VHDL module of TMFO to not expect an inverter to be placed at the in0 and out0 of the TMFO!!
+}
+
+
+// This function is supposed to be called after addSuppress and after convert_to_special_mux but before addFork
+/*void CircuitGenerator::OLDconvert_REGEN_SUPP(){
+    ENode* loop_mux = nullptr;
+    std::vector<ENode*>* loop_mux_succs = nullptr;
+    std::vector<ENode*>* loop_mux_preds = nullptr;
+    ENode* cons_branch = nullptr;
+    bool found_cons_branch = false;
+    int cons_branch_idx = -1;
+
+    networkType cons_branch_network;
+
+    for(auto& enode: *enode_dag) {
+        found_cons_branch = false;
+        cons_branch = nullptr;
+        loop_mux = nullptr;
+        cons_branch_idx = -1;
+        if((enode->type == Loop_Phi_n || enode->type == Loop_Phi_c) && enode->is_regen_mux) {
+            loop_mux = enode;
+
+            // identify the succs and preds array of the loop_mux enode
+            if(enode->type == Loop_Phi_n) {
+                assert(enode->CntrlSuccs->size() > 0 && enode->CntrlPreds->size() > 0);
+                loop_mux_succs = enode->CntrlSuccs;
+                loop_mux_preds = enode->CntrlPreds;
+            } else {
+                if(enode->JustCntrlSuccs->size() > 0) {
+                    assert(enode->JustCntrlPreds->size() > 0);
+                    assert(enode->CntrlOrderSuccs->size() == 0 && enode->CntrlOrderPreds->size() == 0);
+                    loop_mux_succs = enode->JustCntrlSuccs;
+                    loop_mux_preds = enode->JustCntrlPreds;
+                } else {
+                    assert(enode->CntrlOrderSuccs->size() > 0 && enode->CntrlOrderPreds->size() > 0);
+                    loop_mux_succs = enode->CntrlOrderSuccs;
+                    loop_mux_preds = enode->CntrlOrderPreds;
+                }
+            }
+            assert(loop_mux_succs != nullptr);
+            assert(loop_mux_preds != nullptr);
+
+            // loop over the succs of the enode
+            for(int i = 0; i < loop_mux_succs->size(); i++) {
+                ENode* succ = loop_mux_succs->at(i);
+                if(succ->type == Branch_n || succ->type == Branch_c) {
+                    auto pos_1 = std::find(succ->true_branch_succs->begin(), succ->true_branch_succs->end(), loop_mux);
+                    auto pos_2 = std::find(succ->true_branch_succs_Ctrl->begin(), succ->true_branch_succs_Ctrl->end(), loop_mux);
+                    auto pos_3 = std::find(succ->true_branch_succs_Ctrl_lsq->begin(), succ->true_branch_succs_Ctrl_lsq->end(), loop_mux);
+                    // if the branch is not feeding the loop_mux enode (i.e., if it is not the Branch that is part of the regeneration)
+                    if(pos_1 == succ->true_branch_succs->end() && pos_2 == succ->true_branch_succs_Ctrl->end() && pos_3 == succ->true_branch_succs_Ctrl_lsq->end()) {
+                        cons_branch = succ;
+                        found_cons_branch = true;
+                        cons_branch_idx = i;
+                        break;
+                    }
+                }
+            }
+
+            if(found_cons_branch) {
+                std::vector<ENode*>* cons_branch_succs = nullptr;
+                assert(cons_branch != nullptr && cons_branch_idx != -1);
+                // add here the logic of exchanging the positions of the cons_branch and loop_mux and feed them with a TMFO component..
+
+                // IMP to note: I assume here that Branches are all SUPPRESSes meaning that they have succs either in the true array or the false array but never both
+                // 1st identify the type of the Branch to identify its array of succs
+                if(cons_branch->type == Branch_n) {
+                    assert(cons_branch->true_branch_succs_Ctrl->size() + cons_branch->true_branch_succs_Ctrl_lsq->size() + cons_branch->false_branch_succs_Ctrl->size() + cons_branch->false_branch_succs_Ctrl_lsq->size() == 0);
+                    // identify the array of succs
+                    if(cons_branch->true_branch_succs->size() > 0) {
+                        assert(cons_branch->false_branch_succs->size() == 0);
+                        cons_branch_succs = cons_branch->true_branch_succs;
+                    } else {
+                        assert(cons_branch->false_branch_succs->size() > 0);
+                        cons_branch_succs = cons_branch->false_branch_succs;
+                    }
+                    cons_branch_network = data;
+                } else {
+                    assert(cons_branch->type == Branch_c);
+                    assert(cons_branch->true_branch_succs->size() + cons_branch->false_branch_succs->size() == 0);
+                    // identify the array of succs
+                    if(cons_branch->true_branch_succs_Ctrl->size() > 0) {
+                        assert(cons_branch->false_branch_succs_Ctrl->size() + cons_branch->true_branch_succs_Ctrl_lsq->size() + cons_branch->false_branch_succs_Ctrl_lsq->size() == 0);
+                        cons_branch_succs = cons_branch->true_branch_succs_Ctrl;
+                        cons_branch_network = constCntrl;
+                    } else {
+                        if(cons_branch->false_branch_succs_Ctrl->size() > 0){
+                            assert(cons_branch->true_branch_succs_Ctrl_lsq->size() + cons_branch->false_branch_succs_Ctrl_lsq->size() == 0);
+                            cons_branch_succs = cons_branch->false_branch_succs_Ctrl;
+                            cons_branch_network = constCntrl;
+                        } else {
+                            if(cons_branch->true_branch_succs_Ctrl_lsq->size() > 0){
+                                assert(cons_branch->false_branch_succs_Ctrl_lsq->size() == 0);
+                                cons_branch_succs = cons_branch->true_branch_succs_Ctrl_lsq;
+                            } else {
+                                assert(cons_branch->false_branch_succs_Ctrl_lsq->size() > 0);
+                                cons_branch_succs = cons_branch->false_branch_succs_Ctrl_lsq;
+                            }
+                            cons_branch_network = memDeps;
+                        }
+                    }
+                }
+                assert(cons_branch_succs != nullptr);
+
+                // 2nd loop over the succs of the Branch and add them all to the succs of the enode such that the very first succ is put in place of the Branch
+                loop_mux_succs->at(cons_branch_idx) = cons_branch_succs->at(0);
+                for(int i = 1; i < cons_branch_succs->size(); i++) {
+                    loop_mux_succs->push_back(cons_branch_succs->at(i));
+                }
+                // let the loop_mux enode replace the cons_branch in the preds of each succ of cons_branch!!
+                for(int i = 0; i < cons_branch_succs->size(); i++) {
+                    switch(cons_branch_network) {
+                      case data:
+                      {
+                        auto pos__1 = std::find(cons_branch_succs->at(i)->CntrlPreds->begin(), cons_branch_succs->at(i)->CntrlPreds->end(), cons_branch);
+                        assert(pos__1 != cons_branch_succs->at(i)->CntrlPreds->end());
+                        int idx__1 = pos__1 - cons_branch_succs->at(i)->CntrlPreds->begin();
+                        cons_branch_succs->at(i)->CntrlPreds->at(idx__1) = loop_mux;
+                        break;
+                      }
+                        
+                      case constCntrl:
+                      {
+                        auto pos__2 = std::find(cons_branch_succs->at(i)->JustCntrlPreds->begin(), cons_branch_succs->at(i)->JustCntrlPreds->end(), cons_branch);
+                        assert(pos__2 != cons_branch_succs->at(i)->JustCntrlPreds->end());
+                        int idx__2 = pos__2 - cons_branch_succs->at(i)->JustCntrlPreds->begin();
+                        cons_branch_succs->at(i)->JustCntrlPreds->at(idx__2) = loop_mux;
+                        break;
+                      }
+                        
+                      case memDeps:
+                      {
+                        auto pos__3 = std::find(cons_branch_succs->at(i)->CntrlOrderPreds->begin(), cons_branch_succs->at(i)->CntrlOrderPreds->end(), cons_branch);
+                        assert(pos__3 != cons_branch_succs->at(i)->CntrlOrderPreds->end());
+                        int idx__3 = pos__3 - cons_branch_succs->at(i)->CntrlOrderPreds->begin();
+                        cons_branch_succs->at(i)->CntrlOrderPreds->at(idx__3) = loop_mux;
+                        break;
+                      }
+                        
+                    }
+                }
+
+
+                // 3rd the cons_branch should be placed between the loop_mux and its pred that comes from outside of the loop 
+                    // and the cons_branch should have the loop_mux as its only succ
+                // identify the loop_mux pred that comes from outside the loop
+
+                // making sure that in0 comes from outside
+                if(loop_mux_preds == loop_mux->CntrlPreds) {
+                    assert(!BBMap->at(loop_mux->BB)->loop->contains(loop_mux_preds->at(1)->BB));  // (i.e., in0 of the Mux should come from outside the loop)
+                    assert(loop_mux_preds->at(1)->type != Branch_n && loop_mux_preds->at(1)->type != Branch_c);   // TEMPORARY ASSUMING THAT IT CAN NOT BE A BRANCH TO AVOID CHECKING THE SUCC ARRAYS OF A BRANCH...
+                    
+                    // search for the loop_mux in the CntrlSuccs of this pred
+                    auto pos_ = std::find(loop_mux_preds->at(1)->CntrlSuccs->begin(), loop_mux_preds->at(1)->CntrlSuccs->end(), loop_mux);
+                    assert(pos_ != loop_mux_preds->at(1)->CntrlSuccs->end());
+                    int idx_ = pos_ - loop_mux_preds->at(1)->CntrlSuccs->begin();
+                    loop_mux_preds->at(1)->CntrlSuccs->at(idx_) = cons_branch;
+
+                    // and this should overwrite the data feeding the Branch
+                    assert(cons_branch->CntrlPreds->at(0) == loop_mux);
+                    cons_branch->CntrlPreds->at(0) = loop_mux_preds->at(1);
+
+                    // the cons_branch now should be seen to be outside of the loop so change its BB field to the BB of the preds that is coming from outside
+                    cons_branch->BB = loop_mux_preds->at(1)->BB;
+
+                    // cons_branch should now be the node feeding the loop_mux input from outside the loop
+                    loop_mux_preds->at(1) = cons_branch;
+
+                } else {
+                    assert(!BBMap->at(loop_mux->BB)->loop->contains(loop_mux_preds->at(0)->BB));  
+                    assert(loop_mux_preds->at(0)->type != Branch_n && loop_mux_preds->at(0)->type != Branch_c);   // TEMPORARY ASSUMING THAT IT CAN NOT BE A BRANCH TO AVOID CHECKING THE SUCC ARRAYS OF A BRANCH...
+
+                    // the cons_branch now should be seen to be outside of the loop so change its BB field to the BB of the preds that is coming from outside
+                    cons_branch->BB = loop_mux_preds->at(0)->BB;
+
+                    // cons_branch should now be the node feeding the loop_mux input from outside the loop
+                    loop_mux_preds->at(0) = cons_branch;
+
+                    if(loop_mux_preds == loop_mux->JustCntrlPreds) {
+                         // search for the loop_mux in the JustCntrlSuccs
+                        auto pos_ = std::find(loop_mux_preds->at(0)->JustCntrlSuccs->begin(), loop_mux_preds->at(0)->JustCntrlSuccs->end(), loop_mux);
+                        assert(pos_ != loop_mux_preds->at(0)->JustCntrlSuccs->end());
+                        int idx_ = pos_ - loop_mux_preds->at(0)->JustCntrlSuccs->begin();
+                        loop_mux_preds->at(0)->JustCntrlSuccs->at(idx_) = cons_branch;
+
+                        // and this should overwrite the data feeding the Branch
+                        assert(cons_branch->JustCntrlPreds->at(0) == loop_mux);
+                        cons_branch->JustCntrlPreds->at(0) = loop_mux_preds->at(0);
+                    } else {
+                        assert(loop_mux_preds == loop_mux->CntrlOrderPreds);
+                        // search for the loop_mux in the JustCntrlSuccs
+                        auto pos_ = std::find(loop_mux_preds->at(0)->CntrlOrderSuccs->begin(), loop_mux_preds->at(0)->CntrlOrderSuccs->end(), loop_mux);
+                        assert(pos_ != loop_mux_preds->at(0)->CntrlOrderSuccs->end());
+                        int idx_ = pos_ - loop_mux_preds->at(0)->CntrlOrderSuccs->begin();
+                        loop_mux_preds->at(0)->CntrlOrderSuccs->at(idx_) = cons_branch;
+
+                        // and this should overwrite the data feeding the Branch
+                        assert(cons_branch->CntrlOrderPreds->at(0) == loop_mux);
+                        cons_branch->CntrlOrderPreds->at(0) = loop_mux_preds->at(0);
+                    }
+                }
+                // the only succs of the cons_branch now should be the loop_mux and it should be in0 of the loop_mux preds
+                cons_branch_succs->clear();
+                cons_branch_succs->push_back(loop_mux);
+
+                // 4th ADjust the conditions and add TMFO!!! Do not forget to adhere with the convention of the TMFO!!
+                // the condition of the SUPPRESS is in its Cntrlpreds.at(1) if it's Branch_n or .at(0) if Branch_c and the condition of the LoopMux is in CntrlPreds.at(0)
+                // SHould simply add a TMFO object feeding both conditions (out0 for SUPP and out1 for LoopMux) and have the old conditions inputs to the LoopMux
+
+                // BUT FOR NOW, LET'S TEST JUST THE FACT THAT THE MUX AND THE BRANCH ARE CORRECTLY SWAPPED!!!
+
+
+            }  // end of the if condition that checks if found_cons_branch...
+
+        }
+    }
+}*/

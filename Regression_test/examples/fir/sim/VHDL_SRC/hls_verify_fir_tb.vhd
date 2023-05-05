@@ -19,13 +19,18 @@ architecture behav of fir_tb is
 	-- Constant declarations
 
 	constant HALF_CLK_PERIOD : TIME := 2.00 ns;
-	constant TRANSACTION_NUM : INTEGER := 100;
+	constant TRANSACTION_NUM : INTEGER := 10;
 	constant INPUT_end : STRING := "";
 	constant OUTPUT_end : STRING := "../VHDL_OUT/output_end.dat";
 	constant DATA_WIDTH_end : INTEGER := 32;
 	constant INPUT_arg_1 : STRING := "../INPUT_VECTORS/input_arg_1.dat";
 	constant OUTPUT_arg_1 : STRING := "";
 	constant DATA_WIDTH_arg_1 : INTEGER := 32;
+	constant INPUT_A : STRING := "../INPUT_VECTORS/input_A.dat";
+	constant OUTPUT_A : STRING := "../VHDL_OUT/output_A.dat";
+	constant DATA_WIDTH_A : INTEGER := 32;
+	constant ADDR_WIDTH_A : INTEGER := 32;
+	constant DATA_DEPTH_A : INTEGER := 10;
 
 	-- Signal declarations
 
@@ -49,6 +54,18 @@ architecture behav of fir_tb is
 	signal arg_1_mem_din0 : std_logic_vector(DATA_WIDTH_arg_1 - 1 downto 0);
 
 
+	signal A_mem_ce0 : std_logic;
+	signal A_mem_we0 : std_logic;
+	signal A_mem_din0 : std_logic_vector(DATA_WIDTH_A - 1 downto 0);
+	signal A_mem_dout0 : std_logic_vector(DATA_WIDTH_A - 1 downto 0);
+	signal A_mem_address0 : std_logic_vector(ADDR_WIDTH_A - 1 downto 0);
+
+	signal A_mem_ce1 : std_logic;
+	signal A_mem_we1 : std_logic;
+	signal A_mem_din1 : std_logic_vector(DATA_WIDTH_A - 1 downto 0);
+	signal A_mem_dout1 : std_logic_vector(DATA_WIDTH_A - 1 downto 0);
+	signal A_mem_address1 : std_logic_vector(ADDR_WIDTH_A - 1 downto 0);
+
 
 	signal tb_temp_idle : std_logic:= '1';
 	shared variable transaction_idx : INTEGER := 0;
@@ -56,7 +73,6 @@ architecture behav of fir_tb is
 	signal tb_done : std_logic;
 	signal temp_start_valid : std_logic;
 	signal temp_arg_valid : std_logic;
-	signal tb_arg_1_trigger : std_logic:= '1';
 
 begin
 
@@ -70,10 +86,20 @@ duv: 	 entity work.fir
 			end_ready => '1',
 			arg_1_valid_in => tb_arg_valid,
 			arg_1_din => arg_1_mem_dout0,
+			arg_1_ready_out => tb_arg_ready,
+			A_address0 => A_mem_address0,
+			A_ce0 => A_mem_ce0,
+			A_we0 => A_mem_we0,
+			A_din0 => A_mem_dout0,
+			A_dout0 => A_mem_din0,
+			A_address1 => A_mem_address1,
+			A_ce1 => A_mem_ce1,
+			A_we1 => A_mem_we1,
+			A_din1 => A_mem_dout1,
+			A_dout1 => A_mem_din1,
 			start_in => (others => '0'),
 			start_ready => tb_start_ready,
-			start_valid => (tb_start_valid and tb_start_ready),
-			arg_1_ready_out => tb_arg_ready
+			start_valid => (tb_start_valid and tb_start_ready)
 		);
 
 
@@ -109,6 +135,30 @@ arg_inst_arg_1:	 entity work.single_argument
 		done => (temp_arg_valid and tb_arg_ready)
 	);
 
+mem_inst_A:	 entity work.two_port_RAM 
+	generic map(
+		TV_IN => INPUT_A,
+		TV_OUT => OUTPUT_A,
+		DEPTH => DATA_DEPTH_A,
+		DATA_WIDTH => DATA_WIDTH_A,
+		ADDR_WIDTH => ADDR_WIDTH_A
+	)
+	port map(
+		clk => tb_clk,
+		rst => tb_rst,
+		ce0 => A_mem_ce0,
+		we0 => A_mem_we0,
+		address0 => A_mem_address0,
+		mem_dout0 => A_mem_dout0,
+		mem_din0 => A_mem_din0,
+		ce1 => A_mem_ce1,
+		we1 => A_mem_we1,
+		address1 => A_mem_address1,
+		mem_dout1 => A_mem_dout1,
+		mem_din1 => A_mem_din1,
+		done => tb_temp_idle
+	);
+
 
 
 ----------------------------------------------------------------------------
@@ -136,6 +186,36 @@ begin
 	file_open(fstatus, fp, OUTPUT_end, APPEND_MODE);
 	if (fstatus /= OPEN_OK) then
 		assert false report "Open file " & OUTPUT_end & " failed!!!" severity note;
+		assert false report "ERROR: Simulation using HLS TB failed." severity failure;
+	end if;
+	write(token_line, string'("[[[/runtime]]]"));
+	writeline(fp, token_line);
+	file_close(fp);
+	wait;
+end process;
+write_output_transactor_A_runtime_proc : process
+	file fp             : TEXT;
+	variable fstatus    : FILE_OPEN_STATUS;
+	variable token_line : LINE;
+	variable token      : STRING(1 to 1024);
+
+begin
+	file_open(fstatus, fp, OUTPUT_A, WRITE_MODE);
+	if (fstatus /= OPEN_OK) then
+		assert false report "Open file " & OUTPUT_A & " failed!!!" severity note;
+		assert false report "ERROR: Simulation using HLS TB failed." severity failure;
+	end if;
+	write(token_line, string'("[[[runtime]]]"));
+	writeline(fp, token_line);
+	file_close(fp);
+	while tb_done /= '1' loop
+		wait until tb_clk'event and tb_clk = '1';
+	end loop;
+	wait until tb_clk'event and tb_clk = '1';
+	wait until tb_clk'event and tb_clk = '1';
+	file_open(fstatus, fp, OUTPUT_A, APPEND_MODE);
+	if (fstatus /= OPEN_OK) then
+		assert false report "Open file " & OUTPUT_A & " failed!!!" severity note;
 		assert false report "ERROR: Simulation using HLS TB failed." severity failure;
 	end if;
 	write(token_line, string'("[[[/runtime]]]"));
@@ -202,7 +282,7 @@ generate_idle_signal: process(tb_clk,tb_rst)
 begin
    if (tb_rst = '1') then
        tb_temp_idle <= '1';
-   elsif rising_edge(tb_clk) then
+   else
        tb_temp_idle <= tb_end_valid;
    end if;
 end process generate_idle_signal;

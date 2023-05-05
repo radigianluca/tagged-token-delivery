@@ -209,8 +209,6 @@ std::string aya_printDataflowEdges(std::vector<ENode*>* enode_dag, std::vector<B
 				if(enode->type == Phi_c && enode->is_redunCntrlNet) {
 					// sanity check: this enode should be having a single successor in the CntrlSuccs and a single successor in the enode->CntrlOrderSuccs
 
-					// AYA: TEMPORARILY COMMENTING THIS FOR DEBUGGING!! 16/11/2021
-
 					//assert(enode->CntrlSuccs->size() == 1 && enode->CntrlOrderSuccs->size() == 1);
 					// the convention is that the CntrlOrderSuccs is printed at out1 and the CntrlSuccs at out2, we need here to enforce that of CntrlSuccs but that of CntrlOrderSuccs will happen naturally without any extra condition..
 					// TODO: reach for this in a way better than hardcoding!!
@@ -296,7 +294,10 @@ std::string aya_printDataflowEdges(std::vector<ENode*>* enode_dag, std::vector<B
 				fork_data_index ++; 
 				str += ", from = \"out" + to_string(fork_data_index) + "\"";
 			} else {
-				 str += ", from = \"out" + to_string(indexOf(enode->JustCntrlSuccs, enode_cntrl_succ) + 1) + "\"";
+				if(enode->type == LoopMux_Synch)  // AYA: 30/04/2023: for the LoopMUX_Synch
+					str += ", from = \"out" + to_string(indexOf(enode->JustCntrlSuccs, enode_cntrl_succ) + 1 + enode->CntrlSuccs->size()) + "\"";
+				else
+					str += ", from = \"out" + to_string(indexOf(enode->JustCntrlSuccs, enode_cntrl_succ) + 1) + "\"";
 			} 
 
 
@@ -326,7 +327,8 @@ std::string aya_printDataflowEdges(std::vector<ENode*>* enode_dag, std::vector<B
 					} 
 				} else {
 					// AYA: 28/02/2023: added the last OR to add support for the new MUX that we place at the loop headers 
-					if((enode_cntrl_succ->type == Phi_c && !enode_cntrl_succ->is_redunCntrlNet) || enode_cntrl_succ->type == Loop_Phi_c) {
+					// AYA: 30/04/2023: added an extra OR to correctly print the inputs of a LoopMUX_Synch since they could be scattered over all of the 4 networks
+					if((enode_cntrl_succ->type == Phi_c && !enode_cntrl_succ->is_redunCntrlNet) || enode_cntrl_succ->type == Loop_Phi_c || enode_cntrl_succ->type == LoopMux_Synch) {
 						str += ", to = \"in" + to_string(indexOf(enode_cntrl_succ->JustCntrlPreds, enode) + enode_cntrl_succ->CntrlPreds->size() + 1) + "\"";
 						str += "];\n";
 					} else {
@@ -389,6 +391,9 @@ std::string aya_printDataflowEdges(std::vector<ENode*>* enode_dag, std::vector<B
 							fork_control_index ++; 
 							str += ", from = \"out" + to_string(fork_control_index) + "\"";
 						} else {
+							if(enode->type == LoopMux_Synch)  // AYA: 30/04/2023: for the LoopMUX_Synch
+								str += ", from = \"out" + to_string(indexOf(enode->CntrlOrderSuccs, enode_redun_cntrl_succ) + 1 + enode->CntrlSuccs->size() + enode->JustCntrlSuccs->size()) + "\"";
+							else
 								str += ", from = \"out" + to_string(indexOf(enode->CntrlOrderSuccs, enode_redun_cntrl_succ) + 1) + "\"";
 						}
 
@@ -461,7 +466,6 @@ void aya_printotherNodes(std::vector<ENode*>* enode_dag, std::string serial_numb
 			}
 		}
 	
-		//assert(666 != 666);	
 	//dotline += "\n\t}\n"; // braces to close the cluster, but here we have no clusters
 	dotfile << dotline;  
 }
@@ -946,6 +950,10 @@ std::string getNodeDotTypeNew(ENode* enode) {
         	name += "LoopMux";
         break;
 
+        case LoopMux_Synch:
+        	name += "Synch";
+    	break;
+
         case Fork_:
         case Fork_c:
             name += "Fork";
@@ -1097,6 +1105,28 @@ std::string getNodeDotInputs(ENode* enode) {
     string name = "";
 
     switch (enode->type) {
+    	case LoopMux_Synch:
+			if (enode->CntrlPreds->size() > 0)
+				name += ", in = \"";
+			for (int i = 0; i < (int)enode->CntrlPreds->size() + (int)enode->JustCntrlPreds->size() + (int)enode->CntrlOrderPreds->size(); i++) {
+	            name += " in" + to_string(i + 1);
+	            name += inputSuffix(enode, i);
+	            name += ":" + to_string(DATA_SIZE);
+	        }
+		    if (enode->CntrlPreds->size() > 0 )
+	            name += "\"";
+		break;
+    	// AYA: 27/03/2023: component needing in the REGEN_SUPP to SUPP_REGEN transformation
+    	case TMFO:
+    		for(int i = 0; i < enode->CntrlPreds->size(); i++) {
+    			name += ", in = \"in" + to_string(i + 1) + ":" + to_string(COND_SIZE) + "\"";
+    			if(enode->is_advanced_component) {
+					if(enode->is_negated_input->at(i)) {
+						name += "*i";
+					}
+				} 
+    		}
+    		break;
     	// Aya: 15/09/2022: Included among those cases the case to print the output of the new buff_Bx component
     	case Bx_Buffer_wrapper_:
     		name += ", in = \"in1:0\"";
@@ -1323,11 +1353,25 @@ std::string getNodeDotOutputs(ENode* enode) {
     string name = "";
 
     switch (enode->type) {
+    	case LoopMux_Synch:
+			if (enode->CntrlSuccs->size() > 0)
+				name += ", out = \"";
+			for (int i = 0; i < (int)enode->CntrlSuccs->size() + (int)enode->JustCntrlSuccs->size() + (int)enode->CntrlOrderSuccs->size(); i++) {
+	            name += " out" + to_string(i + 1) + ":" + to_string(DATA_SIZE);
+	        }
+		    if (enode->CntrlSuccs->size() > 0 )
+	            name += "\"";
+		break;
+    	// Aya: 27/03/2022
+    	case TMFO:
+    		name += ", out = \"out1:" + to_string(COND_SIZE) + "\"";
+    		name += ", out = \"out2:" + to_string(COND_SIZE) + "\"";
+    		break;
     	// Aya: 15/09/2022: Included among those cases the case to print the output of the new buff_Bx component
     	case Bx_Buffer_wrapper_:
     	case Bx_Join_wrapper_:
     		name += ", out = \"out1:0\"";
-    	break;
+    		break;
         case Argument_:
         case Buffera_:
         case Bufferi_:
@@ -1744,6 +1788,29 @@ std::string getNodeDotInputs_withOB(ENode* enode) {
     int mem_data_size;
 
     switch (enode->type) {
+    	case LoopMux_Synch:
+			if (enode->CntrlPreds->size() > 0)
+				name += ", in = \"";
+			for (int i = 0; i < (int)enode->CntrlPreds->size() + (int)enode->JustCntrlPreds->size() + (int)enode->CntrlOrderPreds->size(); i++) {
+	            name += " in" + to_string(i + 1);
+	            name += inputSuffix(enode, i);
+	            name += ":" + getInPortSize_withOB(enode, i);
+	        }
+		    if (enode->CntrlPreds->size() > 0 )
+	            name += "\"";
+		break;
+    	// AYA: 27/03/2023: component needing in the REGEN_SUPP to SUPP_REGEN transformation
+    	case TMFO:
+    		for(int i = 0; i < enode->CntrlPreds->size(); i++) {
+    			name += ", in = \"in" + to_string(i + 1) + ":" + to_string(COND_SIZE) + "\"";
+    			if(enode->is_advanced_component) {
+					// check if the first input of the branch should be negated!
+					if(enode->is_negated_input->at(i)) {
+						name += "*i";
+					}
+				} 
+    		}
+    		break;
     	// Aya: 15/09/2022: Included among those cases the case to print the output of the new buff_Bx component
     	case Bx_Buffer_wrapper_:
     		name += ", in = \"in1:0\"";
@@ -2130,6 +2197,20 @@ std::string getNodeDotOutputs_withOB(ENode* enode) {
     int mem_data_size;
 
     switch (enode->type) {
+    	case LoopMux_Synch:
+    		if (enode->CntrlSuccs->size() > 0)
+				name += ", out = \"";
+			for (int i = 0; i < (int)enode->CntrlSuccs->size() + (int)enode->JustCntrlSuccs->size() + (int)enode->CntrlOrderSuccs->size(); i++) {
+	            name += " out" + to_string(i + 1) + ":" + to_string(DATA_SIZE);
+	        }
+		    if (enode->CntrlSuccs->size() > 0 )
+	            name += "\"";
+        break;
+    	// Aya: 27/03/2022
+    	case TMFO:
+    		name += ", out = \"out1:" + to_string(COND_SIZE) + "\"";
+    		name += ", out = \"out2:" + to_string(COND_SIZE) + "\"";
+    		break;
     	// Aya: 15/09/2022: Included among those cases the case to print the output of the new buff_Bx component
     	case Bx_Buffer_wrapper_:
     	case Bx_Join_wrapper_:
@@ -2431,7 +2512,6 @@ std::string getNodeDotParams(ENode* enode, std::string serial_number) {
         	break;
         case Phi_:
         case Phi_n:
-        case Loop_Phi_n: // AYA: 28/02/2023: TEMPORARYYYY UNTIL WE ADD THE PROPER TIMING!
             name += ", delay=";
             if (enode->CntrlPreds->size() == 1)
                 name += getFloatValue(get_component_delay(ZDC_NAME, DATA_SIZE, serial_number));
@@ -2439,11 +2519,21 @@ std::string getNodeDotParams(ENode* enode, std::string serial_number) {
                 name += getFloatValue(get_component_delay(enode->Name, DATA_SIZE, serial_number));
             break;
         case Phi_c:
-        case Loop_Phi_c: // AYA: 28/02/2023: TEMPORARYYYY UNTIL WE ADD THE PROPER TIMING!
             name += ", delay=" + getFloatValue(get_component_delay(enode->Name, DATA_SIZE, serial_number));
             break;
         case Cst_:
             name += ", value = \"0x" + getHexValue(getConstantValue(enode)) + "\"";
+            break;
+        case Loop_Phi_n: // AYA: 28/02/2023: TEMPORARYYYY UNTIL WE ADD THE PROPER TIMING!
+        	name += ", delay=0.366";   // AYA: 24/03/2023: temporarily hardcoding this delay!!!
+        	break;
+    	case Loop_Phi_c: // AYA: 28/02/2023: TEMPORARYYYY UNTIL WE ADD THE PROPER TIMING!
+    		name += ", delay=0.166";   // AYA: 24/03/2023: temporarily hardcoding this delay!!!
+        	break;
+    	// AYA: 27/03/2023: STILL TODO: needs proper timing!!!
+    	case TMFO:
+    		name += ", delay=0";   // TEMPORARY PUTTING A 0 UNTIL I PROPERLY TIME IT!!
+        	break;
         default:
             break;
     }

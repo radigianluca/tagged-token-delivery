@@ -7,7 +7,7 @@
 
 #define AMOUNT_OF_TEST 1
 
-float cordic (in_float_t theta, out_float_t a[2], in_float_t cordic_phase[1000], in_float_t current_cos, in_float_t current_sin){
+float cordic (in_float_t theta, in_float_t cordic_phase[1000], in_float_t current_cos, in_float_t current_sin){
 
 	float factor = 1.0;
 
@@ -21,8 +21,8 @@ float cordic (in_float_t theta, out_float_t a[2], in_float_t cordic_phase[1000],
 		theta = theta - sigma*cordic_phase[i];
 		factor = factor/2 ;
 	}
-	a[0] = current_cos;
-	a[1] = current_sin;
+	//a[0] = current_cos;
+	//a[1] = current_sin;
 	return theta;
 }
 
@@ -46,7 +46,7 @@ int main(void){
 	}
 	//for(int i = 0; i < AMOUNT_OF_TEST; ++i){
 	int i = 0;
-	cordic(thetas[i], results[i], cordic_phases, initial_cos, initial_sin);
+	cordic(thetas[i], cordic_phases, initial_cos, initial_sin);
 	//}
 }
 

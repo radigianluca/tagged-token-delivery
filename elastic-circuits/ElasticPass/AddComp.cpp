@@ -34,6 +34,9 @@ int CircuitGenerator::lazy_fork_id = 0;
 
 int CircuitGenerator::loop_phi_id = 0; // 24/02/2023: Aya added this new type that should be used to represent any MUX at the loop header so that we do not insert an INIT!
 
+int CircuitGenerator::tmfo_id = 0;
+
+int CircuitGenerator::loop_mux_synch_id = 0; // Aya: 29/04/2023
 
 // AYA: 31/10/2021: The following function is a wrapper that calls the above functions of adding branches and adding phis but with a special condition, only to check if the extra constants added for serving as a condition for unconditional branches are triggered correctly!!!
 // WE call each of the functions with the flag true because we are in the control network for triggering constants!!
@@ -1117,7 +1120,12 @@ void CircuitGenerator::addFork() {
 		// put a fork after any node having multiple successors in the data path or control path, except for branches
 		h_file << "\nNode Name: " << getNodeDotNameNew(enode) << "\n";
 		
-		if(enode->CntrlSuccs->size() + enode->JustCntrlSuccs->size() > 1 && enode->type != Fork_ && enode->type != Fork_c && enode->type != Branch_ && enode->type != Branch_c && enode->type != Branch_n && enode->type != MC_ && enode->type != LSQ_ && !enode->isLoadOrStore() && enode->BB != nullptr) {
+		// Aya: 27/03/2023: added TMFO to be excluded from this condition as well because its succs are in separate arrays just like a Branch
+		if(enode->CntrlSuccs->size() + enode->JustCntrlSuccs->size() > 1 
+				&& enode->type != TMFO && enode->type != Fork_ && enode->type != Fork_c
+					 && enode->type != Branch_ && enode->type != Branch_c && enode->type != Branch_n 
+					 	&& enode->type != MC_ && enode->type != LSQ_ && !enode->isLoadOrStore() && enode->BB != nullptr
+					 		&& enode->type != LoopMux_Synch) {
 			h_file << "Entered the big if_condition\n";
 
 			if(enode->CntrlSuccs->size() == 0) {
@@ -1179,15 +1187,10 @@ void CircuitGenerator::addFork() {
 			}
 		}
 
-
-		/*if(enode->type == Branch_c && !enode->is_redunCntrlNet){
-			//fixBranchesSuccs(enode, true);
-			addBrSuccs(enode, true);
-		} else
-			if(enode->type == Branch_n) {
-				//fixBranchesSuccs(enode, false);
-				addBrSuccs(enode, false);
-			}*/
+		// Aya: 27/03/2023: handling the succs of the TMFO
+		if(enode->type == TMFO) {
+			addTMFOSuccs(enode);
+		}
 
 	} 
 
@@ -1205,6 +1208,88 @@ void CircuitGenerator::addFork() {
 	////////////////////////////////////////////////////////////////////
 	// the following function checks if a load operation feeds multiple consumers thus require adding a fork!!
 	addFork_Mem_loads();
+}
+
+void CircuitGenerator::addTMFOSuccs(ENode* tmfo) {
+	switch(tmfo->tmfo_supp_succs->size()) {
+		case 0:
+		{
+			// add a sink
+			ENode* sink_node = new ENode(Sink_, "sink");
+			sink_node->id    = sink_id++;
+			enode_dag->push_back(sink_node);
+			tmfo->CntrlSuccs->push_back(sink_node);
+			sink_node->CntrlPreds->push_back(tmfo);
+			break;
+		}
+
+		case 1:
+			// tmfo feeds a single suppress so push it directly to the .at(0) of CntrlSuccs array without adding any forks
+			tmfo->CntrlSuccs->push_back(tmfo->tmfo_supp_succs->at(0));
+			break;
+
+		default:  // which is any size > 1
+		{
+			// for extra checking
+			assert(tmfo->tmfo_supp_succs->size() > 1);
+
+			// add a Fork
+			ENode* fork = new ENode(Fork_, "fork", tmfo->tmfo_supp_succs->at(0)->BB);
+			fork->id = fork_id++;
+			enode_dag->push_back(fork);
+			fork->CntrlPreds->push_back(tmfo);
+			tmfo->CntrlSuccs->push_back(fork);
+
+			for(int i = 0; i < tmfo->tmfo_supp_succs->size(); i++) {
+				fork->CntrlSuccs->push_back(tmfo->tmfo_supp_succs->at(i));
+				// replace the tmfo in the preds of the tmfo_supp_succs->at(i) with 
+				auto pos = std::find(tmfo->tmfo_supp_succs->at(i)->CntrlPreds->begin(), tmfo->tmfo_supp_succs->at(i)->CntrlPreds->end(), tmfo);
+				assert(pos != tmfo->tmfo_supp_succs->at(i)->CntrlPreds->end());
+				int idx = pos - tmfo->tmfo_supp_succs->at(i)->CntrlPreds->begin();
+				tmfo->tmfo_supp_succs->at(i)->CntrlPreds->at(idx) = fork;
+			}
+		}
+	}
+
+	switch(tmfo->tmfo_regen_succs->size()) {
+		case 0:
+		{
+			// add a sink
+			ENode* sink_node = new ENode(Sink_, "sink");
+			sink_node->id    = sink_id++;
+			enode_dag->push_back(sink_node);
+			tmfo->CntrlSuccs->push_back(sink_node);
+			sink_node->CntrlPreds->push_back(tmfo);
+			break;
+		}
+
+		case 1:
+			// tmfo feeds a single suppress so push it directly to the .at(1) of CntrlSuccs array without adding any forks
+			tmfo->CntrlSuccs->push_back(tmfo->tmfo_regen_succs->at(0));
+			break;
+
+		default:  // which is any size > 1
+		{
+			// for extra checking
+			assert(tmfo->tmfo_regen_succs->size() > 1);
+
+			// add a Fork
+			ENode* fork = new ENode(Fork_, "fork", tmfo->tmfo_regen_succs->at(0)->BB);
+			fork->id = fork_id++;
+			enode_dag->push_back(fork);
+			fork->CntrlPreds->push_back(tmfo);
+			tmfo->CntrlSuccs->push_back(fork);
+
+			for(int i = 0; i < tmfo->tmfo_regen_succs->size(); i++) {
+				fork->CntrlSuccs->push_back(tmfo->tmfo_regen_succs->at(i));
+				// replace the tmfo in the preds of the tmfo_supp_succs->at(i) with 
+				auto pos = std::find(tmfo->tmfo_regen_succs->at(i)->CntrlPreds->begin(), tmfo->tmfo_regen_succs->at(i)->CntrlPreds->end(), tmfo);
+				assert(pos != tmfo->tmfo_regen_succs->at(i)->CntrlPreds->end());
+				int idx = pos - tmfo->tmfo_regen_succs->at(i)->CntrlPreds->begin();
+				tmfo->tmfo_regen_succs->at(i)->CntrlPreds->at(idx) = fork;
+			}
+		}
+	}
 }
 
 void CircuitGenerator::addBrSuccs(ENode* branch, networkType network_flag) {

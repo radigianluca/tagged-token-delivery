@@ -55,7 +55,7 @@
 #define ENTITY_SOURCE           "source"
 #define ENTITY_SINK             "sink"
 #define ENTITY_MUX              "Mux"
-#define ENTITY_LOOPMUX          "LoopMux"  // Aya: 28/02/2023
+#define ENTITY_LOOPMUX          "gian_mux_fifo" // "LoopMux"  // Aya: 28/02/2023  // 04/04/2023: changed it gian_mux to print the name of Gianluca's MUX
 #define ENTITY_CTRLMERGE        "CntrlMerge"
 #define ENTITY_LSQ              "LSQ"
 #define ENTITY_MC               "MemCont"
@@ -63,6 +63,8 @@
 #define ENTITY_DISTRIBUTOR      "Distributor"
 #define ENTITY_SELECTOR			"Selector"
 #define ENTITY_INJECTOR			"Inj"
+#define ENTITY_TMFO          "TMFO"  // Aya: 27/03/2023
+#define ENTITY_SYNCH "Synch"  // Aya: 29/04/2023
 
 #define COMPONENT_MERGE         "Merge"
 #define COMPONENT_READ_MEMORY   "load"
@@ -87,7 +89,7 @@
 #define COMPONENT_SOURCE        "Source"
 #define COMPONENT_SINK          "Sink"
 #define COMPONENT_MUX           "Mux"
-#define COMPONENT_LOOPMUX           "LoopMux"  // Aya: 28/02/2023
+#define COMPONENT_LOOPMUX        "LoopMux"   // Aya: 28/02/2023
 #define COMPONENT_CTRLMERGE     "CntrlMerge"
 #define COMPONENT_LSQ           "LSQ"
 #define COMPONENT_MC            "MC"
@@ -95,6 +97,8 @@
 #define COMPONENT_DISTRIBUTOR   "Distributor"
 #define COMPONENT_SELECTOR		"Selector"
 #define COMPONENT_INJECTOR		"Inj"
+#define COMPONENT_TMFO      "TMFO" // Aya: 27/03/2023
+#define COMPONENT_SYNCH "Synch"  // Aya: 29/04/2023
 
 
 #define UNDERSCORE  "_"

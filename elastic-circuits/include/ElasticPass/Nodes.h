@@ -47,6 +47,10 @@ enum node_type {
 
     Loop_Phi_n = 27,  // 24/02/2023: Aya added this new type that should be used to represent any MUX at the loop header so that we do not insert an INIT!
     Loop_Phi_c = 28,
+
+    TMFO = 29,  // needed in the control path in the transformation of REGEN_SUPP to SUPP_REGEN 
+
+    LoopMux_Synch = 30,
 };
 
 class BBNode; 
@@ -180,6 +184,16 @@ public:
     // AYA: 24/02/2023: the following are new fields I added towards the new methodology for handling loops
     bool is_shannons_mux = false;  // used inside the newLoops_management to identify the MUXes that have INIT as their SEL vs. MUXes inserted by Shannon's because the latter could exist at the loop header as well making it not enough to check the BB
 
+    // AYA: 24/03/2023: this flag should be "true" only for phis (will become loopmux later) that are added for regeneration when the consumer is inside a loop that the producer is outside
+    bool is_regen_mux = false; 
+
+    //Aya: 27/03/2023: arrays for maintaining all of the suucs and regens fed by 1 tmfo.. and just like branches, addFork, puts them in CntrlSuccs
+    std::vector<ENode*>* tmfo_supp_succs;
+    std::vector<ENode*>* tmfo_regen_succs; 
+
+    // Aya: 29/04/2023: added to mark LoopMUXes that were already fed with a Synchronizer
+    bool is_loopMux_synchronized = false;
+
 private:
     void commonInit(const node_type nd, const char* name, Instruction* inst, Argument* a,
                     BasicBlock* bb);
@@ -226,4 +240,5 @@ public:
 
     // Aya: 12/09/2022: added the following field to mark the BBnodes that are either themselves the entire group or are the earliest BBnode in 1 group!
     bool is_group_head = false;
+
 };

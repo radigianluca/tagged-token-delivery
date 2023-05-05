@@ -34,11 +34,11 @@ architecture behav of single_argument is
 	shared variable mem : STD_LOGIC_VECTOR(DATA_WIDTH - 1 downto 0) := (others => '0');
 	signal write_done_flag : STD_LOGIC := '0';
 
+
 begin
 ----------------------------------------------------------------------------
 -----------------------------------Read array-------------------------------
 	-- Read data from file to array
-
 
 	read_file_proc : process
 		file fp                  : TEXT;
@@ -53,7 +53,7 @@ begin
 	begin
 		if (TV_IN /= "") then
 		
-		wait until rst = '0';
+		wait until done = '1';
 		transaction_idx := 0;
 		file_open(fstatus, fp, TV_IN, READ_MODE);
 		if (fstatus /= OPEN_OK) then
@@ -64,27 +64,33 @@ begin
 			assert false report "ERROR: Simulation using HLS TB failed." severity failure;
 		end if;
 		esl_read_token(fp, token_line, token);
+		loop
+			exit when (done = '1');
+			wait for 0.1 ns;
+		end loop;
+
 		while (token(1 to 14) /= "[[[/runtime]]]") loop
-			if (token(1 to 15) /= "[[transaction]]") then
-				assert false report "ERROR: Simulation using HLS TB failed." severity failure;
-			end if;
-			esl_read_token(fp, token_line, token); -- Skip transaction number
-			-- Start to read data for every transaction round
-			while ( done /= '1') loop  
+				if (token(1 to 15) /= "[[transaction]]") then
+					assert false report "ERROR: Simulation using HLS TB failed." severity failure;
+				end if;
+				esl_read_token(fp, token_line, token); -- Skip transaction number
+
+				esl_read_token(fp, token_line, token);
+				mem := esl_str2lv_hex(token, DATA_WIDTH);
+
+				esl_read_token(fp, token_line, token);
+				
 				wait until clk'event and clk = '1';
-			end loop;
+				loop
+					wait for 0.1 ns;
+					exit when (done = '1');
+				end loop;
 
-			esl_read_token(fp, token_line, token);
-			mem := esl_str2lv_hex(token, DATA_WIDTH);
-
-			esl_read_token(fp, token_line, token);
-			wait until done = '0';
-
-			if (token(1 to 16) /= "[[/transaction]]") then
-				assert false report "ERROR: Simulation using HLS TB failed." severity failure;
-			end if;
-			esl_read_token(fp, token_line, token);
-			transaction_idx := transaction_idx + 1;
+				if (token(1 to 16) /= "[[/transaction]]") then
+					assert false report "ERROR: Simulation using HLS TB failed." severity failure;
+				end if;
+				esl_read_token(fp, token_line, token);
+				transaction_idx := transaction_idx + 1;
 		end loop;
 		file_close(fp);
 		
@@ -151,7 +157,10 @@ begin
 			writeline(fp, token_line);
 			transaction_idx := transaction_idx + 1;
 			file_close(fp);
-			wait until done = '0';
+				loop
+					wait until clk'event and clk = '1';
+					exit when (done = '1');
+				end loop;
 		end loop;
 		end if;
 	wait;

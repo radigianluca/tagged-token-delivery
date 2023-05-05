@@ -74,6 +74,10 @@ public:
 
 	static int loop_phi_id; // 24/02/2023: Aya added this new type that should be used to represent any MUX at the loop header so that we do not insert an INIT!
 
+	static int tmfo_id;
+
+	static int loop_mux_synch_id;
+
     //--------------------------------------------------------//
 
     CircuitGenerator(std::vector<ENode*>* enode_dag, std::vector<BBNode*>* bbnode_dag,
@@ -555,6 +559,16 @@ public:
 	void fixLoopMuxes_inputs(ENode* enode);
 	void removeINIT(std::ofstream& dbg_file, ENode* enode);
 	void convert_to_special_mux();
+
+	// AYA: 29/04/2023: functions to be used if our LoopMUX design requires a Synchronizer at the in0 of all LoopMUXes belonging to the same loop
+	void synch_loopMux();
+	void connect_synch_to_LoopMux(ENode* one_loop_mux, ENode* synch);
+	ENode* insert_LoopMux_synch(BBNode* bbnode);
+
+	// AYA: 24/03/2023: towards the TERM REWRITING SYSTEM
+	void apply_term_rewriting(networkType network_flag);
+	void convert_REGEN_SUPP(networkType network_flag, ENode* loop_mux, ENode* supp, int idx_supp_in_mux_succs);
+	void addTMFOSuccs(ENode* tmfo);  // called inside addFork
 
     //--------------------------------------------------------//
 

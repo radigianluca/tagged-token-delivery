@@ -416,6 +416,8 @@ Consumer of type type = "Merge!!
 
 		 Triggering the producer == consumer case!!!!
 
+	 NEW DEUBUG INFO: The original producer is in BB1
+
 	 The finalized f_prod =  1 
 
 
@@ -487,6 +489,8 @@ Consumer of type type = "Merge!!
 
 
 		 Triggering the producer == consumer case!!!!
+
+	 NEW DEUBUG INFO: The original producer is in BB1
 
 	 The finalized f_prod =  1 
 

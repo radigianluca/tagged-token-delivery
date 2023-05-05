@@ -157,7 +157,10 @@ begin
 			writeline(fp, token_line);
 			transaction_idx := transaction_idx + 1;
 			file_close(fp);
-			wait until done = '0';
+				loop
+					wait until clk'event and clk = '1';
+					exit when (done = '1');
+				end loop;
 		end loop;
 		end if;
 	wait;

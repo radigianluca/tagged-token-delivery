@@ -12,7 +12,7 @@ Consumer of type LLVM Phi!!
 ======================================================
 
 
-New (Producer,Consumer) pair: (BB2, BB2)
+New (Producer,Consumer) pair: (BB5, BB2)
 
 Consumer of type LLVM Phi!!
 
@@ -39,7 +39,34 @@ Consumer of type LLVM Phi!!
 ======================================================
 
 
-New (Producer,Consumer) pair: (BB2, BB2)
+New (Producer,Consumer) pair: (BB5, BB2)
+
+Consumer of type LLVM Phi!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB1, BB2)
+
+Consumer of type LLVM Phi!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB1, BB2)
+
+Consumer of type LLVM Phi!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB5, BB2)
 
 Consumer of type LLVM Phi!!
 
@@ -70,4 +97,154 @@ Considering f_prod =  1
 And f_cons =  not C2 &  + 
 
 The outcome of negating the product number 0is: 	 C2 +  & 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB3)
+
+Consumer of type type = "Operator!!
+
+
+
+Considering f_prod =  1 
+
+
+
+And f_cons =  not C2 &  + 
+
+The outcome of negating the product number 0is: 	 C2 +  & 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB4)
+
+Consumer of type type = "Operator!!
+
+
+
+Considering f_prod =  1 
+
+
+
+And f_cons =  C2 &  + 
+
+The outcome of negating the product number 0is: 	 not C2 +  & 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB4)
+
+Consumer of type type = "Operator!!
+
+
+
+Considering f_prod =  1 
+
+
+
+And f_cons =  C2 &  + 
+
+The outcome of negating the product number 0is: 	 not C2 +  & 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB4)
+
+Consumer of type type = "Operator!!
+
+
+
+Considering f_prod =  1 
+
+
+
+And f_cons =  C2 &  + 
+
+The outcome of negating the product number 0is: 	 not C2 +  & 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB5)
+
+Consumer of type LLVM Phi!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB4, BB5)
+
+Consumer of type LLVM Phi!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB5)
+
+Consumer of type LLVM Phi!!
+
+
+
+Considering f_prod =  1 
+
+
+
+And f_cons =  not C2 &  + 
+
+The outcome of negating the product number 0is: 	 C2 +  & 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB4, BB5)
+
+Consumer of type LLVM Phi!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB5)
+
+Consumer of type type = "Operator!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB5, BB6)
+
+Consumer of type type = "Operator!!
+
+
+
+Considering f_prod =  1 
+
+
+
+And f_cons =  not C5 &  +  not C5 &  + 
+
+The outcome of negating the product number 0is: 	 C5 +  & The outcome of negating the product number 1is: 	 C5 +  & 
 

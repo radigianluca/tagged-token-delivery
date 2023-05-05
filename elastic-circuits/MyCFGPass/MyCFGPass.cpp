@@ -102,6 +102,8 @@ public:
             // Naively building circuit
             CircuitGenerator* circuitGen = new CircuitGenerator(enode_dag, bbnode_dag, OB, MEI);//, CDGP);//, CDG);
 
+
+
 	    // calling functions implemented in `AddComp.cpp`
             circuitGen->buildDagEnodes(F);
             circuitGen->fixBuildDagEnodes();
@@ -117,7 +119,7 @@ public:
 			circuitGen->Fix_LLVM_PhiPreds();
 
 			// AYA: 21/10/2022: temporarily calling this function here to trigger all constants from source
-			circuitGen->addSourceForConstants();
+			circuitGen->addSourceForConstants();   
 
 	    	circuitGen->addStartC();
 
@@ -207,9 +209,10 @@ public:
 				circuitGen->checkLoops(F, LI, CircuitGenerator::memDeps);
 			}
 
-			// AYAA: TODO: 09/11/2022: add a new function here to delete the extra PHIs added from above..
 				// MY GOAL is to have a single PHI of my insertion ONLY in the innermost loop that the consumer is inside and the producer is not inside
 					// SINCE IT IS STILL EXPERIMENTAL AND IN ORDER TO NOT MESS UP WITH OTHER STUFF, I WILL NOT CHANGE ANYTHING IN THE ABOVE FUNCTION OF INSERTING PHIS AND WILL DO THE CHANGES I WANT IN A NEW FUNCTION THAT DELETES THE EXTRA ADDED STUFF
+			
+			// To ttest these functions, 1) uncomment the following 3 lines, 2) Need to do a change in the body of "if(producer == consumer)", Currently the code that works for regenerate is put in the else of "if(network_flag == constCntrl || network_flag == memDeps || network_flag == data) {"
 			//circuitGen->TEMP_deleteExtraPhis(CircuitGenerator::data);
 			//circuitGen->TEMP_deleteExtraPhis(CircuitGenerator::constCntrl);
 			//circuitGen->TEMP_deleteExtraPhis(CircuitGenerator::memDeps);
@@ -248,7 +251,6 @@ public:
 
 			//general_dbg_file << "\nAfter the 3 calls of Fix_my_PhiPreds!\n";
 
-			
 			/////////////////////////////////////////////////
 
 			circuitGen->addSuppress_with_loops(CircuitGenerator::data); // connect producers and consumers of the datapath
@@ -260,6 +262,7 @@ public:
 
 			//general_dbg_file << "\nAfter the 3 calls of addSuppress_with_loops!\n";
 
+			// AYA: 26/03/2023: commenting out the SUPPRESS to Branches optimizations to make the term rewriting system work!!!!!
 			circuitGen->removeExtraBranchesWrapper(CircuitGenerator::data);
 			circuitGen->removeExtraBranchesWrapper(CircuitGenerator::constCntrl);
 			if(is_smart_cntrlOrder_flag) {
@@ -267,6 +270,8 @@ public:
 			}
 			
 			//general_dbg_file << "\nAfter the 3 calls of removeExtraBranchesWrapper!\n";
+
+			// AYA: 24/04/2023: TODO: Note that the following setMuxes_nonLoop() function crashes when a BB in the CFG is fed by three inputs
 
 			// Aya: 16/06/2022: final version of setMuxes that converts only the Merges at the confluence points not at the loop headers into MUXes
 				// this is why internally it does not need to operate on Phi_c because those are never inserted except at loop headers (for regeneration)
@@ -330,6 +335,32 @@ public:
 			// 3rd change the inputs order of the MUX is needed to comply with the convention that the 0th input should always come from outside
 			circuitGen->convert_to_special_mux();
 
+			// AYA: 29/04/2023: Forcing the insertion of a Synchronizer component that gets fed with all in0 of all LoopMUXes belonging to 1 loop
+			circuitGen->synch_loopMux();
+
+
+			// TODO: ADD A FUNCTION ABOVE TO STORE THE ORIGINAL PRODUCER AND CONSUMERS BEFORE ADDING ANY REGENERATES OR SUPPRESSES..
+				// THE GOAL IS TO IDENTIFY PAIRS OF ORIGINAL PRODUCERS AND CONSUMER FROM THIS TO APPLY THE TERM REWRITING FOR EACH PAIR..
+			// EXPERIMENTING converting REGEN_SUPP to SUPP_REGEN
+			// 18/03/2023: added a function that converts a REGEN followed by a SUPP to a SUPP followed by a REGEN and uses the TMFO to do so..
+			//circuitGen->apply_term_rewriting(CircuitGenerator::data);  // CAN VERIFY ON THE SIMPLEST EXAMPLE WITH ONE LOOP WITH A CONSUMER EXECUTING CONDITIONALLY!!!
+			//circuitGen->apply_term_rewriting(CircuitGenerator::constCntrl); 
+			//circuitGen->apply_term_rewriting(CircuitGenerator::memDeps); 
+
+			// TEMPORARILY FOR DEBUGGING: 26/03/2023
+			/*std::ofstream dbg_file_term_rewriting;
+    		dbg_file_term_rewriting.open("term_rewriting_check.txt");
+    		for(auto& enode : *enode_dag) {
+    			if(enode->type == Loop_Phi_n && enode->is_regen_mux) {
+    				dbg_file_term_rewriting << "\n" << getNodeDotNameNew(enode) << " has the following preds:\n\t ";
+    				for(int i = 0; i < enode->CntrlPreds->size(); i++) {
+    					dbg_file_term_rewriting << "Pred with index " << i << " with enode name called " << getNodeDotNameNew(enode->CntrlPreds->at(i)) << ", ";
+    				}
+    			}
+    			dbg_file_term_rewriting << "\n";
+    		}*/
+
+
 		// IMP Note: this function is also important to connect the predecessors of all branches!!!
 			circuitGen->addFork();
 			//general_dbg_file << "\nAfter addFork!\n";
@@ -381,8 +412,6 @@ public:
 
 			//circuitGen->remove_SUPP_COND_Negation();
 
-
-
 	   // call a function to create the exit node, NEED TO CHECK RETURN LOGIC!!
 	      	circuitGen->addExitC();
 			//general_dbg_file << "\nAfter addExitC!\n";
@@ -394,7 +423,6 @@ public:
 			//general_dbg_file << "\nAfter addBuffersSimple_OLD!\n";
 
 			general_dbg_file.close();
-
 
 
 	// Aya: The following is meant for optimizing bit width

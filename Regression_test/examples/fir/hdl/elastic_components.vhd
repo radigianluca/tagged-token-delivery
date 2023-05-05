@@ -613,75 +613,238 @@ begin
 end arch;
 
 
------------------------------------------------------------  gian_branch
+-----------------------------------------------------------  gian_branch_tag
 ------------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
 USE work.customTypes.all;
+use ieee.numeric_std.all;
 
-entity gian_branch is generic( INPUTS:integer; SIZE : integer; DATA_SIZE_IN : integer;DATA_SIZE_OUT : integer; THRD_NUM : integer);
+entity gian_branch_tag is generic(
+    INPUTS        : integer; --supports only two inputs and one condition (so put 3)
+    SIZE          : integer;
+    DATA_SIZE_IN  : integer;
+    DATA_SIZE_OUT : integer;
+    COND_SIZE     : integer;
+    THRD_NUM      : integer;
+    TAG_SIZE      : integer
+);
 port(
-    clk, rst : in std_logic;
-    pValidArray         : in std_logic_vector(1 downto 0);
-    condition: in data_array (0 downto 0)(0 downto 0);
-    dataInArray          : in data_array (0 downto 0)(DATA_SIZE_IN-1 downto 0);
-    dataOutArray            : out data_array (SIZE-1 downto 0)(DATA_SIZE_OUT-1 downto 0);
-    nReadyArray     : in std_logic_vector(1 downto 0);  -- (branch1, branch0)
-    validArray      : out std_logic_vector(1 downto 0); -- (branch1, branch0)
-    readyArray      : out std_logic_vector(1 downto 0));    -- (data, condition)
-end gian_branch;
+    clk, rst      : in  std_logic;
+    dataInArray   : in  data_array(0 downto 0)(DATA_SIZE_IN - 1 downto 0);
+    dataOutArray  : out data_array(1 downto 0)(DATA_SIZE_OUT - 1 downto 0);
+    pValidArray   : in  std_logic_vector(1 downto 0);
+    nReadyArray      : in  std_logic_vector(1 downto 0);
+    validArray      : out std_logic_vector(1 downto 0);
+    readyArray : out std_logic_vector(1 downto 0);
+    condition     : in  data_array(0 downto 0)(COND_SIZE - 1 downto 0);   ----(integer(ceil(log2(real(INPUTS)))) - 1 downto 0);
+    tag_pValidArray : in std_logic_vector(1 downto 0);
+    tag_readyArray : out std_logic_vector(1 downto 0);
+    tag_nReadyArray : in std_logic_vector(1 downto 0);
+    tag_validArray : out std_logic_vector(1 downto 0);
+    tag_dataInArray : in data_array(1 downto 0)(TAG_SIZE - 1 downto 0); 
+    tag_dataOutArray : out data_array(1 downto 0)(TAG_SIZE - 1 downto 0)
+);
+end gian_branch_tag;
 
-architecture arch of gian_branch is
+architecture arch of gian_branch_tag is
 
-signal cond_buff : std_logic_vector(THRD_NUM-1 downto 0);
-signal pValid_join : std_logic;
-signal branchReady, joinValid : std_logic;
+signal cond_buff : data_array(THRD_NUM-1 downto 0)(COND_SIZE - 1 downto 0);
+signal tag_cond_buff : data_array(THRD_NUM-1 downto 0)(TAG_SIZE - 1 downto 0);
+signal in_buff : data_array(THRD_NUM - 1 downto 0)(DATA_SIZE_IN - 1 downto 0);
+signal tag_in_buff : data_array(THRD_NUM - 1 downto 0)(DATA_SIZE_IN - 1 downto 0);
+
+signal tehb_data_in  : std_logic_vector(DATA_SIZE_IN - 1 downto 0);
+signal tehb_pvalid_0, tehb_pvalid_1 : std_logic;
+signal tehb_tag_pvalid_0, tehb_tag_pvalid_1 : std_logic;
+
+signal tehb_ready_1, tehb_ready_0 : std_logic;
+signal tehb_tag_ready_1, tehb_tag_ready_0 : std_logic;
+
+signal tmp_data_out : std_logic_vector(DATA_SIZE_OUT - 1 downto 0);
+signal tmp_tag_data_out : std_logic_vector(TAG_SIZE - 1 downto 0);
+
 
 begin
 
     process(clk, rst)
     variable index_cond : integer := 0;
+    variable index_tag_cond : integer := 0;
+    variable index_in : integer := 0 ;
+    variable index_tag_in : integer := 0;
+    variable found_match : integer := 0;
+    variable index_match : integer := 0;
     begin
         if(rst = '1') then
             index_cond := 0;
-            cond_buff <= (others => '0');
-            pValid_join <= '0';
+            index_tag_cond := 0;
+            index_in := 0;
+            index_tag_in := 0;
+            cond_buff <= (others => (others => '0'));
+            in_buff <= (others => (others => '0'));
+            tag_cond_buff <= (others => (others => '0'));
+            tag_in_buff <= (others => (others => '0'));
+            found_match := 0;
+            index_match := 0;
+            tehb_pvalid_0 <= '0';
+            tehb_pvalid_1 <= '0';
+            tehb_tag_pvalid_0 <= '0';
+            tehb_tag_pvalid_1 <= '0';
+            readyArray <= (others => '0');
+            tag_readyArray <= (others => '0');
         elsif rising_edge(clk) then
-            if(index_cond > 0) then
-                pValid_join <= '1';
-                index_cond := index_cond - 1;
-                for i in 0 to THRD_NUM - 2 loop
-                    cond_buff(i) <= cond_buff(i+1);
-                end loop;
+            --default
+            found_match := 0;
+            index_match := 0;
+            tehb_pvalid_0 <= '0';
+            tehb_pvalid_1 <= '0';
+            tehb_tag_pvalid_0 <= '0';
+            tehb_tag_pvalid_1 <= '0';
+            --search for match
+            for I in 0 to THRD_NUM - 1 loop
+                if(found_match = 0) then
+                    index_match := I;
+                end if;
+                if(to_integer(unsigned(tag_in_buff(I))) /= 0 and to_integer(unsigned(tag_cond_buff(0))) /= 0 and index_cond > 0 and index_match < index_in and to_integer(unsigned(tag_in_buff(I))) = to_integer(unsigned(tag_cond_buff(0))) and found_match = 0) then
+                    found_match := 1;
+                end if;
+            end loop;
+            --output
+            if(found_match = 1) then
+                tmp_data_out <= in_buff(index_match);
+                if(to_integer(unsigned(cond_buff(0))) = 0) then  --
+                    if(nReadyArray(0) = '1' and tag_nReadyArray(0) = '1') then
+                        tehb_pvalid_0 <= '1';
+                        tmp_tag_data_out <= tag_cond_buff(0);
+                        tehb_tag_pvalid_0 <= '1';
+                    end if;
+                else
+                    if(nReadyArray(1) = '1' and tag_nReadyArray(1) = '1') then
+                        tehb_pvalid_1 <= '1';
+                        tmp_tag_data_out <= tag_cond_buff(0);
+                        tehb_tag_pvalid_1 <= '1';
+                    end if;
+                end if;
+                if((to_integer(unsigned(cond_buff(0))) = 0 and nReadyArray(0) = '1' and tag_nReadyArray(0) = '1') or (to_integer(unsigned(cond_buff(0))) = 1 and nReadyArray(1) = '1' and tag_nReadyArray(1) = '1')) then
+                    for I in 0 to THRD_NUM - 2 loop --make the data slides in the buffer
+                        cond_buff(I) <= cond_buff(I+1);
+                        tag_cond_buff(I) <= tag_cond_buff(I+1);
+                    end loop;
+                    in_buff(THRD_NUM - 1) <= (others => '0');
+                    for I in 0 to THRD_NUM - 2 loop --make the data slides in the buffer
+                        if(I >= index_match) then
+                            tag_in_buff(I) <= tag_in_buff(I+1);
+                            in_buff(I) <= in_buff(I+1);
+                        end if;
+                    end loop;
+                    index_in := index_in - 1;
+                    index_cond := index_cond - 1;
+                    index_tag_in := index_tag_in - 1;
+                    index_tag_cond := index_tag_cond - 1;
+                end if;
             end if;
-            else
-                pValid_join <= '0';
-            if(pValidArray(1) = '1') then
-                cond_buff(index_cond) <= condition(0)(0);
+            --dataIn_0_buff
+            if(pValidArray(0) = '1' and index_in < THRD_NUM and readyArray(0) = '1') then  
+                in_buff(index_in) <= dataInArray(0);
+                index_in := index_in + 1;
+            end if;
+            --tag_in0_buff for normal mux
+            if(tag_pValidArray(0) = '1' and index_tag_in < THRD_NUM and tag_readyArray(0) = '1') then  
+                tag_in_buff(index_tag_in) <= tag_dataInArray(0);
+                index_tag_in := index_tag_in + 1;
+            end if;
+            --cond_buff
+            if(pValidArray(1) = '1' and index_cond < THRD_NUM and readyArray(1) = '1') then  
+                cond_buff(index_cond) <= condition(0);
                 index_cond := index_cond + 1;
+            end if;
+            --tag_cond_buff
+            if(tag_pValidArray(1) = '1' and index_tag_cond < THRD_NUM and tag_readyArray(1) = '1') then  
+                tag_cond_buff(index_tag_cond) <= tag_dataInArray(1);
+                index_tag_cond := index_tag_cond + 1;
+            end if;
+            --ready
+            if(index_in = THRD_NUM) then
+                readyArray(0) <= '0';
+            else
+                readyArray(0) <= '1';
+            end if;
+            if(index_tag_in = THRD_NUM) then
+                tag_readyArray(0) <= '0';
+            else
+                tag_readyArray(0) <= '1';
+            end if;
+            if(index_cond = THRD_NUM) then
+                readyArray(1) <= '0';
+            else
+                readyArray(1) <= '1';
+            end if;
+            if(index_tag_cond = THRD_NUM) then
+                tag_readyArray(1) <= '0';
+            else
+                tag_readyArray(1) <= '1';
             end if;
         end if;
     end process;
 
-    j : entity work.join(arch) generic map(2)
-            port map(   (pValid_join, pValidArray(0)),
-                        branchReady,
-                        joinValid,
-                        readyArray);
+    tehb1: entity work.TEHB(arch) generic map (1, 1, DATA_SIZE_IN, DATA_SIZE_IN)
+        port map (
+        --inputspValidArray
+            clk => clk, 
+            rst => rst, 
+            pValidArray(0)  => tehb_pvalid_1, 
+            nReadyArray(0) => nReadyArray(1),    
+            validArray(0) => validArray(1), 
+        --outputs
+            readyArray(0) => tehb_ready_1,   
+            dataInArray(0) => tmp_data_out,
+            dataOutArray(0) => dataOutArray(1)
+        );
 
-    br : entity work.branchSimple(arch)
-            port map(   cond_buff(0),
-                        joinValid,
-                        nReadyArray,
-                        validArray,
-                        branchReady);
+    tehb0: entity work.TEHB(arch) generic map (1, 1, DATA_SIZE_IN, DATA_SIZE_IN)
+        port map (
+        --inputspValidArray
+            clk => clk, 
+            rst => rst, 
+            pValidArray(0)  => tehb_pvalid_0, 
+            nReadyArray(0) => nReadyArray(0),    
+            validArray(0) => validArray(0), 
+        --outputs
+            readyArray(0) => tehb_ready_0,   
+            dataInArray(0) => tmp_data_out,
+            dataOutArray(0) => dataOutArray(0)
+    );
 
-    process(dataInArray)
-    begin
-        for I in 0 to SIZE - 1 loop
-            dataOutArray(I) <= dataInArray(0);
-        end loop;  
-    end process;
+    tehb_tag0: entity work.TEHB(arch) generic map (1, 1, DATA_SIZE_IN, DATA_SIZE_IN)
+        port map (
+        --inputspValidArray
+            clk => clk, 
+            rst => rst, 
+            pValidArray(0)  => tehb_tag_pvalid_0, 
+            nReadyArray(0) => tag_nReadyArray(0),    
+            validArray(0) => tag_validArray(0), 
+        --outputs
+            readyArray(0) => tehb_tag_ready_0,   
+            dataInArray(0) => tmp_tag_data_out,
+            dataOutArray(0) => tag_dataOutArray(0)
+    );
+
+    tehb_tag1: entity work.TEHB(arch) generic map (1, 1, DATA_SIZE_IN, DATA_SIZE_IN)
+        port map (
+        --inputspValidArray
+            clk => clk, 
+            rst => rst, 
+            pValidArray(0)  => tehb_tag_pvalid_1, 
+            nReadyArray(0) => tag_nReadyArray(1),    
+            validArray(0) => tag_validArray(1), 
+        --outputs
+            readyArray(0) => tehb_tag_ready_1,   
+            dataInArray(0) => tmp_tag_data_out,
+            dataOutArray(0) => tag_dataOutArray(1)
+    );
+
+
+
 
 end arch;
 
@@ -1361,7 +1524,7 @@ FullUpdate_proc : process (CLK)
 end process;
   
  -------------------------------------------
--- process for updating full
+-- process for updating empty
 EmptyUpdate_proc : process (CLK)
    
   begin
@@ -1496,9 +1659,9 @@ begin
             end if;
     end process;
 
-    validArray(0) <= pValidArray(0) or fifo_valid;    
+    validArray(0) <= pValidArray(0) or fifo_valid;    --fifo_valid is 0 only if fifo is empty
     readyArray(0) <= fifo_ready or nReadyArray(0);
-    fifo_pvalid <= pValidArray(0) and (not nReadyArray(0) or fifo_valid);
+    fifo_pvalid <= pValidArray(0) and (not nReadyArray(0) or fifo_valid); --store in FIFO if next is not ready or FIFO is already outputting something
     mux_sel <= fifo_valid;
 
     fifo_nready <= nReadyArray(0);
@@ -2037,7 +2200,7 @@ use work.customTypes.all;
 use ieee.numeric_std.all;
 use IEEE.math_real.all;
 
-entity gian_mux is
+entity curr_gian_mux is
     generic(
         INPUTS        : integer; --supports only two inputs and one condition (so put 3)
         OUTPUTS       : integer;
@@ -2057,9 +2220,9 @@ entity gian_mux is
         condition     : in  data_array(0 downto 0)(COND_SIZE - 1 downto 0)   ----(integer(ceil(log2(real(INPUTS)))) - 1 downto 0);
         
     );
-end gian_mux;
+end curr_gian_mux;
 
-architecture arch of gian_mux is
+architecture arch of curr_gian_mux is
 signal dataIn_0_buff : data_array(THRD_NUM - 1 downto 0)(DATA_SIZE_IN - 1 downto 0);
 signal dataIn_1_buff : data_array(THRD_NUM - 1 downto 0)(DATA_SIZE_IN - 1 downto 0);
 signal tehb_data_in  : std_logic_vector(DATA_SIZE_IN - 1 downto 0);
@@ -2069,12 +2232,14 @@ signal tehb_ready : std_logic;
 begin
 
 horrible_mono_process: process(clk, rst)
-variable index_0_buff : integer := 0;
-variable index_1_buff : integer := 0;
-variable index_cond_buff : integer := 0;
 variable tmp_data_out  : unsigned(DATA_SIZE_IN - 1 downto 0);
 variable tmp_valid_out : std_logic;
 variable count : integer;
+variable accept_in0 : integer := 1;
+variable accept_in1 : integer := 0;
+variable index_0_buff : integer := 0;
+variable index_1_buff : integer := 0;
+variable index_cond_buff : integer := 0;
 begin
     if(rst = '1') then
         dataIn_0_buff <= (others => (others => '0'));
@@ -2083,21 +2248,29 @@ begin
         index_1_buff := 0;
         index_cond_buff := 0;
         count := 0;
+        tmp_valid_out := '0';
+        tmp_data_out  := unsigned(dataInArray(0));
+        readyArray <= (others => '0');
     elsif rising_edge(clk) then
         --output
         tmp_valid_out := '0';
         tmp_data_out  := unsigned(dataInArray(0));
         if(nReadyArray(0) = '1') then
-            if(index_0_buff > 0) then --there is something stored in the in_0_buffer
+            if(index_0_buff > 0 and accept_in0 = 1) then --there is something stored in the in_0_buffer
                 tmp_data_out := unsigned(dataIn_0_buff(0));
                 tmp_valid_out := '1';
                 index_0_buff := index_0_buff - 1;
                 count := count + 1;
+                if(count = THRD_NUM) then
+                    count := 0;
+                    accept_in0 := 0;
+                    accept_in1 := 1;
+                end if;
                 for I in 0 to THRD_NUM - 2 loop --make the data slides in the buffer
                     dataIn_0_buff(I) <= dataIn_0_buff(I+1);
                 end loop;
                 dataIn_0_buff(THRD_NUM - 1) <= (others => '0');
-            elsif (index_1_buff > 0 and index_cond_buff > 0 and count = THRD_NUM) then
+            elsif (index_1_buff > 0 and index_cond_buff > 0 and accept_in1 = 1) then
                 tmp_data_out := unsigned(dataIn_1_buff(0));
                 tmp_valid_out := '1';
                 index_1_buff := index_1_buff - 1;
@@ -2109,7 +2282,7 @@ begin
             end if;
         end if;
         --dataIn_0_buff
-        if(pValidArray(1) = '1' and index_0_buff < THRD_NUM) then  
+        if(pValidArray(1) = '1' and index_0_buff < THRD_NUM and readyArray(1) = '1') then  
             dataIn_0_buff(index_0_buff) <= dataInArray(0);
             index_0_buff := index_0_buff + 1;
         end if;
@@ -2119,15 +2292,30 @@ begin
             index_1_buff := index_1_buff + 1;
         end if;
         --cond_buff
-        if(pValidArray(0) = '1' and index_cond_buff < THRD_NUM and to_integer(unsigned(condition(0))) /= 0) then  --interested only in non-0 conditions
-            index_cond_buff := index_cond_buff + 1;
+        if(pValidArray(0) = '1' and index_cond_buff < THRD_NUM) then
+            if(to_integer(unsigned(condition(0))) = 0) then
+                count := count + 1;
+            else
+                index_cond_buff := index_cond_buff + 1;
+            end if;
+            if(count = THRD_NUM) then
+                count := 0;
+                accept_in0 := 1;
+                accept_in1 := 0;
+            end if;
         end if;
     end if;
+    --tehb inputs
     tehb_data_in <= std_logic_vector(resize(tmp_data_out,DATA_SIZE_OUT));
     tehb_pvalid  <= tmp_valid_out;
+    --ready
+    if(index_0_buff = THRD_NUM) then
+        readyArray <= "101";
+    else
+        readyArray <= "111";
+    end if;
 end process;
 
-readyArray <= "111"; --num of buffers is equal to number of threads
 
 tehb1: entity work.TEHB(arch) generic map (1, 1, DATA_SIZE_IN, DATA_SIZE_IN)
         port map (
@@ -2234,7 +2422,660 @@ begin
         );
 end arch;
 
+-----------------------------------------------------------------------gian_mux_fifo
+library ieee;
+use ieee.std_logic_1164.all;
+use work.customTypes.all;
+use ieee.numeric_std.all;
+use IEEE.math_real.all;
 
+entity gian_mux_fifo is
+    generic(
+        INPUTS        : integer; --supports only two inputs and one condition (so put 3)
+        OUTPUTS       : integer;
+        DATA_SIZE_IN  : integer;
+        DATA_SIZE_OUT : integer;
+        COND_SIZE     : integer;
+        THRD_NUM      : integer
+    );
+    port(
+        clk, rst      : in  std_logic;
+        dataInArray   : in  data_array(INPUTS - 2 downto 0)(DATA_SIZE_IN - 1 downto 0);
+        dataOutArray  : out data_array(0 downto 0)(DATA_SIZE_OUT - 1 downto 0);
+        pValidArray   : in  std_logic_vector(INPUTS -1 downto 0);
+        nReadyArray   : in  std_logic_vector(0 downto 0);
+        validArray    : out std_logic_vector(0 downto 0);
+        readyArray    : out std_logic_vector(INPUTS -1 downto 0);
+        condition     : in  data_array(0 downto 0)(COND_SIZE - 1 downto 0)   ----(integer(ceil(log2(real(INPUTS)))) - 1 downto 0);
+        
+    );
+end gian_mux_fifo;
+architecture arch of gian_mux_fifo is
+    signal tehb_pvalid, tehb_ready : std_logic;
+    signal tehb_data_in : std_logic_vector(DATA_SIZE_IN - 1 downto 0);
+    signal fifo_0_valid, fifo_1_valid, fifo_0_nReady, fifo_1_nReady, fifo_0_ready, fifo_1_ready : std_logic;
+    signal fifo_0_dataOut, fifo_1_dataOut : std_logic_vector(DATA_SIZE_IN - 1 downto 0);
+    signal state : std_logic;
+
+    constant zero : std_logic_vector(COND_SIZE-1 downto 0) := (others => '0');
+    constant one : std_logic_vector(COND_SIZE-1 downto 0) := (COND_SIZE-1 downto 1 => '0', others => '1');
+
+    begin
+
+    readyArray(1) <= fifo_0_ready;
+    readyArray(2) <= '1';
+    readyArray(0) <= '1';
+
+    fifo_0_nReady <= (not state) and tehb_ready;
+    fifo_1_nready <= state and tehb_ready;
+
+    with state select tehb_pvalid <=
+        fifo_0_valid when '0',
+        fifo_1_valid when others;
+
+    with state select tehb_data_in <=
+        fifo_0_dataOut when '0',
+        fifo_1_dataOut when others;
+
+    fifo_0: entity work.transpFIFO(arch) generic map (1, 1, DATA_SIZE_IN, DATA_SIZE_IN, THRD_NUM)
+    port map (
+    --inputspValidArray
+        clk => clk, 
+        rst => rst, 
+        pValidArray(0)  => pValidArray(1), 
+        nReadyArray(0) => fifo_0_nReady,    
+        validArray(0) => fifo_0_valid, 
+    --outputs
+        readyArray(0) => fifo_0_ready,   
+        dataInArray(0) => dataInArray(0),
+        dataOutArray(0) => fifo_0_dataOut
+    );
+
+    fifo_1: entity work.transpFIFO(arch) generic map (1, 1, DATA_SIZE_IN, DATA_SIZE_IN, THRD_NUM)
+    port map (
+    --inputspValidArray
+        clk => clk, 
+        rst => rst, 
+        pValidArray(0)  => pValidArray(2), 
+        nReadyArray(0) => fifo_1_nReady,    
+        validArray(0) => fifo_1_valid, 
+    --outputs
+        readyArray(0) => fifo_1_ready,   
+        dataInArray(0) => dataInArray(1),
+        dataOutArray(0) => fifo_1_dataOut
+    );
+
+    tehb1: entity work.TEHB(arch) generic map (1, 1, DATA_SIZE_IN, DATA_SIZE_IN)
+        port map (
+        --inputspValidArray
+            clk => clk, 
+            rst => rst, 
+            pValidArray(0)  => tehb_pvalid, 
+            nReadyArray(0) => nReadyArray(0),    
+            validArray(0) => validArray(0), 
+        --outputs
+            readyArray(0) => tehb_ready,   
+            dataInArray(0) => tehb_data_in,
+            dataOutArray(0) => dataOutArray(0)
+        );
+
+    count_state_process : process(clk, rst)
+    variable count : integer := 0;
+    variable count_1_cond : integer := 0;
+    variable count_in1 : integer := 0;
+    begin
+        if(rst = '1') then
+            state <= '0';
+            count := 0;
+        elsif rising_edge(clk) then
+            if(state = '0' and tehb_ready = '1' and fifo_0_valid = '1') then --count the tokens output from in0
+                count := count + 1;
+            end if;
+            if(state = '1' and tehb_ready = '1' and fifo_1_valid = '1') then --count the tokens output from in1
+                count_in1 := count_in1 + 1;
+            end if;
+            if(pValidArray(0) = '1' and condition(0) = zero) then  --count the 0-condition received 
+                count := count - 1;
+            end if;
+            if(pValidArray(0) = '1' and condition(0) = one) then --count the 1-condition received
+                count_1_cond := count_1_cond + 1;
+            end if;
+            if(state = '0' and (count = THRD_NUM or (count > 0 and fifo_0_valid = '0'))) then --transition to state 1
+                state <= '1';
+            end if;
+            if(state = '1' and count = 0 and count_in1 = count_1_cond) then --transition to state 0
+                count_1_cond := 0;
+                count_in1 := 0;
+                state <= '0';
+            end if;
+        end if;
+    end process;
+
+end;
+
+
+-----------------------------------------------------------------------gian_mux
+library ieee;
+use ieee.std_logic_1164.all;
+use work.customTypes.all;
+use ieee.numeric_std.all;
+use IEEE.math_real.all;
+
+entity gian_mux is
+    generic(
+        INPUTS        : integer; --supports only two inputs and one condition (so put 3)
+        OUTPUTS       : integer;
+        DATA_SIZE_IN  : integer;
+        DATA_SIZE_OUT : integer;
+        COND_SIZE     : integer;
+        THRD_NUM       : integer
+    );
+    port(
+        clk, rst      : in  std_logic;
+        dataInArray   : in  data_array(INPUTS - 2 downto 0)(DATA_SIZE_IN - 1 downto 0);
+        dataOutArray  : out data_array(0 downto 0)(DATA_SIZE_OUT - 1 downto 0);
+        pValidArray   : in  std_logic_vector(INPUTS -1 downto 0);
+        nReadyArray      : in  std_logic_vector(0 downto 0);
+        validArray      : out std_logic_vector(0 downto 0);
+        readyArray : out std_logic_vector(INPUTS -1 downto 0);
+        condition     : in  data_array(0 downto 0)(COND_SIZE - 1 downto 0)   ----(integer(ceil(log2(real(INPUTS)))) - 1 downto 0);
+        
+    );
+end gian_mux;
+
+architecture arch of gian_mux is
+signal dataIn_0_buff : data_array(THRD_NUM - 1 downto 0)(DATA_SIZE_IN - 1 downto 0);
+signal dataIn_1_buff : data_array(THRD_NUM - 1 downto 0)(DATA_SIZE_IN - 1 downto 0);
+signal tehb_data_in  : std_logic_vector(DATA_SIZE_IN - 1 downto 0);
+signal tehb_pvalid : std_logic;
+signal tehb_ready : std_logic;
+
+
+begin
+
+horrible_mono_process: process(clk, rst)
+variable index_0_buff : integer := 0;
+variable index_1_buff : integer := 0;
+variable count : integer := 0;
+variable tmp_data_out  : unsigned(DATA_SIZE_IN - 1 downto 0);
+variable tmp_valid_out : std_logic;
+variable only_in1 : integer := 0;
+variable through_0 : integer := 0;
+variable through_1 : integer := 0;
+begin
+    if(rst = '1') then
+        dataIn_0_buff <= (others => (others => '0'));
+        index_0_buff := 0;
+        dataIn_1_buff <= (others => (others => '0'));
+        index_1_buff := 0;
+        count := 0;
+        through_0 := 0;
+        through_1 := 0;
+        only_in1 := 0;
+        tmp_valid_out := '0';
+        tmp_data_out  := unsigned(dataInArray(0));
+        readyArray <= (others => '0');
+    elsif rising_edge(clk) then
+        --default
+        tmp_valid_out := '0';
+        tmp_data_out  := unsigned(dataInArray(0));
+        through_0 := 0;
+        through_1 := 0;
+        if(nReadyArray(0) = '1') then
+            if((index_0_buff > 0 or(pValidArray(1) = '1' and index_0_buff = 0)) and only_in1 = 0) then 
+                if(pValidArray(1) = '1' and index_0_buff = 0) then -- pass it through
+                    tmp_data_out := unsigned(dataInArray(0));
+                    through_0 := 1;
+                else
+                    tmp_data_out := unsigned(dataIn_0_buff(0));
+                    index_0_buff := index_0_buff - 1;
+                    for I in 0 to THRD_NUM - 2 loop --make the data slides in the buffer
+                    dataIn_0_buff(I) <= dataIn_0_buff(I+1);
+                    end loop;
+                    dataIn_0_buff(THRD_NUM - 1) <= (others => '0');
+                end if;
+                tmp_valid_out := '1';
+                count := count + 1;
+            elsif (index_1_buff > 0 or (pValidArray(2) = '1' and index_1_buff = 0)) then
+                if(pValidArray(2) = '1' and index_1_buff = 0) then --pass it through
+                    tmp_data_out := unsigned(dataInArray(1));
+                    through_1 := 1;
+                else
+                    tmp_data_out := unsigned(dataIn_1_buff(0));
+                    index_1_buff := index_1_buff - 1;
+                    for I in 0 to THRD_NUM - 2 loop --make the data slides in the buffer
+                        dataIn_1_buff(I) <= dataIn_1_buff(I+1);
+                    end loop;
+                    dataIn_1_buff(THRD_NUM - 1) <= (others => '0');
+                end if;                
+                tmp_valid_out := '1';         
+            end if;
+        end if;
+        --dataIn_0_buff
+        if(pValidArray(1) = '1' and index_0_buff < THRD_NUM and readyArray(1) = '1' and through_0 = 0) then  
+            dataIn_0_buff(index_0_buff) <= dataInArray(0);
+            index_0_buff := index_0_buff + 1;
+        end if;
+        --dataIn_1_buff
+        if(pValidArray(2) = '1' and index_1_buff < THRD_NUM and through_1 = 0) then  
+            dataIn_1_buff(index_1_buff) <= dataInArray(1);
+            index_1_buff := index_1_buff + 1;
+        end if;
+        --cond decrementation
+        if(pValidArray(0) = '1' and to_integer(unsigned(condition(0))) = 0) then 
+            count := count - 1;
+            if(count = 0 and index_1_buff = 0 and pValidArray(2) = '0') then --nothing left in in1 (nor arriving in in1) and count 0-conditions received
+                only_in1 := 0;
+            end if;
+        end if;
+        --ready
+        readyArray(2) <= '1';
+        readyArray(0) <= '1';
+        if(index_0_buff = THRD_NUM) then
+            readyArray(1) <= '0';
+        else
+            readyArray(1) <= '1';
+        end if;
+        --only_in1
+        if((index_0_buff = 0 and count > 0 and pValidArray(1) = '0') or count = THRD_NUM) then --you have sent out at least something from in0 but now there is nothing in in0
+            only_in1 := 1;
+        end if;
+    end if;
+    --tehb inputs
+    tehb_data_in <= std_logic_vector(resize(tmp_data_out,DATA_SIZE_OUT));
+    tehb_pvalid  <= tmp_valid_out;
+end process;
+
+tehb1: entity work.TEHB(arch) generic map (1, 1, DATA_SIZE_IN, DATA_SIZE_IN)
+        port map (
+        --inputspValidArray
+            clk => clk, 
+            rst => rst, 
+            pValidArray(0)  => tehb_pvalid, 
+            nReadyArray(0) => nReadyArray(0),    
+            validArray(0) => validArray(0), 
+        --outputs
+            readyArray(0) => tehb_ready,   
+            dataInArray(0) => tehb_data_in,
+            dataOutArray(0) => dataOutArray(0)
+        );
+
+end architecture;
+
+----------------------------------------------------------------
+
+-----------------------------------------------------------------------gian_mux_tag
+library ieee;
+use ieee.std_logic_1164.all;
+use work.customTypes.all;
+use ieee.numeric_std.all;
+use IEEE.math_real.all;
+
+entity gian_mux_tag is
+    generic(
+        INPUTS        : integer; --supports only two inputs and one condition (so put 3)
+        OUTPUTS       : integer;
+        DATA_SIZE_IN  : integer;
+        DATA_SIZE_OUT : integer;
+        COND_SIZE     : integer;
+        THRD_NUM      : integer;
+        TAG_SIZE      : integer;
+        TAG_INPUTS: integer
+    );
+    port(
+        clk, rst      : in  std_logic;
+        dataInArray   : in  data_array(INPUTS - 2 downto 0)(DATA_SIZE_IN - 1 downto 0);
+        dataOutArray  : out data_array(0 downto 0)(DATA_SIZE_OUT - 1 downto 0);
+        pValidArray   : in  std_logic_vector(INPUTS -1 downto 0);
+        nReadyArray      : in  std_logic_vector(0 downto 0);
+        validArray      : out std_logic_vector(0 downto 0);
+        readyArray : out std_logic_vector(INPUTS -1 downto 0);
+        condition     : in  data_array(0 downto 0)(COND_SIZE - 1 downto 0);   ----(integer(ceil(log2(real(INPUTS)))) - 1 downto 0);
+        tag_pValidArray : in std_logic_vector(TAG_INPUTS - 1 downto 0);
+        tag_readyArray : out std_logic_vector(TAG_INPUTS - 1 downto 0);
+        tag_nReadyArray : in std_logic_vector(0 downto 0);
+        tag_validArray : out std_logic_vector(0 downto 0);
+        tag_dataInArray : in data_array(TAG_INPUTS - 1 downto 0)(TAG_SIZE - 1 downto 0); --(condition, in0, in1, ...) or (condition, in1, ...)
+        tag_dataOutArray : out data_array(0 downto 0)(TAG_SIZE - 1 downto 0)
+    );
+end gian_mux_tag;
+
+architecture arch of gian_mux_tag is
+signal dataIn_0_buff : data_array(THRD_NUM - 1 downto 0)(DATA_SIZE_IN - 1 downto 0);
+signal dataIn_1_buff : data_array(THRD_NUM - 1 downto 0)(DATA_SIZE_IN - 1 downto 0);
+signal cond_buff : data_array(THRD_NUM - 1 downto 0)(COND_SIZE - 1 downto 0);
+signal tag_cond_buff : data_array(THRD_NUM - 1 downto 0)(TAG_SIZE - 1 downto 0);
+signal tag_in0_buff : data_array(THRD_NUM - 1 downto 0)(TAG_SIZE - 1 downto 0);
+signal tag_in1_buff : data_array(THRD_NUM - 1 downto 0)(TAG_SIZE - 1 downto 0);
+signal tehb_data_in  : std_logic_vector(DATA_SIZE_IN - 1 downto 0);
+signal tehb_tag_data_in  : std_logic_vector(TAG_SIZE - 1 downto 0);
+signal tehb_pvalid, tehb_tag_pvalid : std_logic;
+signal tehb_ready, tehb_tag_ready : std_logic;  
+begin
+
+horrible_mono_process: process(clk, rst)
+
+variable index_0_buff : integer := 0;
+variable index_1_buff : integer := 0;
+variable index_cond_buff : integer := 0;
+variable tag_in0_index : integer := 0;
+variable tag_in1_index : integer := 0;
+variable tag_cond_index : integer := 0;
+variable count : integer := 0;
+variable count_tag : integer := 0;
+variable tmp_data_out  : unsigned(DATA_SIZE_IN - 1 downto 0);
+variable tmp_valid_out : std_logic;
+variable only_in1 : integer := 0;
+variable any_output : integer := 0;
+variable ind_match_in0 : integer := 0;
+variable ind_match_in1 : integer := 0;
+variable found_match_in0 : integer := 0;
+variable found_match_in1 : integer := 0;
+variable count_in1_out : integer := 0;
+variable count_cond1 : integer := 0;
+begin
+    if(rst = '1') then
+        dataIn_0_buff <= (others => (others => '0'));
+        index_0_buff := 0;
+        dataIn_1_buff <= (others => (others => '0'));
+        index_1_buff := 0;
+        cond_buff <= (others => (others => '0'));
+        index_cond_buff := 0;
+        tag_in0_buff <= (others => (others => '0'));
+        tag_in0_index := 0;
+        tag_in1_buff <= (others => (others => '0'));
+        tag_in1_index := 0;
+        tag_cond_buff <= (others => (others => '0'));
+        tag_cond_index := 0;
+        count := 0;
+        only_in1 := 0;
+        tmp_valid_out := '0';
+        tmp_data_out  := unsigned(dataInArray(0));
+        readyArray <= (others => '0');
+        tag_readyArray <= (others => '0');
+        count_in1_out := 0;
+        count_cond1 := 0;
+    elsif rising_edge(clk) then
+        --default
+        tmp_valid_out := '0';
+        tehb_tag_pvalid <= '0';
+        tmp_data_out  := unsigned(dataInArray(0));
+        ind_match_in0 := 0;
+        ind_match_in1 := 0;
+        found_match_in0 := 0;
+        found_match_in1 := 0;
+        --search for mathces
+        if(TAG_INPUTS > 2) then --normal mux
+            for I in 0 to THRD_NUM - 1 loop
+                if(found_match_in0 = 0) then
+                    ind_match_in0 := I;
+                end if;
+                if(to_integer(unsigned(tag_in0_buff(0))) /= 0 and to_integer(unsigned(tag_cond_buff(I))) /= 0 and index_0_buff > 0 and ind_match_in0 < index_cond_buff and to_integer(unsigned(tag_in0_buff(0))) = to_integer(unsigned(tag_cond_buff(I))) and found_match_in0 = 0) then
+                    found_match_in0 := 1;
+                end if;
+            end loop;                    
+        end if;
+        for I in 0 to THRD_NUM - 1 loop
+            if(found_match_in1 = 0) then
+                ind_match_in1 := I;
+            end if;
+            if(to_integer(unsigned(tag_in1_buff(0))) /= 0 and to_integer(unsigned(tag_cond_buff(I))) /= 0 and index_1_buff > 0 and ind_match_in1 < index_cond_buff and to_integer(unsigned(tag_in1_buff(0))) = to_integer(unsigned(tag_cond_buff(I))) and found_match_in1 = 0) then
+                found_match_in1 := 1;
+            end if;
+        end loop;
+        --output
+        if(nReadyArray(0) = '1' and tag_nReadyArray(0) = '1') then
+            if((index_0_buff > 0 and TAG_INPUTS = 2 and only_in1 = 0) or (TAG_INPUTS > 2 and found_match_in0 = 1)) then 
+                tmp_data_out := unsigned(dataIn_0_buff(0));
+                tmp_valid_out := '1';
+                tehb_tag_pvalid <= '1';
+                index_0_buff := index_0_buff - 1;
+                for I in 0 to THRD_NUM - 2 loop --make the data slides in the buffer
+                    dataIn_0_buff(I) <= dataIn_0_buff(I+1);
+                    tag_in0_buff(I) <= tag_in0_buff(I+1);
+                end loop;
+                dataIn_0_buff(THRD_NUM - 1) <= (others => '0');
+                if(TAG_INPUTS = 2) then --if it is a loop mux
+                    count_tag := count_tag + 1;
+                    count := count + 1;
+                    tehb_tag_data_in <= std_logic_vector(to_unsigned(count_tag, tehb_tag_data_in'length));
+                else
+                    tehb_tag_data_in <= tag_in0_buff(0);
+                    index_cond_buff := index_cond_buff - 1;
+                    tag_in0_index := tag_in0_index - 1;
+                    tag_cond_index := tag_cond_index - 1;
+                    for I in 0 to THRD_NUM - 2 loop --make the data slides in the buffer
+                        if(I >= ind_match_in0) then
+                            tag_cond_buff(I) <= tag_cond_buff(I+1);
+                            cond_buff(I) <= cond_buff(I+1);
+                            tag_cond_buff(I+1) <= (others => '0');
+                        end if;
+                    end loop;
+                    tag_cond_buff(THRD_NUM - 1) <= (others => '0');
+                    cond_buff(THRD_NUM - 1) <= (others => '0');
+                end if;       
+            elsif (found_match_in1 = 1) then
+                tmp_data_out := unsigned(dataIn_1_buff(0));
+                for I in 0 to THRD_NUM - 2 loop --make the data slides in the buffer
+                    dataIn_1_buff(I) <= dataIn_1_buff(I+1);
+                    tag_in1_buff(I) <= tag_in1_buff(I+1);
+                end loop;
+                dataIn_1_buff(THRD_NUM - 1) <= (others => '0');
+                tmp_valid_out := '1';
+                tehb_tag_pvalid <= '1';
+                tehb_tag_data_in <= tag_in1_buff(0);
+                index_1_buff := index_1_buff - 1;
+                index_cond_buff := index_cond_buff - 1;
+                tag_in1_index := tag_in1_index - 1;
+                tag_cond_index := tag_cond_index - 1;
+                if(TAG_INPUTS = 2) then
+                    count_in1_out := count_in1_out + 1;
+                end if;
+                for I in 0 to THRD_NUM - 2 loop --make the data slides in the buffer
+                    if(I >= ind_match_in1) then
+                        tag_cond_buff(I) <= tag_cond_buff(I+1);
+                        cond_buff(I) <= cond_buff(I+1);
+                        tag_cond_buff(I+1) <= (others => '0');
+                    end if;
+                end loop;
+                tag_cond_buff(THRD_NUM - 1) <= (others => '0');
+                cond_buff(THRD_NUM - 1) <= (others => '0');
+            end if;
+        end if;
+        --dataIn_0_buff
+        if(pValidArray(1) = '1' and index_0_buff < THRD_NUM and readyArray(1) = '1') then  
+            dataIn_0_buff(index_0_buff) <= dataInArray(0);
+            index_0_buff := index_0_buff + 1;
+        end if;
+        --tag_in0_buff for normal mux
+        if(TAG_INPUTS > 2 and tag_pValidArray(1) = '1' and tag_in0_index < THRD_NUM and tag_readyArray(1) = '1') then  
+            tag_in0_buff(tag_in0_index) <= tag_dataInArray(1);
+            tag_in0_index := tag_in0_index + 1;
+        end if;
+        --dataIn_1_buff
+        if(pValidArray(2) = '1' and index_1_buff < THRD_NUM) then
+            if((TAG_INPUTS > 2 and readyArray(2) = '1') or TAG_INPUTS = 2) then 
+                dataIn_1_buff(index_1_buff) <= dataInArray(1);
+                index_1_buff := index_1_buff + 1;
+            end if;
+        end if;
+        --tag_in1_buff
+        if(((TAG_INPUTS = 2 and tag_pValidArray(1) = '1') or (TAG_INPUTS > 2 and tag_pValidArray(2) = '1' and tag_readyArray(TAG_INPUTS-1) = '1')) and tag_in1_index < THRD_NUM) then  
+            if(TAG_INPUTS = 2) then --loop mux
+                tag_in1_buff(tag_in1_index) <= tag_dataInArray(1);
+            else
+                tag_in1_buff(tag_in1_index) <= tag_dataInArray(2);
+            end if;
+            tag_in1_index := tag_in1_index + 1;
+        end if;
+        --cond_buff
+        if(pValidArray(0) = '1' and index_cond_buff < THRD_NUM) then
+            if((TAG_INPUTS > 2 and readyArray(0) = '1') or TAG_INPUTS = 2) then
+                cond_buff(index_cond_buff) <= condition(0);
+                index_cond_buff := index_cond_buff + 1;
+            end if;
+        end if;
+        --tag_cond_buff
+        if(tag_pValidArray(0) = '1' and tag_cond_index < THRD_NUM) then
+            if((TAG_INPUTS > 2 and tag_readyArray(0) = '1') or TAG_INPUTS = 2) then
+                tag_cond_buff(tag_cond_index) <= tag_dataInArray(0);
+                tag_cond_index := tag_cond_index + 1;
+            end if;
+        end if;
+        --decrementation only for loop mux
+        if(TAG_INPUTS = 2) then
+            if(pValidArray(0) = '1' and to_integer(unsigned(condition(0))) = 0)  then
+                count := count - 1;
+            elsif(pValidArray(0) = '1' and to_integer(unsigned(condition(0))) = 1) then
+                count_cond1 := count_cond1 + 1;
+            end if;
+            if(count = 0 and count_in1_out = count_cond1) then
+                only_in1 := 0;
+                count_cond1 := 0;
+                count_in1_out := 0;
+                index_cond_buff := 0;
+                tag_cond_index := 0; --blindly ignore stored 0 conditions and their tags 
+            end if;
+        end if;
+        --ready for loopMux (only in0)
+        if(TAG_INPUTS = 2) then
+            --ready
+            readyArray(2) <= '1';
+            readyArray(0) <= '1';
+            if(index_0_buff = THRD_NUM) then
+                readyArray(1) <= '0';
+            else
+                readyArray(1) <= '1';
+            end if;
+            tag_readyArray <=  (others => '1');
+        else    --ready for normal mux
+            if(index_cond_buff = THRD_NUM) then
+                readyArray(0) <= '0';
+            else
+                readyArray(0) <= '1';
+            end if;
+            if(tag_cond_index = THRD_NUM) then
+                tag_readyArray(0) <= '0';
+            else
+                tag_readyArray(0) <= '1';
+            end if;
+            if(index_0_buff = THRD_NUM) then
+                readyArray(1) <= '0';
+            else
+                readyArray(1) <= '1';
+            end if;
+            if(tag_in0_index = THRD_NUM) then
+                tag_readyArray(1) <= '0';
+            else
+                tag_readyArray(1) <= '1';
+            end if;
+            if(index_1_buff = THRD_NUM) then
+                readyArray(2) <= '0';
+            else
+                readyArray(2) <= '1';
+            end if;
+            if(tag_in1_index = THRD_NUM) then
+                tag_readyArray(TAG_INPUTS - 1) <= '0'; --used TAG_INPUTS - 1 instead of 2 only for vsim
+            else
+                tag_readyArray(TAG_INPUTS - 1) <= '1';
+            end if;
+        end if;
+        --only_in1
+        if(((index_0_buff = 0 and count > 0) or count = THRD_NUM) and TAG_INPUTS = 2) then --you have sent out at least something from in0 but now there is nothing in in0
+            only_in1 := 1;
+        end if;
+    end if;
+    --tehb inputs
+    tehb_data_in <= std_logic_vector(resize(tmp_data_out,DATA_SIZE_OUT));
+    tehb_pvalid  <= tmp_valid_out;
+end process;
+
+tehb1: entity work.TEHB(arch) generic map (1, 1, DATA_SIZE_IN, DATA_SIZE_IN)
+        port map (
+        --inputspValidArray
+            clk => clk, 
+            rst => rst, 
+            pValidArray(0)  => tehb_pvalid, 
+            nReadyArray(0) => nReadyArray(0),    
+            validArray(0) => validArray(0), 
+        --outputs
+            readyArray(0) => tehb_ready,   
+            dataInArray(0) => tehb_data_in,
+            dataOutArray(0) => dataOutArray(0)
+        );
+
+tehb1_tag: entity work.TEHB(arch) generic map (1, 1, DATA_SIZE_IN, DATA_SIZE_IN)
+port map (
+--inputspValidArray
+    clk => clk, 
+    rst => rst, 
+    pValidArray(0)  => tehb_tag_pvalid, 
+    nReadyArray(0) => tag_nReadyArray(0),    
+    validArray(0) => tag_validArray(0), 
+--outputs
+    readyArray(0) => tehb_tag_ready,   
+    dataInArray(0) => tehb_tag_data_in,
+    dataOutArray(0) => tag_dataOutArray(0)
+);
+
+end architecture;
+----------------------------------------------------------------
+library ieee;
+use ieee.std_logic_1164.all;
+USE work.customTypes.all;
+entity synch is generic(
+SIZE : integer ; DATA_SIZE_IN: integer; DATA_SIZE_OUT: integer
+);
+port(
+        pValidArray : in std_logic_vector(SIZE - 1 downto 0);
+        nReadyArray : in std_logic_vector(SIZE - 1 downto 0);
+        validArray : out std_logic_vector(SIZE - 1 downto 0);
+        readyArray : out std_logic_vector(SIZE - 1 downto 0);
+        dataInArray   : in  data_array(SIZE - 1 downto 0)(DATA_SIZE_IN - 1 downto 0);
+        dataOutArray  : out data_array(SIZE - 1 downto 0)(DATA_SIZE_OUT - 1 downto 0)
+        );
+end synch;
+
+architecture arch of synch is
+
+signal join_valid : std_logic;
+signal join_nReady : std_logic;
+constant all_one : std_logic_vector(SIZE-1 downto 0) := (others => '1');
+begin
+    
+    j : entity work.join(arch) generic map(SIZE)
+                port map(   pValidArray,
+                            join_nReady,
+                            join_valid,
+                            readyArray);
+
+    dataOutArray <= dataInArray;
+
+    process(join_valid, readyArray)
+    begin
+        if(join_valid = '1' and readyArray = all_one) then
+            validArray <= (others => '1');
+        else
+            validArray <= (others => '0');
+        end if;
+    end process;
+
+    process (nReadyArray)
+    variable check : std_logic := '1';
+    begin
+        check := '1';
+        for I in 0 to SIZE - 1 loop
+            check := check and nReadyArray(I);
+        end loop;
+        if(check = '1') then
+            join_nReady <= '1';
+        else 
+            join_nReady <= '0';
+        end if;
+    end process;
+
+end architecture;
+----------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
 USE work.customTypes.all;

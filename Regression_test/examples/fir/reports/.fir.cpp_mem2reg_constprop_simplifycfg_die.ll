@@ -4,36 +4,72 @@ target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-unknown-linux-gnu"
 
 ; Function Attrs: noinline nounwind uwtable
-define i32 @_Z3firi(i32 %arg_1) #0 {
+define i32 @_Z3firiPi(i32 %arg_1, i32* %A) #0 {
 entry:
   br label %for.body
 
-for.body:                                         ; preds = %for.body, %entry
-  %arg_1.addr.02 = phi i32 [ %arg_1, %entry ], [ %mul, %for.body ]
-  %i.01 = phi i32 [ 0, %entry ], [ %inc, %for.body ]
-  %mul = mul nsw i32 %arg_1.addr.02, 5
-  %inc = add nuw nsw i32 %i.01, 1
-  %cmp = icmp ult i32 %inc, 3
+for.body:                                         ; preds = %for.inc, %entry
+  %arg_1.addr.03 = phi i32 [ %arg_1, %entry ], [ %arg_1.addr.1, %for.inc ]
+  %i.02 = phi i32 [ 2, %entry ], [ %inc3, %for.inc ]
+  %acc.01 = phi i32 [ 1, %entry ], [ %acc.1, %for.inc ]
+  %rem1 = and i32 %arg_1.addr.03, 1
+  %tobool = icmp eq i32 %rem1, 0
+  br i1 %tobool, label %if.else, label %if.then
+
+if.then:                                          ; preds = %for.body
+  %0 = zext i32 %i.02 to i64
+  %arrayidx = getelementptr inbounds i32, i32* %A, i64 %0
+  %1 = load i32, i32* %arrayidx, align 4
+  %mul = mul nsw i32 %acc.01, %1
+  br label %for.inc
+
+if.else:                                          ; preds = %for.body
+  %sub = add nsw i32 %i.02, -1
+  %idxprom1 = sext i32 %sub to i64
+  %arrayidx2 = getelementptr inbounds i32, i32* %A, i64 %idxprom1
+  %2 = load i32, i32* %arrayidx2, align 4
+  %add = add nsw i32 %acc.01, %2
+  %inc = add nsw i32 %arg_1.addr.03, 1
+  br label %for.inc
+
+for.inc:                                          ; preds = %if.else, %if.then
+  %acc.1 = phi i32 [ %mul, %if.then ], [ %add, %if.else ]
+  %arg_1.addr.1 = phi i32 [ %arg_1.addr.03, %if.then ], [ %inc, %if.else ]
+  %inc3 = add nuw nsw i32 %i.02, 1
+  %cmp = icmp ult i32 %inc3, 10
   br i1 %cmp, label %for.body, label %for.end
 
-for.end:                                          ; preds = %for.body
-  ret i32 %mul
+for.end:                                          ; preds = %for.inc
+  ret i32 %acc.1
 }
 
 ; Function Attrs: noinline norecurse nounwind uwtable
 define i32 @main() #1 {
 entry:
+  %A = alloca [10 x i32], align 16
   br label %for.body
 
 for.body:                                         ; preds = %for.body, %entry
-  %i.01 = phi i32 [ 0, %entry ], [ %inc, %for.body ]
-  %add = add nuw nsw i32 %i.01, 1
-  %call = call i32 @_Z3firi(i32 %add)
-  %inc = add nuw nsw i32 %i.01, 1
-  %cmp = icmp ult i32 %inc, 5
+  %j.02 = phi i32 [ 0, %entry ], [ %inc, %for.body ]
+  %0 = zext i32 %j.02 to i64
+  %arrayidx = getelementptr inbounds [10 x i32], [10 x i32]* %A, i64 0, i64 %0
+  store i32 %j.02, i32* %arrayidx, align 4
+  %inc = add nuw nsw i32 %j.02, 1
+  %cmp = icmp ult i32 %inc, 10
   br i1 %cmp, label %for.body, label %for.end
 
 for.end:                                          ; preds = %for.body
+  br label %for.body3
+
+for.body3:                                        ; preds = %for.body3, %for.end
+  %i.01 = phi i32 [ 0, %for.end ], [ %inc5, %for.body3 ]
+  %arraydecay = getelementptr inbounds [10 x i32], [10 x i32]* %A, i64 0, i64 0
+  %call = call i32 @_Z3firiPi(i32 %i.01, i32* nonnull %arraydecay)
+  %inc5 = add nuw nsw i32 %i.01, 1
+  %cmp2 = icmp ult i32 %inc5, 10
+  br i1 %cmp2, label %for.body3, label %for.end6
+
+for.end6:                                         ; preds = %for.body3
   ret i32 0
 }
 

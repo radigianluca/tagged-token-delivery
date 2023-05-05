@@ -77,7 +77,7 @@ namespace hls_verify {
             "begin\n"
             "   if (tb_rst = '1') then\n"
             "       tb_temp_idle <= '1';\n"
-            "   elsif rising_edge(tb_clk) then\n"
+            "   else\n"
             "       tb_temp_idle <= tb_end_valid;\n"
             "   end if;\n"
             "end process generate_idle_signal;\n"
@@ -632,6 +632,7 @@ namespace hls_verify {
             if (!m.isArray && p.is_input) {
                 duvPortMap.emplace_back(get_valid_in_port_name_for_cParam(p.parameter_name), "tb_arg_valid"); //modified for arg_valid decoupling
                 duvPortMap.emplace_back(get_data_inSA_port_name_for_cParam(p.parameter_name), m.dOut0SignalName);
+                duvPortMap.push_back(pair<string, string>(get_ready_out_port_name_for_cParam(p.parameter_name), "tb_arg_ready"));
             }
 
             if (!m.isArray && p.is_output && p.is_return) {
@@ -657,7 +658,6 @@ namespace hls_verify {
         duvPortMap.push_back(pair<string, string>("start_ready", "tb_start_ready"));
         duvPortMap.push_back(pair<string, string>("start_valid", "(tb_start_valid and tb_start_ready)"));
         //new mapping for decoupled start and arg valid
-        duvPortMap.push_back(pair<string, string>("arg_1_ready_out", "tb_arg_ready"));
 
         stringstream code;
         code << "duv: \t entity work." << duvName << endl;
