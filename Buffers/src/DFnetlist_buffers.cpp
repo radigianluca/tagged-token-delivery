@@ -1429,6 +1429,36 @@ bool DFnetlist_Impl::createThroughputConstraints_sc(Milp_Model &milp, milpVarsEB
     double frac = 0.5;
     for (auto sub_mg: components[mg]) {
         int th_mg = Vars.th_MG[sub_mg]; // Throughput of the marked graph.
+        
+        // Special treatment for pipelined units
+
+        //gian 23.05.2023
+        int latency = 0;
+        int count_pip = 0;
+
+        for (blockID b: MG[sub_mg].getBlocks()) {
+
+            double lat = getLatency(b);
+            if (lat == 0) continue;
+
+            //gian 23.05.2023
+            latency += lat;
+            count_pip++;
+
+            int in_ret_tok = Vars.in_retime_tokens[sub_mg][b];
+            int out_ret_tok = Vars.out_retime_tokens[sub_mg][b];
+
+            double maxTokens = lat/getInitiationInterval(b);
+            // rout_tok-rin_tok <= Lat/II
+            milp.newRow( {{1, out_ret_tok}, {-1, in_ret_tok}}, '<', maxTokens);
+            // Th*Lat <= rout-rin:   rout-rin-Th*lat >= 0
+            milp.newRow( {{1, out_ret_tok}, {-1, in_ret_tok}, {-lat, th_mg}}, '>', 0);
+        }
+
+        //gian 23.05.2023
+        cout << "Gian: total latency is " << latency << " and target N is " << latency/count_pip <<  "\n\n";
+
+
         for (channelID c: MG[sub_mg].getChannels()) {
 
             // Ignore select input channel which is less frequently executed
@@ -1463,7 +1493,13 @@ bool DFnetlist_Impl::createThroughputConstraints_sc(Milp_Model &milp, milpVarsEB
             // Initial token
             int token = isBackEdge(c) ? 1 : 0;
             // Token + ret_dst - ret_src = Th_channel
-            milp.newRow( {{-1, ret_dst_tok}, {1, ret_src_tok}, {1, th_tok}}, '=', token);
+
+            //gian 23.05.2023
+            //int N = (latency/count_pip);
+            //if(N == 0)
+            //    N = 1;
+
+            milp.newRow( {{-1, ret_dst_tok}, {1, ret_src_tok}, {1, th_tok}}, '=', 1*token);
             //milp.newRow( {{-1, ret_dst_bub}, {1, ret_src_bub}, {1, th_bub}}, '=', token);
             // Th_channel >= Th - 1 + flop
             milp.newRow( {{1, th_mg}, {1, hasFlop}, {-1, th_tok}}, '<', 1);
@@ -1472,24 +1508,8 @@ bool DFnetlist_Impl::createThroughputConstraints_sc(Milp_Model &milp, milpVarsEB
             //milp.newRow( {{1,Slots}, {-1,th_tok}, {-1,th_bub}}, '>', 0);
             //milp.newRow( {{1,Slots}, {-2,th_tok}}, '>', 0);
             //milp.newRow( {{1,Slots}, {-1,th_tok}}, '>', 0);
-            milp.newRow( {{1, th_tok}, {1, th_mg}, {1, hasFlop}, {-1, Slots}}, '<', 1);
-            milp.newRow( {{1, th_tok}, {-1, Slots}}, '<', 0);
-        }
-
-        //continue;
-        // Special treatment for pipelined units
-        for (blockID b: MG[sub_mg].getBlocks()) {
-
-            double lat = getLatency(b);
-            if (lat == 0) continue;
-            int in_ret_tok = Vars.in_retime_tokens[sub_mg][b];
-            int out_ret_tok = Vars.out_retime_tokens[sub_mg][b];
-
-            double maxTokens = lat/getInitiationInterval(b);
-            // rout_tok-rin_tok <= Lat/II
-            milp.newRow( {{1, out_ret_tok}, {-1, in_ret_tok}}, '<', maxTokens);
-            // Th*Lat <= rout-rin:   rout-rin-Th*lat >= 0
-            milp.newRow( {{1, out_ret_tok}, {-1, in_ret_tok}, {-lat, th_mg}}, '>', 0);
+            milp.newRow( {{1, th_tok}, {1, th_mg}, {1, hasFlop}, {-1, Slots}}, '<', 1); //it was 1 (maybe 2)
+            milp.newRow( {{1, th_tok}, {-1, Slots}}, '<', 0); //it was 0 
         }
 
         if (first_MG) break;

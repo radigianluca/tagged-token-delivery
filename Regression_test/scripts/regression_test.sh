@@ -29,13 +29,13 @@ testcase=$1
 
 echo "****Executing test case $testcase ****" >> $workingdir/$report_file
 #Wo optimization
-sh scripts/execute.sh $testcase $workingdir/$report >> $workingdir/$report_file
-sh scripts/check.sh $testcase $workingdir/$report >> $workingdir/$report_file
+#sh scripts/execute.sh $testcase $workingdir/$report >> $workingdir/$report_file
+#sh scripts/check.sh $testcase $workingdir/$report >> $workingdir/$report_file
 
 #echo "****Executing test case $testcase optimized ****" >> $report_file
 #With optimization
-#sh scripts/execute.sh $testcase $workingdir/$report optimized >> $report_file
-#sh scripts/check.sh $testcase $workingdir/$report optimized >> $report_file
+sh scripts/execute.sh $testcase $workingdir/$report optimized >> $report_file
+sh scripts/check.sh $testcase $workingdir/$report optimized >> $report_file
 
 #report "Execution" $result
 

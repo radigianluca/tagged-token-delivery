@@ -799,7 +799,9 @@ typedef int in_int_t;
 typedef int inout_int_t;
 
 
-int fir (in_int_t arg_1, inout_int_t A[10]);
+
+
+int fir (in_int_t arg_1);
 # 3 "../C_SRC/fir.cpp.tmp.c" 2
 
 
@@ -1880,7 +1882,6 @@ extern int getloadavg (double __loadavg[], int __nelem)
 # 1026 "/usr/include/stdlib.h" 3 4
 
 # 10 "../C_SRC/fir.cpp.tmp.c" 2
-
 
 
 # 1 "/usr/include/unistd.h" 1 3 4
@@ -3100,7 +3101,7 @@ int getentropy (void *__buffer, size_t __length) ;
 
 
 
-# 14 "../C_SRC/fir.cpp.tmp.c" 2
+# 13 "../C_SRC/fir.cpp.tmp.c" 2
 # 1 "/usr/include/string.h" 1 3 4
 # 26 "/usr/include/string.h" 3 4
 # 1 "/usr/include/x86_64-linux-gnu/bits/libc-header-start.h" 1 3 4
@@ -3380,7 +3381,7 @@ extern char *stpncpy (char *__restrict __dest,
      __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1, 2)));
 # 498 "/usr/include/string.h" 3 4
 
-# 15 "../C_SRC/fir.cpp.tmp.c" 2
+# 14 "../C_SRC/fir.cpp.tmp.c" 2
 # 1 "/usr/include/math.h" 1 3 4
 # 27 "/usr/include/math.h" 3 4
 # 1 "/usr/include/x86_64-linux-gnu/bits/libc-header-start.h" 1 3 4
@@ -4268,26 +4269,20 @@ enum
   };
 # 1263 "/usr/include/math.h" 3 4
 
-# 16 "../C_SRC/fir.cpp.tmp.c" 2
+# 15 "../C_SRC/fir.cpp.tmp.c" 2
+# 45 "../C_SRC/fir.cpp.tmp.c"
 
-
-
-
-# 19 "../C_SRC/fir.cpp.tmp.c"
+# 45 "../C_SRC/fir.cpp.tmp.c"
 
 int hlsv_transaction_id = -1;
 
-int fir(in_int_t arg_1, inout_int_t A[10]) {
+int fir(in_int_t arg_1) {
 
 	int hlsv_return;
 	FILE * hlsv_of_return;
 	FILE * hlsv_if_arg_1;
-	FILE * hlsv_if_A;
-	FILE * hlsv_of_A;
 
 	int hlsv_i = 0;
-
-	int hlsv_i0 = 0;
 
 	hlsv_transaction_id++;
 
@@ -4297,37 +4292,19 @@ int fir(in_int_t arg_1, inout_int_t A[10]) {
 	fprintf(hlsv_if_arg_1, "[[/transaction]]\n");
 	fclose(hlsv_if_arg_1);
 
-	hlsv_if_A = fopen("../INPUT_VECTORS/input_A.dat", "a");
-	fprintf(hlsv_if_A, "[[transaction]] %d\n", hlsv_transaction_id);
-	for(hlsv_i0 = 0; hlsv_i0 < 10; hlsv_i0++){
-			fprintf(hlsv_if_A, "0x%08llx\n", (long long)A[hlsv_i0]);
-		}
-	fprintf(hlsv_if_A, "[[/transaction]]\n");
-	fclose(hlsv_if_A);
 
 
- int acc = 1;
- for(int i = 2; i < 10;i++) {
-  if(arg_1 % 2) {
-   acc *= A[i];
-  } else {
-   acc += A[i-1];
-   arg_1++;
-  }
+ int acc = 5;
+ for(int i = 0; i < 3; i++) {
+
+
+
+   arg_1 *= 5;
+
  }
-
-
     
 	{
-		hlsv_of_A = fopen("../C_OUT/output_A.dat", "a");
-		fprintf(hlsv_of_A, "[[transaction]] %d\n", hlsv_transaction_id);
-	for(hlsv_i0 = 0; hlsv_i0 < 10; hlsv_i0++){
-			fprintf(hlsv_of_A, "0x%08llx\n", (long long)A[hlsv_i0]);
-		}
-		fprintf(hlsv_of_A, "[[/transaction]]\n");
-		fclose(hlsv_of_A);
-
-		hlsv_return =  acc;
+		hlsv_return =  arg_1;
 		hlsv_of_return = fopen("../C_OUT/output_end.dat", "a");
 		fprintf(hlsv_of_return, "[[transaction]] %d\n", hlsv_transaction_id);
 		fprintf(hlsv_of_return, "0x%08llx\n", (long long)hlsv_return);
@@ -4340,12 +4317,8 @@ int fir(in_int_t arg_1, inout_int_t A[10]) {
 }
 
 int main() {
- int A[10];
- for(int j = 0; j < 10; j++) {
-   A[j] = j;
-  }
 
-    for(int i = 0; i < 10; ++i){
-      fir(i, A);
+    for(int i = 0; i < 1; ++i){
+      fir(i);
     }
 }

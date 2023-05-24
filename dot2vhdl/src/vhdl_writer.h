@@ -55,7 +55,7 @@
 #define ENTITY_SOURCE           "source"
 #define ENTITY_SINK             "sink"
 #define ENTITY_MUX              "Mux"
-#define ENTITY_LOOPMUX          "gian_mux_fifo" // "LoopMux"  // Aya: 28/02/2023  // 04/04/2023: changed it gian_mux to print the name of Gianluca's MUX
+#define ENTITY_LOOPMUX          "LoopMux" // "LoopMux"  // Aya: 28/02/2023  // 04/04/2023: changed it gian_mux to print the name of Gianluca's MUX
 #define ENTITY_CTRLMERGE        "CntrlMerge"
 #define ENTITY_LSQ              "LSQ"
 #define ENTITY_MC               "MemCont"

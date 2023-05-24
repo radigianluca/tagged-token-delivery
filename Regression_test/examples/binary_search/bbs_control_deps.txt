@@ -14,15 +14,20 @@ Has no control dependencies!!
 
 ****************************************
 	BB3:
-Has no control dependencies!!
+2,
 
 
 ****************************************
 	BB4:
-Has no control dependencies!!
+2,
 
 
 ****************************************
 	BB5:
+Has no control dependencies!!
+
+
+****************************************
+	BB6:
 Has no control dependencies!!
 

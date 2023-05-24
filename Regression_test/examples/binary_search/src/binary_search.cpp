@@ -12,10 +12,10 @@
 #include <string.h>
 #include <math.h>
 
-#define AMOUNT_OF_TEST 1
+#define AMOUNT_OF_TEST 10
 
-int binary_search (in_int_t searchVal, in_int_t A[N]) {
-	int idx_1 = -1;
+int binary_search (in_int_t arg_1, in_int_t A[N]) {
+	/*int idx_1 = -1;
 	int idx_2 = -1;
 
 	for(int i = 0; i < N; i+=2) {
@@ -38,7 +38,17 @@ int binary_search (in_int_t searchVal, in_int_t A[N]) {
 	else if(idx_2 != -1)
 		done = idx_2;
 
-	return done;
+	return done;*/
+
+	for(int i = 0; i < 5; i++)
+	{
+		if(A[arg_1] % 2)
+			arg_1 *= A[i+1];
+		else
+			arg_1 += A[i];
+	}
+
+	return arg_1;
 
 	//return idx;
 	/*int pos = 0;
@@ -72,7 +82,8 @@ int main(void){
 		A[i] = i;
 	} 
 	
-	binary_search(55, A);
+	for(int i = 0; i  < AMOUNT_OF_TEST; i++)
+		binary_search(i, A);
 }
 
 

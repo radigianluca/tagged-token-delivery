@@ -9,25 +9,25 @@ z2
 cModel Technology
 Z0 d/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/HLS_VERIFY
 Eadd_op
-Z1 w1683209474
+Z1 w1684927654
 Z2 DPx4 work 11 customtypes 0 22 F9ddRNTaMg=P:2Nd>7d0G0
 Z3 DPx4 ieee 11 numeric_std 0 22 :ASDNFgHXf_ih3J@9F3Ze1
 Z4 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
 Z5 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
 R0
-Z6 8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/arithmetic_units.vhd
-Z7 F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/arithmetic_units.vhd
+Z6 8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/arithmetic_units.vhd
+Z7 F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/arithmetic_units.vhd
 l0
 L53
 VWJz1_TYD;XZ4:Q^CXVQoP2
 !s100 RgT7didEbzBH6ISb?o0HX1
 Z8 OV;C;10.5b;63
 33
-Z9 !s110 1683209616
+Z9 !s110 1684927659
 !i10b 1
-Z10 !s108 1683209616.000000
-Z11 !s90 -reportprogress|300|-work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/arithmetic_units.vhd|
-Z12 !s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/arithmetic_units.vhd|
+Z10 !s108 1684927659.000000
+Z11 !s90 -work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/arithmetic_units.vhd|
+Z12 !s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/arithmetic_units.vhd|
 !i113 1
 Z13 o-work work -2008 -explicit
 Z14 tExplicit 1 CvgOpt 0
@@ -81,7 +81,7 @@ R2
 R3
 R4
 R5
-Z17 DEx4 work 6 and_op 0 22 TAWkC_Uc?OCok]B[IAeIi0
+DEx4 work 6 and_op 0 22 TAWkC_Uc?OCok]B[IAeIi0
 l158
 L154
 VKA4AWohKHP9h8@PSj:]KJ2
@@ -102,19 +102,19 @@ R2
 R4
 R5
 R0
-Z18 8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/elastic_components.vhd
-Z19 F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/elastic_components.vhd
+Z17 8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/elastic_components.vhd
+Z18 F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/elastic_components.vhd
 l0
 L18
 VQHkkolX_G2]RX30ABaHmb3
 !s100 mCB9VRa19ESm<gmkRm7X?0
 R8
 33
-Z20 !s110 1683209617
+Z19 !s110 1684927658
 !i10b 1
-R10
-Z21 !s90 -reportprogress|300|-work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/elastic_components.vhd|
-Z22 !s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/elastic_components.vhd|
+Z20 !s108 1684927658.000000
+Z21 !s90 -work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/elastic_components.vhd|
+Z22 !s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/elastic_components.vhd|
 !i113 1
 R13
 R14
@@ -129,9 +129,9 @@ VBCK^4z`S_Gn[F7Vb[AbV[3
 !s100 ]gGLdG:ljSEIh8ldi>@LE3
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -229,17 +229,17 @@ R3
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L1208
 VN:7U9YSAl`PHl^E2Sz<2i0
 !s100 8;7P`OOY1V2Al]UUoKm>n3
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -257,9 +257,9 @@ VDdg;HI6Bead=:if<EllnQ1
 !s100 ?;mfWCCBWcVKjI7McV6UP2
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -271,17 +271,17 @@ R2
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L575
 VO3Dk5EUU>7L6fFdgZ4`Uc0
 !s100 Tf31c5972o:MFlXGzgYfJ2
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -300,9 +300,9 @@ VcUYS038[nB>M3H]IVB@8]0
 !s100 6H@<T6:TD6Z5Cb]0T6^g@2
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -315,19 +315,19 @@ R5
 R4
 R3
 R0
-Z28 8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/sharing_components.vhd
-Z29 F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/sharing_components.vhd
+Z28 8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/sharing_components.vhd
+Z29 F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/sharing_components.vhd
 l0
 L8
 Vn1Ul4k;1GYBBgm[1OmAQ[1
 !s100 0`6`oKe^:@hV>Gz5MJ4=H1
 R8
 33
-R20
+Z30 !s110 1684927660
 !i10b 1
-Z30 !s108 1683209617.000000
-Z31 !s90 -reportprogress|300|-work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/sharing_components.vhd|
-Z32 !s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/sharing_components.vhd|
+R10
+Z31 !s90 -work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/sharing_components.vhd|
+Z32 !s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/sharing_components.vhd|
 !i113 1
 R13
 R14
@@ -344,9 +344,9 @@ VfS2YnV4Lade:EY7D6ePmg1
 !s100 A;X]1leKfDAQ;RlPmo3iW0
 R8
 33
-R20
-!i10b 1
 R30
+!i10b 1
+R10
 R31
 R32
 !i113 1
@@ -357,17 +357,17 @@ R1
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L546
 V_i<LHBc<V7o7MNHhB0K>82
 !s100 Z:6_D7THa>CR;QnOXZzn>2
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -383,9 +383,9 @@ Vj[LgnmcHI8<dFF8hF7;^>2
 !s100 4iZPTf@Xl[Z?f:BQc]fAf1
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -398,17 +398,17 @@ R3
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L358
 VcGXlc0;zgh07`O>]eX27>0
 !s100 i@gXjnz7XWO^f5J<USkbz0
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -426,9 +426,9 @@ VTRQ^jM^aVf87c7RgUFXEd0
 !s100 VOaD5AQnY=3TG3bGnTBDU1
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -449,9 +449,9 @@ VL;aeB;J7Zg92Fz>hM72z<3
 !s100 TmNZJAIPhWCf@dFYi]PI70
 R8
 33
-R20
-!i10b 1
 R30
+!i10b 1
+R10
 R31
 R32
 !i113 1
@@ -470,9 +470,9 @@ VjKNTzE46E5Si[A8d@Z8Qz3
 !s100 X;<LEEW0_RHTh<R2Vm>gX1
 R8
 33
-R20
-!i10b 1
 R30
+!i10b 1
+R10
 R31
 R32
 !i113 1
@@ -527,17 +527,17 @@ R2
 R4
 R5
 R0
+R17
 R18
-R19
 l0
-L3082
-V3M04PFgcMRT^[nbOel^W03
-!s100 g3J^YY@N9PQPQN39NCR0H1
+L3289
+V2DTd]i;JZLK6Qnn5HS9;42
+!s100 eCjh;<;zez;IkjnVdl?Kf0
 R8
 33
-R20
+R9
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -551,16 +551,16 @@ Z38 DEx4 work 12 merge_notehb 0 22 BJRWa^>N9GXGc7@=TX=Ia1
 R2
 R4
 R5
-DEx4 work 10 cntrlmerge 0 22 3M04PFgcMRT^[nbOel^W03
-l3108
-L3095
-VcSPn3W@<LVLU9dBBO;EeI1
-!s100 XKL9X9>UTXE9?A;gz0D:73
+DEx4 work 10 cntrlmerge 0 22 2DTd]i;JZLK6Qnn5HS9;42
+l3315
+L3302
+VAmDT`m6cd93WY1@E0kL`L3
+!s100 AM_GM:l>c^X]Ie4Z2YRic1
 R8
 33
-R20
+R9
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -573,17 +573,17 @@ R3
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L1773
 V<?Nk=>CeTKJaHZPHZ3hSl3
 !s100 ZFZa]6ZbkD5;XJNkzEZeT2
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -601,9 +601,9 @@ Vi;dln2UH9Cmf<TfB7:`gi2
 !s100 g:h`DISoF=d47m4GY1XVK2
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -653,96 +653,6 @@ R12
 !i113 1
 R13
 R14
-Ecordic
-R1
-R2
-R3
-R4
-R5
-R0
-Z40 8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/cordic.vhd
-Z41 F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/cordic.vhd
-l0
-L11
-VFcJXdEXUJ6NN=RSY30dk93
-!s100 M=aR@b8Io05UIHe667]<E3
-R8
-33
-R9
-!i10b 1
-R10
-Z42 !s90 -reportprogress|300|-work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/cordic.vhd|
-Z43 !s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/cordic.vhd|
-!i113 1
-R13
-R14
-Abehavioral
-Z44 DEx4 work 13 elasticbuffer 0 22 liiDIK^?Y9Mg=DaYcC=Wa1
-Z45 DEx4 work 8 end_node 0 22 4en9Anb2@Ffo?T69m]LNj3
-Z46 DEx4 work 4 sink 0 22 VJKDnYI?khDgNRU@0kUPn0
-Z47 DEx4 work 7 memcont 0 22 ^0f>C[z_zZcnYZGJhj7GI0
-Z48 DEx4 work 6 ret_op 0 22 DaY_@6heB<>eD`T_1A0ed3
-Z49 DEx4 work 5 synch 0 22 bofaX;;onHVCmkXMB:g3=0
-R27
-Z50 DEx4 work 6 source 0 22 m=bjO=@RMA8<ki>>:=Cdo3
-Z51 DEx4 work 11 icmp_ult_op 0 22 F^h=^987FilCnN=PVa7Pe3
-R16
-Z52 DEx4 work 10 mc_load_op 0 22 Ro?Ja;gUg9PRmefiz_?bj1
-Z53 DEx4 work 7 fadd_op 0 22 ie^IU8ia4ha4J@K1T]T4f1
-Z54 DEx4 work 7 fsub_op 0 22 dWA@CXUoORGmC<dciBa>H2
-Z55 DEx4 work 7 fmul_op 0 22 LN`EJ7nfUWOkfk?iMaU9k2
-Z56 DEx4 work 9 select_op 0 22 jX2h252Sm9@3192^a>2d?3
-Z57 DEx4 work 11 fcmp_olt_op 0 22 ;NnORglaa9IjR5e7=RO9X3
-Z58 DPx4 ieee 9 math_real 0 22 Sk6CSihbPL<f[^Shm]=KX0
-Z59 DEx4 work 13 gian_mux_fifo 0 22 <V@UX4^@JA9NEl55Yh7?J0
-R36
-R39
-Z60 DEx4 work 10 start_node 0 22 SWZbX@^OOMAB>`Ta39]>81
-R2
-R3
-R4
-R5
-DEx4 work 6 cordic 0 22 FcJXdEXUJ6NN=RSY30dk93
-l798
-L42
-V5Q8K1XUk0iY:=TMf[lo>A1
-!s100 VJNWAN`k>jf5[QKUZeWY33
-R8
-33
-R9
-!i10b 1
-R10
-R42
-R43
-!i113 1
-R13
-R14
-Ecordic_tb
-R1
-Z61 DPx4 work 11 sim_package 0 22 O803A0o]4RmS^UYZ]TCeU2
-R3
-Z62 DPx4 ieee 16 std_logic_textio 0 22 V5TSK`;aJKC<l]CEg1>mz1
-Z63 DPx4 ieee 18 std_logic_unsigned 0 22 ;eZjO2D4ZDz<]0>8AL<ne1
-Z64 DPx4 ieee 15 std_logic_arith 0 22 [G314=:2zXJ`VORJe1J@Z1
-R4
-R5
-R0
-8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/hls_verify_cordic_tb.vhd
-F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/hls_verify_cordic_tb.vhd
-l0
-L13
-Vo<Zfh8WAX`QWjPV1mN2K=1
-!s100 J>@AoR:lYE7P6Z7_COWET3
-R8
-33
-R20
-!i10b 1
-R30
-!s90 -reportprogress|300|-work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/hls_verify_cordic_tb.vhd|
-!s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/hls_verify_cordic_tb.vhd|
-!i113 1
-R13
-R14
 Ecosf_op
 R1
 R2
@@ -788,23 +698,23 @@ R13
 R14
 Ecurr_gian_mux
 R1
-R58
+Z40 DPx4 ieee 9 math_real 0 22 Sk6CSihbPL<f[^Shm]=KX0
 R3
 R2
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L2203
 VM[8AN_==NQdR6[;VQ:S<@3
 !s100 0MfGS3Sz<T;6D80@z1eT91
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -812,7 +722,7 @@ R13
 R14
 Aarch
 R37
-R58
+R40
 R3
 R2
 R4
@@ -824,9 +734,9 @@ VYWznK4==>L=Hf]Cb6XD5b0
 !s100 12?3WadN:FY?WR2n7mLn90
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -837,17 +747,17 @@ R4
 R5
 R1
 R0
+R17
 R18
-R19
 l0
 L4
 VF9ddRNTaMg=P:2Nd>7d0G0
 !s100 UPnn8B79Ah9OfcfW1l8Mc0
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -859,19 +769,19 @@ R3
 R4
 R5
 R0
-Z65 8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/delay_buffer.vhd
-Z66 F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/delay_buffer.vhd
+Z41 8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/delay_buffer.vhd
+Z42 F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/delay_buffer.vhd
 l0
 L5
 V]2RTiYhB_JJnW`c:3OCZ92
 !s100 `hk2mzCQc<]IlDWQ;o01j3
 R8
 33
-R9
+R19
 !i10b 1
-R10
-Z67 !s90 -reportprogress|300|-work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/delay_buffer.vhd|
-Z68 !s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/delay_buffer.vhd|
+R20
+Z43 !s90 -work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/delay_buffer.vhd|
+Z44 !s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/delay_buffer.vhd|
 !i113 1
 R13
 R14
@@ -879,18 +789,18 @@ Aarch
 R3
 R4
 R5
-Z69 DEx4 work 12 delay_buffer 0 22 ]2RTiYhB_JJnW`c:3OCZ92
+Z45 DEx4 work 12 delay_buffer 0 22 ]2RTiYhB_JJnW`c:3OCZ92
 l21
 L16
 Vg>zCg_OO9^nCAO7b2WZA[3
 !s100 i[fQJM<>oGS=Oo:0?<n423
 R8
 33
-R9
+R19
 !i10b 1
-R10
-R67
-R68
+R20
+R43
+R44
 !i113 1
 R13
 R14
@@ -909,9 +819,9 @@ V>ZB^W7l^2bOo?X05;`GOL2
 !s100 JOk?chboYP?2=8jnQEU>]2
 R8
 33
-R20
-!i10b 1
 R30
+!i10b 1
+R10
 R31
 R32
 !i113 1
@@ -931,9 +841,9 @@ VD?Fj]OmC[JlOK0W?R=L0X2
 !s100 zJ^c2X<1Kd2[gFATl<a<71
 R8
 33
-R20
-!i10b 1
 R30
+!i10b 1
+R10
 R31
 R32
 !i113 1
@@ -944,17 +854,17 @@ R1
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L856
 V@DogzBNjGJ;z]QXGDTagB2
 !s100 8jz5aNH0P8HGiES^Y?Rlk1
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -963,16 +873,16 @@ R14
 Aarch
 R4
 R5
-Z70 DEx4 work 23 eagerfork_registerblock 0 22 @DogzBNjGJ;z]QXGDTagB2
+Z46 DEx4 work 23 eagerfork_registerblock 0 22 @DogzBNjGJ;z]QXGDTagB2
 l865
 L863
 VRdOXKDXMN@aQECF?]@?eo0
 !s100 [^B3[K0I74Ka4@zODS?On3
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -985,39 +895,39 @@ R3
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L291
 VliiDIK^?Y9Mg=DaYcC=Wa1
 !s100 J?B1MN`8I2OL3CXo`lomi1
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
 R13
 R14
 Aarch
-Z71 DEx4 work 4 oehb 0 22 `cK8?oL2Rb74_f6Ro;gD40
+Z47 DEx4 work 4 oehb 0 22 `cK8?oL2Rb74_f6Ro;gD40
 R37
 R2
 R3
 R4
 R5
-R44
+Z48 DEx4 work 13 elasticbuffer 0 22 liiDIK^?Y9Mg=DaYcC=Wa1
 l314
 L307
 V<cFcc2g3hOO=5IFiN;85W2
 !s100 2LFNCzaOOQUFV7e:3H^_[1
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -1030,19 +940,19 @@ R3
 R4
 R5
 R0
-Z72 8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/MemCont.vhd
-Z73 F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/MemCont.vhd
+Z49 8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/MemCont.vhd
+Z50 F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/MemCont.vhd
 l0
 L531
 VWkeaMPYCTnYIlTZm@o3]a0
 !s100 jC?D?IAYS=3o9aNEK1HE13
 R8
 33
-R20
+R9
 !i10b 1
-R30
-Z74 !s90 -reportprogress|300|-work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/MemCont.vhd|
-Z75 !s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/MemCont.vhd|
+R10
+Z51 !s90 -work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/MemCont.vhd|
+Z52 !s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/MemCont.vhd|
 !i113 1
 R13
 R14
@@ -1058,11 +968,11 @@ VJzPnL]V3@0KjJD@LiPg6k1
 !s100 TE7V2zdd9M^SRe7c?zRHj2
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
@@ -1073,17 +983,17 @@ R3
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L1373
 VQDQ]YkQd=OSCB1[N6H9Z@3
 !s100 <K^=TUK[>[lcKD=8ShEUh0
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -1094,16 +1004,16 @@ R2
 R3
 R4
 R5
-Z76 DEx4 work 16 elasticfifoinner 0 22 QDQ]YkQd=OSCB1[N6H9Z@3
+Z53 DEx4 work 16 elasticfifoinner 0 22 QDQ]YkQd=OSCB1[N6H9Z@3
 l1404
 L1390
 VRTHIngb=L<Vk>?16]bQ;23
 !s100 AC6lP`H[K:_Vi;V7G[V_o2
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -1116,17 +1026,17 @@ R2
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L464
 V4en9Anb2@Ffo?T69m]LNj3
 !s100 lchTBbB@[zDM@i^0>Jh0L0
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -1139,16 +1049,16 @@ R3
 R2
 R4
 R5
-R45
+Z54 DEx4 work 8 end_node 0 22 4en9Anb2@Ffo?T69m]LNj3
 l493
 L485
 VM2=:H4<X1Qel3PTjP1PEL2
 !s100 UNn6H2Q@59cGikdGJJ^mH0
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -1221,7 +1131,7 @@ R12
 R13
 R14
 Aarch
-R69
+R45
 R2
 R3
 R4
@@ -1308,14 +1218,14 @@ R12
 R13
 R14
 Aarch
-R71
-R69
+R47
+R45
 R15
 R2
 R3
 R4
 R5
-R53
+DEx4 work 7 fadd_op 0 22 ie^IU8ia4ha4J@K1T]T4f1
 l1959
 L1933
 VimT=8l^dzz_1<InBkWJ?J2
@@ -1354,7 +1264,7 @@ R12
 R13
 R14
 Aarch
-R69
+R45
 R15
 R2
 R3
@@ -1399,7 +1309,7 @@ R12
 R13
 R14
 Aarch
-R69
+R45
 R15
 R2
 R3
@@ -1444,7 +1354,7 @@ R12
 R13
 R14
 Aarch
-R69
+R45
 R15
 R2
 R3
@@ -1489,7 +1399,7 @@ R12
 R13
 R14
 Aarch
-R69
+R45
 R15
 R2
 R3
@@ -1534,15 +1444,15 @@ R12
 R13
 R14
 Aarch
-R69
+R45
 R15
 R2
 R3
 R4
 R5
-R57
+DEx4 work 11 fcmp_olt_op 0 22 ;NnORglaa9IjR5e7=RO9X3
 l1353
-Z77 L1328
+Z55 L1328
 V;6YaiLTa7Y[FWnCkViE<10
 !s100 nT19LG<9a^0aJHONiU]Xk3
 R8
@@ -1579,7 +1489,7 @@ R12
 R13
 R14
 Aarch
-R69
+R45
 R15
 R2
 R3
@@ -1976,8 +1886,8 @@ R12
 R13
 R14
 Aarch
-R71
-R69
+R47
+R45
 R15
 R2
 R3
@@ -1999,118 +1909,112 @@ R12
 R13
 R14
 Efir
-Z78 w1683209245
+R1
 R2
 R3
 R4
 R5
 R0
-Z79 8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/fir.vhd
-Z80 F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/fir.vhd
+Z56 8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/fir_optimized.vhd
+Z57 F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/fir_optimized.vhd
 l0
 L11
-V1HV4zOjZ46UJz4:La9A:@1
-!s100 OcF=Fic7YLY47;`FaNYY]2
+VA;eC0=Q`^aB]VJ3PN2[^H1
+!s100 RhdeCGz>=Eo9=joJ1<>6z2
 R8
 33
-Z81 !s110 1683209250
+R30
 !i10b 1
-Z82 !s108 1683209250.000000
-Z83 !s90 -work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/fir.vhd|
-Z84 !s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/fir.vhd|
+Z58 !s108 1684927660.000000
+Z59 !s90 -work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/fir_optimized.vhd|
+Z60 !s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/fir_optimized.vhd|
 !i113 1
 R13
 R14
 Abehavioral
-R44
-R45
-R46
-R47
+R54
+Z61 DEx4 work 4 sink 0 22 VJKDnYI?khDgNRU@0kUPn0
+Z62 DEx4 work 6 ret_op 0 22 DaY_@6heB<>eD`T_1A0ed3
 R48
-R51
-Z85 DEx4 work 3 mux 0 22 ZA`l`9>E>;[3ST24F3XJQ0
-R16
-Z86 DEx4 work 6 mul_op 0 22 YJSF6RzVaIZOBMgaiYZ`?1
-R52
-R49
+Z63 DEx4 work 5 merge 0 22 Q6101l0=G9eTC05?_=i0I2
 R27
-R50
-Z87 DEx4 work 10 icmp_eq_op 0 22 Wf:ee=M]SL2f0kag@_8S13
-R17
-R58
-R59
+Z64 DEx4 work 6 source 0 22 m=bjO=@RMA8<ki>>:=Cdo3
+Z65 DEx4 work 11 icmp_ult_op 0 22 F^h=^987FilCnN=PVa7Pe3
+R16
+Z66 DEx4 work 6 mul_op 0 22 YJSF6RzVaIZOBMgaiYZ`?1
+R40
+Z67 DEx4 work 3 mux 0 22 ZA`l`9>E>;[3ST24F3XJQ0
 R36
 R39
-R60
+Z68 DEx4 work 10 start_node 0 22 SWZbX@^OOMAB>`Ta39]>81
 R2
 R3
 R4
 R5
-Z88 DEx4 work 3 fir 0 22 1HV4zOjZ46UJz4:La9A:@1
-l678
-L36
-VMNGZZ5g34D>dE;Mfz30c61
-!s100 6a4n;6L5IBRInh680R8`@1
+Z69 DEx4 work 3 fir 0 22 A;eC0=Q`^aB]VJ3PN2[^H1
+l313
+L26
+Z70 V]aUa:SUC6n?=l<k?zBL0R0
+Z71 !s100 ]U=4L^IYP20UJI9=Y2Y1m2
 R8
 33
-R81
+R30
 !i10b 1
-R82
-R83
-R84
+R58
+R59
+R60
 !i113 1
 R13
 R14
 Efir_tb
-Z89 w1683209246
-R61
+R1
+Z72 DPx4 work 11 sim_package 0 22 O803A0o]4RmS^UYZ]TCeU2
 R3
-R62
-R63
-R64
+Z73 DPx4 ieee 16 std_logic_textio 0 22 V5TSK`;aJKC<l]CEg1>mz1
+Z74 DPx4 ieee 18 std_logic_unsigned 0 22 ;eZjO2D4ZDz<]0>8AL<ne1
+Z75 DPx4 ieee 15 std_logic_arith 0 22 [G314=:2zXJ`VORJe1J@Z1
 R4
 R5
 R0
-Z90 8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/hls_verify_fir_tb.vhd
-Z91 F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/hls_verify_fir_tb.vhd
+Z76 8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/hls_verify_fir_tb.vhd
+Z77 F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/hls_verify_fir_tb.vhd
 l0
 L13
 VdPenVja0UNEQ@kF]@XA9e1
 !s100 jGm]Y1PHlAL0Z_UR23AcO2
 R8
 33
-Z92 !s110 1683209251
+R30
 !i10b 1
-R82
-Z93 !s90 -work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/hls_verify_fir_tb.vhd|
-Z94 !s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/hls_verify_fir_tb.vhd|
+R58
+Z78 !s90 -work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/hls_verify_fir_tb.vhd|
+Z79 !s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/hls_verify_fir_tb.vhd|
 !i113 1
 R13
 R14
 Abehav
-Z95 DEx4 work 12 two_port_ram 0 22 ?zABg:;=Q2B>J8SBaWFO<2
-Z96 DEx4 work 15 single_argument 0 22 OnU1E[61Z<HQBb_W1YDS32
+Z80 DEx4 work 15 single_argument 0 22 OnU1E[61Z<HQBb_W1YDS32
 R2
-R88
-R61
+R69
+R72
 R3
-R62
-R63
-R64
+R73
+R74
+R75
 R4
 R5
 DEx4 work 6 fir_tb 0 22 dPenVja0UNEQ@kF]@XA9e1
-l77
+l60
 L17
-V;CL6O>OA7=e1FZ@_;==^^0
-!s100 z:km^z9?Rd=JiMIgXJUdB2
+V]D_4mgn`FdgkfI93a?J831
+!s100 1DKT^Gi^=^;>ZN>UIKUYO1
 R8
 33
-R92
+R30
 !i10b 1
-R82
-R93
-R94
+R58
+R78
+R79
 !i113 1
 R13
 R14
@@ -2181,7 +2085,7 @@ R12
 R13
 R14
 Aarch
-R69
+R45
 R15
 R2
 R3
@@ -2226,7 +2130,7 @@ R12
 R13
 R14
 Aarch
-R69
+R45
 R15
 R2
 R3
@@ -2271,14 +2175,14 @@ R12
 R13
 R14
 Aarch
-R71
-R69
+R47
+R45
 R15
 R2
 R3
 R4
 R5
-R55
+DEx4 work 7 fmul_op 0 22 LN`EJ7nfUWOkfk?iMaU9k2
 l2142
 L2116
 V?zd:UP9D9ei<LYb4DRSGJ3
@@ -2342,25 +2246,25 @@ R2
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L895
 Vi2f0PXXPYh`kJPo7Nd=9j1
 !s100 flDMRQ>Vz9?daggMGM5N01
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
 R13
 R14
 Aarch
-R70
-Z97 DEx4 work 3 orn 0 22 AW;@e7WDNWKSAP2;Q2lB]2
+R46
+Z81 DEx4 work 3 orn 0 22 AW;@e7WDNWKSAP2;Q2lB]2
 R2
 R4
 R5
@@ -2371,9 +2275,9 @@ V7AaIQDK:f8RX1iSmY3E<E1
 !s100 oMEg`JMC7AgcF3CeEGBzX1
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -2447,14 +2351,14 @@ R12
 R13
 R14
 Aarch
-R71
-R69
+R47
+R45
 R15
 R2
 R3
 R4
 R5
-R54
+DEx4 work 7 fsub_op 0 22 dWA@CXUoORGmC<dciBa>H2
 l2052
 L2026
 V@lC;J=:V[Lj36Yb2L=nMS3
@@ -2500,7 +2404,7 @@ R4
 R5
 DEx4 work 16 getelementptr_op 0 22 F80a@8C5AN>`HlBJS14Ed0
 l1010
-Z98 L1005
+Z82 L1005
 VRgeLOiSiC9JPDaP5J`dSf1
 !s100 CM5God4kS=P6M7E_M4f@M2
 R8
@@ -2520,17 +2424,17 @@ R2
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L623
 VDMf=LzZU_F4:i@o<hg5@00
 !s100 `zaDedd9kbOhc]I]^:E8F1
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -2549,9 +2453,9 @@ V@4B<kG9ocH`l3DRJVQ0mm1
 !s100 R3D3CUMO3LG8ldJdn01kd0
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -2559,23 +2463,23 @@ R13
 R14
 Egian_mux
 R1
-R58
+R40
 R3
 R2
 R4
 R5
 R0
+R17
 R18
-R19
 l0
-L2564
-VX^oWLH[9a3>znLifILXmV3
-!s100 HXI`dBOPhNHOF?EFIHH]Z3
+L2711
+VkBB0:93a?:>hodLn9^F_e1
+!s100 fBocdInPFZ`P8@`24SQRF0
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -2583,45 +2487,45 @@ R13
 R14
 Aarch
 R37
-R58
+R40
 R3
 R2
 R4
 R5
-DEx4 work 8 gian_mux 0 22 X^oWLH[9a3>znLifILXmV3
-l2594
-L2586
-Vf[lIGLZMdVYz>V9DoY1;X3
-!s100 k]bSiQU=LT^S4FoShkSVc1
+DEx4 work 8 gian_mux 0 22 kBB0:93a?:>hodLn9^F_e1
+l2741
+L2733
+VCHIM:f^H[CHea0@bY^@c>1
+!s100 ZA[MmlOZgiaHn1I0RR5Sn0
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
 R13
 R14
-Egian_mux_fifo
+Egian_mux_fifo1
 R1
-R58
+R40
 R3
 R2
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L2432
-V<V@UX4^@JA9NEl55Yh7?J0
-!s100 1IAG:1[jQajP^YcmQJ=;o0
+V^Z91Sk6X^Nzz^7?c887HA3
+!s100 WiQEJD;7DRQ@`NlIA^3Ib2
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -2630,21 +2534,21 @@ R14
 Aarch
 R37
 R34
-R58
+R40
 R3
 R2
 R4
 R5
-R59
+DEx4 work 14 gian_mux_fifo1 0 22 ^Z91Sk6X^Nzz^7?c887HA3
 l2463
 L2453
-V@Vb2C?[770T5eJRW>7LNa2
-!s100 2jidR;@_g`7]WnbK4bKI91
+VC0UUVSJSXdLkhX0[N2Mje0
+!s100 ;B]HooT0aRn7<78MK5fEY0
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -2652,23 +2556,23 @@ R13
 R14
 Egian_mux_tag
 R1
-R58
+R40
 R3
 R2
 R4
 R5
 R0
+R17
 R18
-R19
 l0
-L2714
-VUC`G^ZO?6Ucz_kH;B0K4O0
-!s100 1QYg>L81LlT51LMf;V<XD3
+L2861
+VI_KBeD@3RBZ`NO5h57ZoG2
+!s100 0S5HYOgIJ]QWH@H`nj4gf0
 R8
 33
-R20
+R9
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -2676,21 +2580,21 @@ R13
 R14
 Aarch
 R37
-R58
+R40
 R3
 R2
 R4
 R5
-DEx4 work 12 gian_mux_tag 0 22 UC`G^ZO?6Ucz_kH;B0K4O0
-l2754
-L2743
-VAGOcLlhYLS91NCF;H@JbF0
-!s100 QRhZSU8`BcKMCXlcf>P6e1
+DEx4 work 12 gian_mux_tag 0 22 I_KBeD@3RBZ`NO5h57ZoG2
+l2901
+L2890
+VQVLR6@`K3?Fj?55>h0;IM3
+!s100 I=Q<?iVH=21He0lY6?X=M1
 R8
 33
-R20
+R9
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -2725,7 +2629,7 @@ R2
 R3
 R4
 R5
-R87
+DEx4 work 10 icmp_eq_op 0 22 Wf:ee=M]SL2f0kag@_8S13
 l579
 L573
 V2Dlc8TY:1Wf^Z^HilR13n0
@@ -3121,7 +3025,7 @@ R2
 R3
 R4
 R5
-R51
+R65
 l833
 L827
 VPCHEQL4EfgJBfBOQFnoQV0
@@ -3138,23 +3042,23 @@ R13
 R14
 Einj
 R1
-R58
+R40
 R3
 R2
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L1925
 VD]_SN7d5<5<j^0XXY^hm13
 !s100 a8DP]?>1^DPI2cSQ7:O2`2
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -3162,7 +3066,7 @@ R13
 R14
 Aarch
 R37
-R58
+R40
 R3
 R2
 R4
@@ -3174,9 +3078,9 @@ VXR1DM7A^XZ;VKFUm8RW9>3
 !s100 Qg4b^F_dinQnDFM6Q??T23
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -3184,7 +3088,7 @@ R13
 R14
 Einput_selector
 R1
-Z99 DPx4 work 13 selectortypes 0 22 8I`e`:Q0FZbjMXDkC`7bQ3
+Z83 DPx4 work 13 selectortypes 0 22 8I`e`:Q0FZbjMXDkC`7bQ3
 R2
 R5
 R4
@@ -3198,9 +3102,9 @@ V<SP7VePcfZ@_K:>fdJ`Qe3
 !s100 QJNmQZ>3dlX=S5GL6S7]H1
 R8
 33
-R20
-!i10b 1
 R30
+!i10b 1
+R10
 R31
 R32
 !i113 1
@@ -3208,22 +3112,22 @@ R13
 R14
 Aarch
 R35
-Z100 DEx4 work 13 merge_one_hot 0 22 7fkeZDbjkJ7Te=aih]H]`1
-R99
+Z84 DEx4 work 13 merge_one_hot 0 22 7fkeZDbjkJ7Te=aih]H]`1
+R83
 R2
 R5
 R4
 R3
-Z101 DEx4 work 14 input_selector 0 22 <SP7VePcfZ@_K:>fdJ`Qe3
+Z85 DEx4 work 14 input_selector 0 22 <SP7VePcfZ@_K:>fdJ`Qe3
 l282
 L261
 Vc3VoeJ_[_[E2XB1h_6zP:0
 !s100 IF0bThjZcCgdT5<;[zF`E1
 R8
 33
-R20
-!i10b 1
 R30
+!i10b 1
+R10
 R31
 R32
 !i113 1
@@ -3234,17 +3138,17 @@ R1
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L105
 VFd?NB[gj7Sm<h6LSn]_;M1
 !s100 zH@AWBX`PZGP=n01^hG>50
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -3262,9 +3166,9 @@ VIUgeGI0Bb[NKgH_M<_YTW1
 !s100 eTZb[O=NXBbV?ZTzE<iOO1
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -3277,17 +3181,17 @@ R3
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L424
 Vz8<2`XW9YBd9699jRkcAg0
 !s100 TKQMN6TYDdh_eH]N<FSPo2
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -3306,9 +3210,9 @@ VNCPBFkWMofULm7P9zLQ9`3
 !s100 L<?zSljF]7B<CcP9lU4OR0
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -3320,17 +3224,17 @@ R2
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L961
 VGUg]7XNO]<ziHU_h?lP[S2
 !s100 gXnHm=BLfRmT4FcT>o?S03
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -3348,9 +3252,9 @@ VYk7CZ3HzdGPMkYC::eVEF2
 !s100 D1?9ihk9Qdz9ZEKNNbjKg0
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -3363,24 +3267,24 @@ R3
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L1693
 VI2iYm5Lk^kRYJlG6CMFR>1
 !s100 e0n4lkVPfQgFoR6Ci5oN]3
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
 R13
 R14
 Aarch
-R44
+R48
 R2
 R3
 R4
@@ -3392,9 +3296,9 @@ VU?:NPRjZK2LiDQO?>W`0b1
 !s100 5;=]nUE;Fc^>hZUkZlgN53
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -3429,7 +3333,7 @@ R3
 R4
 R5
 DEx4 work 9 log10f_op 0 22 UA1H7`ao1R8DjzQ6F0[0z2
-Z102 l3202
+l3202
 L3163
 V1D4o2Ph@QzB6KSghD2Pa>3
 !s100 c5_jCojmz_2]NPJV:ao;Z2
@@ -3510,7 +3414,7 @@ R12
 R13
 R14
 Aarch
-R69
+R45
 R2
 R3
 R4
@@ -3532,23 +3436,23 @@ R13
 R14
 Eloopmux
 R1
-R58
+R40
 R3
 R2
 R4
 R5
 R0
+R17
 R18
-R19
 l0
-L2012
-VdQA=T=gK^ZJFH`BQhdMG`1
-!s100 2H4Ho8iiSZVf1z55NEUVG2
+L2564
+V3kfk[M=WG0IG^nXf8<C?`1
+!s100 b^TTOG83WWPo5i[_5fJI^1
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -3556,21 +3460,67 @@ R13
 R14
 Aarch
 R37
-R58
+R40
 R3
 R2
 R4
 R5
-DEx4 work 7 loopmux 0 22 dQA=T=gK^ZJFH`BQhdMG`1
-l2043
-L2033
-VNC854S4meOmfUa07WSDCf3
-!s100 CJYQkR8K@HULUUN^M@JMz1
+DEx4 work 7 loopmux 0 22 3kfk[M=WG0IG^nXf8<C?`1
+l2594
+L2585
+V?NfZ]fOPjA[TKQX><<5z00
+!s100 [ePgRBjURM9<leM>57USP0
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
+R21
+R22
+!i113 1
+R13
+R14
+Eloopmux_aya
+R1
+R40
+R3
+R2
+R4
+R5
+R0
+R17
+R18
+l0
+L2012
+V68TLL8TR<XDSED>PJ2TbS1
+!s100 Td;M:MhRUm8R=CMi@GHe?3
+R8
+33
+R19
+!i10b 1
+R20
+R21
+R22
+!i113 1
+R13
+R14
+Aarch
+R37
+R40
+R3
+R2
+R4
+R5
+DEx4 work 11 loopmux_aya 0 22 68TLL8TR<XDSED>PJ2TbS1
+l2043
+L2033
+V6jAaC;h^JiGc6[BX1iM570
+!s100 FBReVgLUYMX658Y]N<^?E0
+R8
+33
+R19
+!i10b 1
+R20
 R21
 R22
 !i113 1
@@ -3627,17 +3577,17 @@ R3
 R4
 R5
 R0
+R17
 R18
-R19
 l0
-L3180
-Vl4iF>M5aoh:0@b[O4Tc7S3
-!s100 0c=A`dhaCoTROPlTgRzB31
+L3387
+Vm2ZE?M7L6AJcbUfgKHO9G2
+!s100 [Ne?CmHghI4M:b]674mH70
 R8
 33
-R20
+R9
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -3648,16 +3598,16 @@ R2
 R3
 R4
 R5
-DEx4 work 11 lsq_load_op 0 22 l4iF>M5aoh:0@b[O4Tc7S3
-R102
-L3200
-V99i=1l02]59S=SlLUlE]>0
-!s100 dc5R;hjT9D;_gQVDRIObb0
+DEx4 work 11 lsq_load_op 0 22 m2ZE?M7L6AJcbUfgKHO9G2
+l3409
+L3407
+VWej5`bjhXl3ik0nTfmi_T3
+!s100 BH:ZFNeO@Y;lg]73cHNG71
 R8
 33
-R20
+R9
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -3670,17 +3620,17 @@ R3
 R4
 R5
 R0
+R17
 R18
-R19
 l0
-L3225
-VI<MO=]a8DPj0ZJF00mEF:2
-!s100 l_1:5Q>WnZn>O2^IPT32_0
+L3432
+V]k]V2;oEPb0KR<F1STlCQ1
+!s100 8=LG=l]2^<`RPZegAGWKP3
 R8
 33
-R20
+R9
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -3691,16 +3641,16 @@ R2
 R3
 R4
 R5
-DEx4 work 12 lsq_store_op 0 22 I<MO=]a8DPj0ZJF00mEF:2
-l3248
-L3246
-VmdDdH4FZD<]iX5HURmVnI3
-!s100 Q^JHfL]3<cnRTWMEjLNnD3
+DEx4 work 12 lsq_store_op 0 22 ]k]V2;oEPb0KR<F1STlCQ1
+l3455
+L3453
+VZ]Pj_@CYfHTQ`0YiaMRhL0
+!s100 c1l7HWF?ciX7>h^2M`XgH2
 R8
 33
-R20
+R9
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -3713,19 +3663,19 @@ R3
 R4
 R5
 R0
-R72
-R73
+R49
+R50
 l0
 L563
 VRo?Ja;gUg9PRmefiz_?bj1
 !s100 g;DVUQ8]V?=DJQPMo]B4i2
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
@@ -3735,18 +3685,18 @@ R2
 R3
 R4
 R5
-R52
+DEx4 work 10 mc_load_op 0 22 Ro?Ja;gUg9PRmefiz_?bj1
 l608
 L583
 V0F4WJSKkg0@Y2QU;SQX[X1
 !s100 =7L9bA@SV:5A<5i3fPKW<2
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
@@ -3757,19 +3707,19 @@ R3
 R4
 R5
 R0
-R72
-R73
+R49
+R50
 l0
 L665
 VU0=ADDiJ:YcYASC>i1f[n3
 !s100 ^WGoHMV2;JO1leFW:cm1`1
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
@@ -3786,11 +3736,11 @@ Vf>ajN?Bd<:YNjRSR>CG;^0
 !s100 JbnXcXcNMMfMFPc5VZIWi0
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
@@ -3801,41 +3751,41 @@ R3
 R4
 R5
 R0
-R72
-R73
+R49
+R50
 l0
 L715
 V^0f>C[z_zZcnYZGJhj7GI0
 !s100 c_1<Fio6TG^I@D<IA<3Sl0
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
 Aarch
-Z103 DEx4 work 20 write_memory_arbiter 0 22 fH1C4SGdZ_^7^lLX?4k_M2
-Z104 DEx4 work 19 read_memory_arbiter 0 22 chHC0TcL;kHkK4IM2KPOj1
+Z86 DEx4 work 20 write_memory_arbiter 0 22 fH1C4SGdZ_^7^lLX?4k_M2
+Z87 DEx4 work 19 read_memory_arbiter 0 22 chHC0TcL;kHkK4IM2KPOj1
 R2
 R3
 R4
 R5
-R47
+DEx4 work 7 memcont 0 22 ^0f>C[z_zZcnYZGJhj7GI0
 l763
 L753
 VJl=J:]zo0BWo5a4Z4<BIj2
 !s100 2;j^Z`7A]3j:RTXbeP6N=1
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
@@ -3846,17 +3796,17 @@ R2
 R4
 R5
 R0
+R17
 R18
-R19
 l0
-R98
+R82
 VQ6101l0=G9eTC05?_=i0I2
 !s100 07_Cjh@:SW]CLLYfFGi9k3
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -3868,16 +3818,16 @@ R3
 R2
 R4
 R5
-DEx4 work 5 merge 0 22 Q6101l0=G9eTC05?_=i0I2
+R63
 l1028
 L1023
 VVX_80:gX5Lk80:@>ARZ4>1
 !s100 GEaEVMC69M1KhFP]`cQ5V2
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -3890,17 +3840,17 @@ R2
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L1075
 VBJRWa^>N9GXGc7@=TX=Ia1
 !s100 :8>6aQAeY74Q5>gi`97cj1
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -3918,9 +3868,9 @@ VRM[G;=2oWLQabjiccY;IT1
 !s100 QmnB?6Hb7igmKd90ddO]?2
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -3941,9 +3891,9 @@ V7fkeZDbjkJ7Te=aih]H]`1
 !s100 9lI0]]QRaFIhO0]>A:1JO0
 R8
 33
-R20
-!i10b 1
 R30
+!i10b 1
+R10
 R31
 R32
 !i113 1
@@ -3955,16 +3905,16 @@ R3
 R2
 R4
 R5
-R100
+R84
 l75
 L70
 Vj`UO0XK?44LN=B2kVA9b>0
 !s100 jVRZ`>Tl[K>L2TSN3VeaV3
 R8
 33
-R20
-!i10b 1
 R30
+!i10b 1
+R10
 R31
 R32
 !i113 1
@@ -3976,19 +3926,19 @@ R3
 R4
 R5
 R0
-Z105 8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/multipliers.vhd
-Z106 F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/multipliers.vhd
+Z88 8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/multipliers.vhd
+Z89 F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/multipliers.vhd
 l0
 L11
 VW2Af<O1494PjAA7BD6acO0
 !s100 0aV1EX;QkzLH>6;RW6FYl1
 R8
 33
-R20
+R9
 !i10b 1
-R30
-Z107 !s90 -reportprogress|300|-work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/multipliers.vhd|
-Z108 !s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/multipliers.vhd|
+R10
+Z90 !s90 -work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/multipliers.vhd|
+Z91 !s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/multipliers.vhd|
 !i113 1
 R13
 R14
@@ -3996,18 +3946,18 @@ Abehav
 R3
 R4
 R5
-Z109 DEx4 work 11 mul_4_stage 0 22 W2Af<O1494PjAA7BD6acO0
+Z92 DEx4 work 11 mul_4_stage 0 22 W2Af<O1494PjAA7BD6acO0
 l32
 L23
 VzZ6Xd8T`eVgh9MzO_[2B>3
 !s100 QC`oa8R?]RIXLCgEn1[lP3
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R107
-R108
+R10
+R90
+R91
 !i113 1
 R13
 R14
@@ -4017,19 +3967,19 @@ R3
 R4
 R5
 R0
-R105
-R106
+R88
+R89
 l0
 L58
 VNa@lVcPk`kNoi8caSWz;a0
 !s100 0LEdim6CIcm8NW`VUGmnF3
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R107
-R108
+R10
+R90
+R91
 !i113 1
 R13
 R14
@@ -4044,11 +3994,11 @@ VC22A[Ki2a9HLl[4:m:^470
 !s100 E<2n>TdOAdJQKzU8bgZN_2
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R107
-R108
+R10
+R90
+R91
 !i113 1
 R13
 R14
@@ -4059,65 +4009,65 @@ R3
 R4
 R5
 R0
-Z110 8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/mul_wrapper.vhd
-Z111 F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/mul_wrapper.vhd
+Z93 8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/mul_wrapper.vhd
+Z94 F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/mul_wrapper.vhd
 l0
 L11
 VYJSF6RzVaIZOBMgaiYZ`?1
 !s100 >8m1TodBhUmGQbO8A]ZF;3
 R8
 33
-R20
-!i10b 1
 R30
-Z112 !s90 -reportprogress|300|-work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/mul_wrapper.vhd|
-Z113 !s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/mul_wrapper.vhd|
+!i10b 1
+R58
+Z95 !s90 -work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/mul_wrapper.vhd|
+Z96 !s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/mul_wrapper.vhd|
 !i113 1
 R13
 R14
 Aarch
-R71
-R69
-R109
+R47
+R45
+R92
 R15
 R2
 R3
 R4
 R5
-R86
+R66
 l37
 L26
 VTO]^f9klld<75:jVjh7WA3
 !s100 =Wem@VF<C<XDzAJ]lEGUY0
 R8
 33
-R20
-!i10b 1
 R30
-R112
-R113
+!i10b 1
+R58
+R95
+R96
 !i113 1
 R13
 R14
 Emux
 R1
-R58
+R40
 R3
 R2
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L2345
 VZA`l`9>E>;[3ST24F3XJQ0
 !s100 NTQWJX6eM7IJXz_H;_7G=3
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -4125,21 +4075,21 @@ R13
 R14
 Aarch
 R37
-R58
+R40
 R3
 R2
 R4
 R5
-R85
+R67
 l2372
 L2366
 V?C<68_n_S7BgTA8nV_on72
 !s100 IRK`HcX2E3hcIa?YiEX2l1
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -4151,17 +4101,17 @@ R2
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L39
 VfkTV[:o9XdEFLK=HE^z<l0
 !s100 1ZYN?ZAPUn_zYAnFzAHP21
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -4178,9 +4128,9 @@ V?4fUa:W_JhnFL9AQO4aV93
 !s100 O^5PY>D20@B2oT=`?HGLE2
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -4193,24 +4143,24 @@ R3
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L1564
 VkWXF0g5FOF==40>OE^:GT1
 !s100 ^6dO]1Cc<SC_1^7Be]zMh0
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
 R13
 R14
 Aarch
-R76
+R53
 R37
 R2
 R3
@@ -4223,9 +4173,9 @@ VMBdRJ9TahB03VmR7AFWKe0
 !s100 Pg7QzY[=d]S>o2kR3YFOb0
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -4237,17 +4187,17 @@ R2
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L83
 V13IRNMh;mPgg:?0lOf[H70
 !s100 GQNEh1bE6^HQ:ZXPWcIDA2
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -4264,9 +4214,9 @@ VjN[SzkN;^J^I8B^Rz19131
 !s100 6de[H<fg[Wb3<fTMmng@_2
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -4279,17 +4229,17 @@ R3
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L229
 V`cK8?oL2Rb74_f6Ro;gD40
 !s100 :aiBO?am;?O>3SjzHbl?;2
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -4300,16 +4250,58 @@ R2
 R3
 R4
 R5
-R71
+R47
 l249
 L246
 VMoDUYNOCjX@0J@[ozCIb60
 !s100 5dD3FVV1m3j]I_7JGkE`O1
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
+R21
+R22
+!i113 1
+R13
+R14
+Eold_synch
+R1
+R2
+R4
+R5
+R0
+R17
+R18
+l0
+L3231
+V<_MCJV7DWPHk3>Qh5WCTm0
+!s100 _ehOlSAGOj6K244al[h_]1
+R8
+33
+R9
+!i10b 1
+R20
+R21
+R22
+!i113 1
+R13
+R14
+Aarch
+R15
+R2
+R4
+R5
+DEx4 work 9 old_synch 0 22 <_MCJV7DWPHk3>Qh5WCTm0
+l3249
+L3244
+Ve7]3Z<oC8^b_G`SmI=j@F1
+!s100 6Jc4OIco:cChc8f;>4ANQ0
+R8
+33
+R9
+!i10b 1
+R20
 R21
 R22
 !i113 1
@@ -4365,17 +4357,17 @@ R2
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L62
 VAW;@e7WDNWKSAP2;Q2lB]2
 !s100 4E]BX:iQbNoFHNBOhBOz_3
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -4385,16 +4377,16 @@ Avanilla
 R2
 R4
 R5
-R97
+R81
 l70
 L68
 V5Emihg5TEO@Ozz[>n:WU_1
 !s100 YVYZ>WJT?oSm17HFe6`@m2
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -4451,19 +4443,19 @@ R3
 R4
 R5
 R0
-R72
-R73
+R49
+R50
 l0
 L40
 VO1@@AHLXlF6`hVDb=YDP^1
 !s100 UZ;FYKEE2l>DoH]]e=`?52
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
@@ -4472,18 +4464,18 @@ R2
 R3
 R4
 R5
-Z114 DEx4 work 16 read_address_mux 0 22 O1@@AHLXlF6`hVDb=YDP^1
+Z97 DEx4 work 16 read_address_mux 0 22 O1@@AHLXlF6`hVDb=YDP^1
 l54
 L52
 VD:TVYzfE^8H]M4E^EUY0]0
 !s100 c0088@96@WOeoeDDg4_RE0
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
@@ -4494,19 +4486,19 @@ R3
 R4
 R5
 R0
-R72
-R73
+R49
+R50
 l0
 L75
 VoOG?J?_LD<z8WS6>Z9h<72
 !s100 N`HZzeO=:IYPZcPBh1ac>3
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
@@ -4515,18 +4507,18 @@ R2
 R3
 R4
 R5
-Z115 DEx4 work 18 read_address_ready 0 22 oOG?J?_LD<z8WS6>Z9h<72
+Z98 DEx4 work 18 read_address_ready 0 22 oOG?J?_LD<z8WS6>Z9h<72
 l87
 L86
 VmJo_F=ZI:[d[Vi^KnXa3;3
 !s100 ED@h[a6i;JkeYHWMn7=DQ3
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
@@ -4537,19 +4529,19 @@ R3
 R4
 R5
 R0
-R72
-R73
+R49
+R50
 l0
 L100
 V9^2`dk>oKP00]EgYAYj=c1
 !s100 m`Z55cmI_c1`6bi;?;ZRh1
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
@@ -4558,18 +4550,18 @@ R2
 R3
 R4
 R5
-Z116 DEx4 work 17 read_data_signals 0 22 9^2`dk>oKP00]EgYAYj=c1
+Z99 DEx4 work 17 read_data_signals 0 22 9^2`dk>oKP00]EgYAYj=c1
 l119
 L116
 VMJ>3OAEj2C08KZ[SC=CZ;1
 !s100 2^0;f<nX48W1N;@z4BGfT1
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
@@ -4580,43 +4572,43 @@ R3
 R4
 R5
 R0
-R72
-R73
+R49
+R50
 l0
 L177
 VchHC0TcL;kHkK4IM2KPOj1
 !s100 Y<?Pmi?Q8F=@ABNaE6hD>0
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
 Aarch
-R116
-R115
-R114
-Z117 DEx4 work 13 read_priority 0 22 gb0lkTkj;8O618IjTaD7_3
+R99
+R98
+R97
+Z100 DEx4 work 13 read_priority 0 22 gb0lkTkj;8O618IjTaD7_3
 R2
 R3
 R4
 R5
-R104
+R87
 l205
 L202
 VTHToZe<WF6gaZeF6P__aH3
 !s100 1N>S;hldM[VNUZfV8JUI02
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
@@ -4627,19 +4619,19 @@ R3
 R4
 R5
 R0
-R72
-R73
+R49
+R50
 l0
 L6
 Vgb0lkTkj;8O618IjTaD7_3
 !s100 b5^m]POV_10alm6UUJL^E2
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
@@ -4648,18 +4640,18 @@ R2
 R3
 R4
 R5
-R117
+R100
 l19
 L17
 V^N48]m4GN2=oR1C4@M24]0
 !s100 GYKe??gIFSM6:D?JR3M161
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
@@ -4692,7 +4684,7 @@ R2
 R3
 R4
 R5
-R48
+R62
 l26
 L24
 Vlo9elSE^iokgo?e4O_Te[2
@@ -4774,7 +4766,7 @@ R12
 R13
 R14
 Aarch
-R69
+R45
 R15
 R2
 R3
@@ -4824,7 +4816,7 @@ R2
 R3
 R4
 R5
-R56
+DEx4 work 9 select_op 0 22 jX2h252Sm9@3192^a>2d?3
 l526
 L519
 V<ecie65?m:_3nI^CIll<c2
@@ -4841,7 +4833,7 @@ R13
 R14
 Eselector
 R1
-R99
+R83
 R2
 R5
 R4
@@ -4855,20 +4847,20 @@ V?V9J<BnJMkzdbPO_c2moj0
 !s100 l]k<dn@KPUmBViAzIg4g62
 R8
 33
-R20
-!i10b 1
 R30
+!i10b 1
+R10
 R31
 R32
 !i113 1
 R13
 R14
 Aarch
-R58
-R85
+R40
+R67
 R36
-R101
-R99
+R85
+R83
 R2
 R5
 R4
@@ -4880,9 +4872,9 @@ VVBKKfG`f75fm78m13Nf2U0
 !s100 UjMeheS]i6z6NDG;F_Qik1
 R8
 33
-R20
-!i10b 1
 R30
+!i10b 1
+R10
 R31
 R32
 !i113 1
@@ -4901,9 +4893,9 @@ V8I`e`:Q0FZbjMXDkC`7bQ3
 !s100 51RDeMTW7GTbXQLS4d>3E1
 R8
 33
-R20
-!i10b 1
 R30
+!i10b 1
+R10
 R31
 R32
 !i113 1
@@ -4997,16 +4989,16 @@ R12
 R13
 R14
 Psim_package
-R62
-R63
+R73
+R74
 R3
-R64
+R75
 R4
 R5
 R1
 R0
-Z118 8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/simpackage.vhd
-Z119 F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/simpackage.vhd
+Z101 8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/simpackage.vhd
+Z102 F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/simpackage.vhd
 l0
 L9
 VO803A0o]4RmS^UYZ]TCeU2
@@ -5014,20 +5006,20 @@ VO803A0o]4RmS^UYZ]TCeU2
 R8
 33
 b1
-R20
+R9
 !i10b 1
-R30
-Z120 !s90 -reportprogress|300|-work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/simpackage.vhd|
-Z121 !s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/simpackage.vhd|
+R10
+Z103 !s90 -work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/simpackage.vhd|
+Z104 !s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/simpackage.vhd|
 !i113 1
 R13
 R14
 Bbody
-R61
-R62
-R63
+R72
+R73
+R74
 R3
-R64
+R75
 R4
 R5
 l0
@@ -5036,11 +5028,11 @@ VHG7nOSGgkm1MhbFc>[I>C3
 !s100 H0@GEBf0je>l[hSSY9E8W1
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R120
-R121
+R10
+R103
+R104
 !i113 1
 R13
 R14
@@ -5089,50 +5081,50 @@ R13
 R14
 Esingle_argument
 R1
-R61
-R62
+R72
+R73
 R3
-R64
-R63
+R75
+R74
 R4
 R5
 R0
-Z122 8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/single_argument.vhd
-Z123 F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/single_argument.vhd
+Z105 8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/single_argument.vhd
+Z106 F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/single_argument.vhd
 l0
 L11
 VOnU1E[61Z<HQBb_W1YDS32
 !s100 fB3HHf`3<i1hgJYMJ2JA`0
 R8
 33
-Z124 !s110 1683209618
+R9
 !i10b 1
-Z125 !s108 1683209618.000000
-Z126 !s90 -reportprogress|300|-work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/single_argument.vhd|
-Z127 !s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/single_argument.vhd|
+R10
+Z107 !s90 -work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/single_argument.vhd|
+Z108 !s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/single_argument.vhd|
 !i113 1
 R13
 R14
 Abehav
-R61
-R62
+R72
+R73
 R3
-R64
-R63
+R75
+R74
 R4
 R5
-R96
+R80
 l38
 L30
 V=F;3g<`nk9m=R[l`=ZMjH3
 !s100 Pm8;U?b2cd^=3]F1^oKNX1
 R8
 33
-R124
+R9
 !i10b 1
-R125
-R126
-R127
+R10
+R107
+R108
 !i113 1
 R13
 R14
@@ -5143,17 +5135,17 @@ R3
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L1312
 VVJKDnYI?khDgNRU@0kUPn0
 !s100 8NGiDnfJ746e9UBWBPkTn0
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -5164,16 +5156,16 @@ R2
 R3
 R4
 R5
-R46
+R61
 l1330
-R77
+R55
 VRI17b9UYbBanRiz_j1<G>2
 !s100 RI2WJZJeT>8PzalYBcU6Q3
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -5203,7 +5195,7 @@ R12
 R13
 R14
 Aarch
-R69
+R45
 R2
 R3
 R4
@@ -5230,17 +5222,17 @@ R3
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L1342
 Vm=bjO=@RMA8<ki>>:=Cdo3
 !s100 `<1QWdKh_zUVI`NDgGb]21
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -5251,16 +5243,16 @@ R2
 R3
 R4
 R5
-R50
+R64
 l1360
 L1358
 Vz:K81dTz1NePCUFh5jaA`2
 !s100 0nn5C_h^dW`U==<;FXUzY0
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -5290,7 +5282,7 @@ R12
 R13
 R14
 Aarch
-R69
+R45
 R2
 R3
 R4
@@ -5334,7 +5326,7 @@ R12
 R13
 R14
 Aarch
-R69
+R45
 R15
 R2
 R3
@@ -5362,38 +5354,38 @@ R3
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L1256
 VSWZbX@^OOMAB>`Ta39]>81
 !s100 `Yl6=g[2TAfk<4eA:BiKF1
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
 R13
 R14
 Aarch
-R44
+R48
 R2
 R3
 R4
 R5
-R60
+R68
 l1282
 L1274
 V]@[<iPCodFI;J8=<1zCb]0
 !s100 b7c7T2KL>h9A99>nk8F5A0
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -5406,24 +5398,24 @@ R3
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L1135
 V[ZN17UO;NVO`SZ]CQZF@>3
 !s100 PHjQj18@o9SBJ70PW]WSb3
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
 R13
 R14
 Aarch
-R44
+R48
 R2
 R3
 R4
@@ -5435,9 +5427,9 @@ VWG]ag3HA<[VGh]7KzhPQ:1
 !s100 K]l0AGh7]El_EHnnbed6:3
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -5450,24 +5442,24 @@ R3
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L1860
 VcfM9QoWXRIjKzLG30^k9L3
 !s100 gnf??@5b_EE;g2M`kJY@I2
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
 R13
 R14
 Aarch
-Z128 DEx4 work 26 write_memory_single_inside 0 22 Y9gMTGBTVFz=_lR2lKC=L2
+Z109 DEx4 work 26 write_memory_single_inside 0 22 Y9gMTGBTVFz=_lR2lKC=L2
 R15
 R2
 R3
@@ -5480,9 +5472,9 @@ VEEdUcgc:A=:kJ4b65Big;3
 !s100 o:nHm1flmhjF@DhVdVG=d3
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -5538,17 +5530,17 @@ R2
 R4
 R5
 R0
+R17
 R18
-R19
 l0
-L3026
-VbofaX;;onHVCmkXMB:g3=0
-!s100 MK[U>7@8P`ghU87KoKZYE2
+L3173
+VZ^Q20o8<1^D[@2Zzz7dAY2
+!s100 6N4Xzgd]F7Pf8[j3XFV3@3
 R8
 33
-R20
+R9
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -5559,16 +5551,16 @@ R15
 R2
 R4
 R5
-R49
-l3044
-L3039
-V8H;Y3N1>B4TE`m[<dXEAe3
-!s100 ki@L:[5hQ2aYYZ8`@0be91
+DEx4 work 5 synch 0 22 Z^Q20o8<1^D[@2Zzz7dAY2
+l3191
+L3186
+Vf]Q34]j@^TW>`LZFzcCY_2
+!s100 F7XYOm:EQXDK8`JINNmjl2
 R8
 33
-R20
+R9
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -5581,17 +5573,17 @@ R3
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L154
 V^GML>No7gjj80d8K:CYV`1
 !s100 0DAD8j2>Mb@RlVcg;`n_R0
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -5609,9 +5601,9 @@ Vd0Nz7NBM@oA>PQ5YhK2gR0
 !s100 UB9XKcn^z=No>Z_F9:Ro=3
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -5624,24 +5616,24 @@ R3
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L1627
 V_g1V2^VDaNe2Ig=7fD0S71
 !s100 PRlJiBO[Kh>VLZL;Fe>`]0
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
 R13
 R14
 Aarch
-R76
+R53
 R2
 R3
 R4
@@ -5653,9 +5645,9 @@ VN6<<TO5VP=A]=L0jGS2U?1
 !s100 >k5WMW]1^anD_1oKdE4CK2
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -5706,50 +5698,50 @@ R13
 R14
 Etwo_port_ram
 R1
-R61
-R62
+R72
+R73
 R3
-R64
-R63
+R75
+R74
 R4
 R5
 R0
-Z129 8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/two_port_RAM.vhd
-Z130 F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/two_port_RAM.vhd
+Z110 8/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/two_port_RAM.vhd
+Z111 F/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/two_port_RAM.vhd
 l0
 L11
 V?zABg:;=Q2B>J8SBaWFO<2
 !s100 J8TB9?=Ba6aPPUlT5:QoA2
 R8
 33
-R124
+R9
 !i10b 1
-R125
-Z131 !s90 -reportprogress|300|-work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/two_port_RAM.vhd|
-Z132 !s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/cordic/sim/VHDL_SRC/two_port_RAM.vhd|
+R10
+Z112 !s90 -work|work|-2008|-explicit|-stats=none|/home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/two_port_RAM.vhd|
+Z113 !s107 /home/dynamatic/Dynamatic/etc/dynamatic/Regression_test/examples/fir/sim/VHDL_SRC/two_port_RAM.vhd|
 !i113 1
 R13
 R14
 Abehav
-R61
-R62
+R72
+R73
 R3
-R64
-R63
+R75
+R74
 R4
 R5
-R95
+DEx4 work 12 two_port_ram 0 22 ?zABg:;=Q2B>J8SBaWFO<2
 l44
 L38
-Z133 VIGE^n2kATHQbk>6m6Gl512
-Z134 !s100 @iJcz2g8;h==gB:^l3?3R1
+VIGE^n2kATHQbk>6m6Gl512
+!s100 @iJcz2g8;h==gB:^l3?3R1
 R8
 33
-R124
+R9
 !i10b 1
-R125
-R131
-R132
+R10
+R112
+R113
 !i113 1
 R13
 R14
@@ -5777,7 +5769,7 @@ R12
 R13
 R14
 Aarch
-R69
+R45
 R15
 R2
 R3
@@ -5822,7 +5814,7 @@ R12
 R13
 R14
 Aarch
-R69
+R45
 R15
 R2
 R3
@@ -5850,19 +5842,19 @@ R3
 R4
 R5
 R0
-R72
-R73
+R49
+R50
 l0
 L314
 VONh2R>aN>e13V2ai>h_jS0
 !s100 ?dZm=?FMYX_d2Xa8]8FSO2
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
@@ -5871,18 +5863,18 @@ R2
 R3
 R4
 R5
-Z135 DEx4 work 17 write_address_mux 0 22 ONh2R>aN>e13V2ai>h_jS0
+Z114 DEx4 work 17 write_address_mux 0 22 ONh2R>aN>e13V2ai>h_jS0
 l328
 L326
 VZOfP=zDBG>zl;0TcP?7aZ0
 !s100 BDEVcF994@1bIico:^RZ70
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
@@ -5893,19 +5885,19 @@ R3
 R4
 R5
 R0
-R72
-R73
+R49
+R50
 l0
 L350
 VYz^:ZWCWFVV:fEEAS7`gj0
 !s100 jl`5^8IVAJn_35UDPD6Cb3
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
@@ -5914,18 +5906,18 @@ R2
 R3
 R4
 R5
-Z136 DEx4 work 19 write_address_ready 0 22 Yz^:ZWCWFVV:fEEAS7`gj0
+Z115 DEx4 work 19 write_address_ready 0 22 Yz^:ZWCWFVV:fEEAS7`gj0
 l364
 L362
 Vhm<d?F2]1GWRPG1nMNdJT1
 !s100 E=LWYXa6l3khXn`HKII;01
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
@@ -5936,19 +5928,19 @@ R3
 R4
 R5
 R0
-R72
-R73
+R49
+R50
 l0
 L380
 V30<A5efPG1]8YXdi;f@`<1
 !s100 fLZ94I3>anm_O5`X=VI<Z2
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
@@ -5957,18 +5949,18 @@ R2
 R3
 R4
 R5
-Z137 DEx4 work 18 write_data_signals 0 22 30<A5efPG1]8YXdi;f@`<1
+Z116 DEx4 work 18 write_data_signals 0 22 30<A5efPG1]8YXdi;f@`<1
 l398
 L396
 VNDd;?kdLP3aY:5dUCjnRJ2
 !s100 Ghd7XT37Wjod?VQz`<KKz3
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
@@ -5979,43 +5971,43 @@ R3
 R4
 R5
 R0
-R72
-R73
+R49
+R50
 l0
 L436
 VfH1C4SGdZ_^7^lLX?4k_M2
 !s100 _V5>VLVH6O@=Kie<EYTi40
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
 Aarch
-R137
-R136
-R135
-Z138 DEx4 work 14 write_priority 0 22 2DGAAN?0_o_`76WH[[zYN2
+R116
+R115
+R114
+Z117 DEx4 work 14 write_priority 0 22 2DGAAN?0_o_`76WH[[zYN2
 R2
 R3
 R4
 R5
-R103
+R86
 l467
 L464
 VVd[RUEBfTG`7en^7PFfm51
 !s100 aZ_>Hm<EzT:NgQi[kZV;;3
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
@@ -6025,17 +6017,17 @@ R3
 R4
 R5
 R0
+R17
 R18
-R19
 l0
 L1800
 VY9gMTGBTVFz=_lR2lKC=L2
 !s100 Xdm^J>>gOZMlfX7=:05LM3
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -6045,16 +6037,16 @@ Aarch
 R3
 R4
 R5
-R128
+R109
 l1827
 L1825
 ViE9i>5zMB;:GAE9m0AN=M3
 !s100 ]R_:Nee<GN64J]EkP0^h03
 R8
 33
-R20
+R19
 !i10b 1
-R10
+R20
 R21
 R22
 !i113 1
@@ -6067,19 +6059,19 @@ R3
 R4
 R5
 R0
-R72
-R73
+R49
+R50
 l0
 L276
 V2DGAAN?0_o_`76WH[[zYN2
 !s100 Rc33mE`[oIZO[R4IE`;T>1
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14
@@ -6088,18 +6080,18 @@ R2
 R3
 R4
 R5
-R138
+R117
 l289
 L287
 V[=XiV4C0IPa:PF2IR6Lhk0
 !s100 SLl2`i5iMmFcl;adiXF>_2
 R8
 33
-R20
+R9
 !i10b 1
-R30
-R74
-R75
+R10
+R51
+R52
 !i113 1
 R13
 R14

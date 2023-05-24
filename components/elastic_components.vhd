@@ -2009,7 +2009,7 @@ use work.customTypes.all;
 use ieee.numeric_std.all;
 use IEEE.math_real.all;
 
-entity LoopMux is
+entity LoopMux_aya is
     generic(
         INPUTS        : integer;
         OUTPUTS       : integer;
@@ -2028,9 +2028,9 @@ entity LoopMux is
         condition     : in  data_array(0 downto 0)(COND_SIZE - 1 downto 0)   ----(integer(ceil(log2(real(INPUTS)))) - 1 downto 0);
         
     );
-end LoopMux;
+end LoopMux_aya;
 
-architecture arch of LoopMux is
+architecture arch of LoopMux_aya is
 
 signal tehb_data_in  : std_logic_vector(DATA_SIZE_IN - 1 downto 0);
 signal tehb_pvalid : std_logic;
@@ -2422,14 +2422,14 @@ begin
         );
 end arch;
 
------------------------------------------------------------------------gian_mux_fifo
+-----------------------------------------------------------------------gian_mux_fifo1
 library ieee;
 use ieee.std_logic_1164.all;
 use work.customTypes.all;
 use ieee.numeric_std.all;
 use IEEE.math_real.all;
 
-entity gian_mux_fifo is
+entity gian_mux_fifo1 is
     generic(
         INPUTS        : integer; --supports only two inputs and one condition (so put 3)
         OUTPUTS       : integer;
@@ -2449,8 +2449,8 @@ entity gian_mux_fifo is
         condition     : in  data_array(0 downto 0)(COND_SIZE - 1 downto 0)   ----(integer(ceil(log2(real(INPUTS)))) - 1 downto 0);
         
     );
-end gian_mux_fifo;
-architecture arch of gian_mux_fifo is
+end gian_mux_fifo1;
+architecture arch of gian_mux_fifo1 is
     signal tehb_pvalid, tehb_ready : std_logic;
     signal tehb_data_in : std_logic_vector(DATA_SIZE_IN - 1 downto 0);
     signal fifo_0_valid, fifo_1_valid, fifo_0_nReady, fifo_1_nReady, fifo_0_ready, fifo_1_ready : std_logic;
@@ -2547,6 +2547,153 @@ architecture arch of gian_mux_fifo is
                 count_1_cond := 0;
                 count_in1 := 0;
                 state <= '0';
+            end if;
+        end if;
+    end process;
+
+end;
+
+-------------------------------------------------------------------------------
+-----------------------------------------------------------------------gian_mux_no_fifo
+library ieee;
+use ieee.std_logic_1164.all;
+use work.customTypes.all;
+use ieee.numeric_std.all;
+use IEEE.math_real.all;
+
+entity LoopMux is
+    generic(
+        INPUTS        : integer; --supports only two inputs and one condition (so put 3)
+        OUTPUTS       : integer;
+        DATA_SIZE_IN  : integer;
+        DATA_SIZE_OUT : integer;
+        COND_SIZE     : integer;
+        THRD_NUM      : integer
+    );
+    port(
+        clk, rst      : in  std_logic;
+        dataInArray   : in  data_array(INPUTS - 2 downto 0)(DATA_SIZE_IN - 1 downto 0);
+        dataOutArray  : out data_array(0 downto 0)(DATA_SIZE_OUT - 1 downto 0);
+        pValidArray   : in  std_logic_vector(INPUTS -1 downto 0);
+        nReadyArray   : in  std_logic_vector(0 downto 0);
+        validArray    : out std_logic_vector(0 downto 0);
+        readyArray    : out std_logic_vector(INPUTS -1 downto 0);
+        condition     : in  data_array(0 downto 0)(COND_SIZE - 1 downto 0)   ----(integer(ceil(log2(real(INPUTS)))) - 1 downto 0);
+        
+    );
+end LoopMux;
+architecture arch of LoopMux is
+signal tehb_data_in  : std_logic_vector(DATA_SIZE_IN - 1 downto 0);
+signal tehb_pvalid : std_logic;
+signal tehb_ready : std_logic;
+type state_type is (INIT, ITER);
+signal state : state_type;
+constant zero : std_logic_vector(COND_SIZE-1 downto 0) := (others => '0');
+
+
+begin
+
+    process(state, dataInArray, pValidArray, nReadyArray, condition, tehb_ready) 
+        variable tmp_data_out  : unsigned(DATA_SIZE_IN - 1 downto 0);
+        variable tmp_valid_out : std_logic;
+    begin
+        tmp_data_out  := unsigned(dataInArray(0));
+        tmp_valid_out := '0';
+        case state is
+            when INIT =>
+                if(pValidArray(1) = '1') then
+                    tmp_data_out  := unsigned(dataInArray(0));
+                    tmp_valid_out := '1';
+                end if;
+                if ((tehb_ready = '1' and pValidArray(1) = '1') or pValidArray(1) = '0') then
+                    readyArray(1) <= '1';
+                else
+                    readyArray(1) <= '0';
+                end if;
+                if (pValidArray(2) = '0') then
+                    readyArray(2) <= '1';
+                else
+                    readyArray(2) <= '0';
+                end if;
+
+            when ITER =>
+                if (pValidArray(2) = '1') then
+                    tmp_data_out  := unsigned(dataInArray(1));
+                    tmp_valid_out := '1';
+                end if;
+
+                if (pValidArray(1) = '0') then
+                    readyArray(1) <= '1';
+                else
+                    readyArray(1) <= '0';
+                end if;
+
+                if ((tehb_ready = '1' and pValidArray(2) = '1') or pValidArray(2) = '0') then
+                    readyArray(2) <= '1';
+                else
+                    readyArray(2) <= '0';
+                end if;
+                         
+        end case;
+        tehb_data_in <= std_logic_vector(resize(tmp_data_out,DATA_SIZE_OUT));
+        tehb_pvalid     <= tmp_valid_out;
+    end process;
+
+
+    tehb1: entity work.TEHB(arch) generic map (1, 1, DATA_SIZE_IN, DATA_SIZE_IN)
+        port map (
+        --inputspValidArray
+            clk => clk, 
+            rst => rst, 
+            pValidArray(0)  => tehb_pvalid, 
+            nReadyArray(0) => nReadyArray(0),    
+            validArray(0) => validArray(0), 
+        --outputs
+            readyArray(0) => tehb_ready,   
+            dataInArray(0) => tehb_data_in,
+            dataOutArray(0) => dataOutArray(0)
+        );
+
+
+    count_state_process : process(clk, rst)
+    variable count_in0 : integer := 0;
+    variable count_0_cond : integer := 0;
+    variable count_1_cond : integer := 0;
+    variable count_in1 : integer := 0;
+    begin
+        if(rst = '1') then
+            state <= INIT;
+            count_0_cond := 0;
+            count_1_cond := 0;
+            count_in0 := 0;
+            count_in1 := 0;
+        elsif rising_edge(clk) then
+            if(state = INIT and tehb_ready = '1' and tehb_pvalid = '1') then --count the tokens output from in0
+                count_in0 := count_in0 + 1;
+            end if;
+            if(state = ITER and tehb_ready = '1' and tehb_pvalid = '1') then --count the tokens output from in1
+                count_in1 := count_in1 + 1;
+            end if;
+            if(pValidArray(0) = '1' and condition(0) = zero and readyArray(0) = '1') then  --count the 0-condition received 
+                count_0_cond := count_0_cond + 1;
+            end if;
+            if(pValidArray(0) = '1' and to_integer(unsigned(condition(0))) = 1 and readyArray(0) = '1') then --count the 1-condition received
+                count_1_cond := count_1_cond + 1;
+            end if;
+            if(count_0_cond > 0 and count_in1 < count_1_cond) then
+                readyArray(0) <= '0';
+            else
+                readyArray(0) <= '1';
+            end if;
+            if(state = INIT and (count_in0 = THRD_NUM or (count_in0 > 0 and pValidArray(1) = '0'))) then --transition to state 1
+                state <= ITER;
+            end if;
+            if(state = ITER and count_in0 = count_0_cond and count_in1 = count_1_cond) then --transition to state 0
+                count_0_cond := 0;
+                count_1_cond := 0;
+                count_in1 := 0;
+                count_in0 := 0;
+                state <= INIT;
             end if;
         end if;
     end process;
@@ -3019,7 +3166,7 @@ port map (
 );
 
 end architecture;
-----------------------------------------------------------------
+----------------------------------------------------------------synh for loopmux
 library ieee;
 use ieee.std_logic_1164.all;
 USE work.customTypes.all;
@@ -3037,6 +3184,64 @@ port(
 end synch;
 
 architecture arch of synch is
+
+signal join_valid : std_logic;
+signal join_nReady : std_logic;
+constant all_one : std_logic_vector(SIZE-1 downto 0) := (others => '1');
+begin
+    
+    j : entity work.join(arch) generic map(SIZE)
+                port map(   pValidArray,
+                            join_nReady,
+                            join_valid,
+                            readyArray);
+
+    dataOutArray <= dataInArray;
+
+    process(join_valid)
+    begin
+        if(join_valid = '1') then
+            validArray <= (others => '1');
+        else
+            validArray <= (others => '0');
+        end if;
+    end process;
+
+    process (nReadyArray)
+    variable check : std_logic := '1';
+    begin
+        check := '1';
+        for I in 0 to SIZE - 1 loop
+            check := check and nReadyArray(I);
+        end loop;
+        if(check = '1') then
+            join_nReady <= '1';
+        else 
+            join_nReady <= '0';
+        end if;
+    end process;
+
+end architecture;
+----------------------------------------------------------------
+
+----------------------------------------------------old_synch
+library ieee;
+use ieee.std_logic_1164.all;
+USE work.customTypes.all;
+entity old_synch is generic(
+SIZE : integer ; DATA_SIZE_IN: integer; DATA_SIZE_OUT: integer
+);
+port(
+        pValidArray : in std_logic_vector(SIZE - 1 downto 0);
+        nReadyArray : in std_logic_vector(SIZE - 1 downto 0);
+        validArray : out std_logic_vector(SIZE - 1 downto 0);
+        readyArray : out std_logic_vector(SIZE - 1 downto 0);
+        dataInArray   : in  data_array(SIZE - 1 downto 0)(DATA_SIZE_IN - 1 downto 0);
+        dataOutArray  : out data_array(SIZE - 1 downto 0)(DATA_SIZE_OUT - 1 downto 0)
+        );
+end old_synch;
+
+architecture arch of old_synch is
 
 signal join_valid : std_logic;
 signal join_nReady : std_logic;
@@ -3075,7 +3280,9 @@ begin
     end process;
 
 end architecture;
-----------------------------------------------------------------
+
+---------------------------------------------------------------------
+
 library ieee;
 use ieee.std_logic_1164.all;
 USE work.customTypes.all;
