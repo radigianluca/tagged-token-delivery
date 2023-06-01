@@ -96,6 +96,8 @@ bool DFnetlist_Impl::check()
         case MUX:
         case CNTRL_MG:
         case LOOPMUX: // Aya: 28/02/2023
+        case SYNCH:
+        case TMFO: // Aya: 14/05/2023: still experimenting where to position this!
         	break;
         case UNKNOWN:
             assert(false);

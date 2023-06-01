@@ -333,10 +333,10 @@ public:
 			// 1st remove all INITs with their constants
 			// 2nd change the type of the MUX to map to the loop-mux in the backend
 			// 3rd change the inputs order of the MUX is needed to comply with the convention that the 0th input should always come from outside
-			//circuitGen->convert_to_special_mux();
+			circuitGen->convert_to_special_mux();
 
 			// AYA: 29/04/2023: Forcing the insertion of a Synchronizer component that gets fed with all in0 of all LoopMUXes belonging to 1 loop
-			//circuitGen->synch_loopMux();
+			circuitGen->synch_loopMux();
 
 
 			// TODO: ADD A FUNCTION ABOVE TO STORE THE ORIGINAL PRODUCER AND CONSUMERS BEFORE ADDING ANY REGENERATES OR SUPPRESSES..

@@ -74,6 +74,8 @@ void DFnetlist_Impl::inferChannelWidth(int default_width)
             case CNTRL_MG:
             case LSQ:
             case MC:
+            case TMFO:   // AYA: 14/05/2023: still experimenting where to position this..
+            case SYNCH:
                 break;
 
             case ELASTIC_BUFFER:

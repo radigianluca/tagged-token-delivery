@@ -19,7 +19,7 @@ architecture behav of fir_tb is
 	-- Constant declarations
 
 	constant HALF_CLK_PERIOD : TIME := 2.00 ns;
-	constant TRANSACTION_NUM : INTEGER := 1;
+	constant TRANSACTION_NUM : INTEGER := 100;
 	constant INPUT_end : STRING := "";
 	constant OUTPUT_end : STRING := "../VHDL_OUT/output_end.dat";
 	constant DATA_WIDTH_end : INTEGER := 32;

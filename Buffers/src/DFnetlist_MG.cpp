@@ -504,6 +504,10 @@ DFnetlist_Impl::subNetlist DFnetlist_Impl::extractMarkedGraph(const map<blockID,
             }
             break;
 
+        case TMFO:  // AYA: 14/05/2023: experimenting
+        case SYNCH: // AYA: 25/05/2023: experimenting
+            break;
+
         default:
             assert(false);
         }
@@ -727,11 +731,11 @@ DFnetlist_Impl::subNetlist DFnetlist_Impl::getMGfromCFDFC(Dataflow::DFnetlist_Im
         }
     }
 
-    /*cout << "Channels in the MG:" << endl;
+    cout << "Channels in the MG:" << endl;
     for (channelID c: snl.getChannels()) {
         cout << "  ";
         writeChannelDot(cout, c);
-    }*/
+    }
 
     return snl;
 }

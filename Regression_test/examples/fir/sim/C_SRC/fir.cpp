@@ -12,7 +12,7 @@
 #include <string.h>
 #include <math.h>
 
-#define AMOUNT_OF_TEST 1
+#define AMOUNT_OF_TEST 100
 
 /*int fir (in_int_t arg_1, in_int_t A[N]) {
 
@@ -43,13 +43,10 @@ int main(void){
 
 int fir(in_int_t arg_1) {
 
-	int acc = 5;
-	for(int i = 0; i < 3; i++) {
-		//for(int j = 0; j < 3; j++)
-		//{
-			//acc *= arg_1;
-			arg_1 *= 5;
-		//}
+	int acc = 3;
+	for(int i = 0; i < 10; i++) {
+		for(int j = 0; j < 10; j++)
+			arg_1 *= (i+j);
 	}
     return arg_1;
 }

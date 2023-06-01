@@ -2429,7 +2429,7 @@ use work.customTypes.all;
 use ieee.numeric_std.all;
 use IEEE.math_real.all;
 
-entity gian_mux_fifo1 is
+entity LoopMuxFIFO is
     generic(
         INPUTS        : integer; --supports only two inputs and one condition (so put 3)
         OUTPUTS       : integer;
@@ -2449,8 +2449,8 @@ entity gian_mux_fifo1 is
         condition     : in  data_array(0 downto 0)(COND_SIZE - 1 downto 0)   ----(integer(ceil(log2(real(INPUTS)))) - 1 downto 0);
         
     );
-end gian_mux_fifo1;
-architecture arch of gian_mux_fifo1 is
+end LoopMuxFIFO;
+architecture arch of LoopMuxFIFO is
     signal tehb_pvalid, tehb_ready : std_logic;
     signal tehb_data_in : std_logic_vector(DATA_SIZE_IN - 1 downto 0);
     signal fifo_0_valid, fifo_1_valid, fifo_0_nReady, fifo_1_nReady, fifo_0_ready, fifo_1_ready : std_logic;
@@ -2464,7 +2464,6 @@ architecture arch of gian_mux_fifo1 is
 
     readyArray(1) <= fifo_0_ready;
     readyArray(2) <= '1';
-    readyArray(0) <= '1';
 
     fifo_0_nReady <= (not state) and tehb_ready;
     fifo_1_nready <= state and tehb_ready;
@@ -2520,32 +2519,43 @@ architecture arch of gian_mux_fifo1 is
         );
 
     count_state_process : process(clk, rst)
-    variable count : integer := 0;
+    variable count_in0 : integer := 0;
+    variable count_0_cond : integer := 0;
     variable count_1_cond : integer := 0;
     variable count_in1 : integer := 0;
     begin
         if(rst = '1') then
             state <= '0';
-            count := 0;
+            count_in0 := 0;
+            count_0_cond := 0;
+            count_1_cond := 0;
+            count_in1 := 0;
         elsif rising_edge(clk) then
             if(state = '0' and tehb_ready = '1' and fifo_0_valid = '1') then --count the tokens output from in0
-                count := count + 1;
+                count_in0 := count_in0 + 1;
             end if;
             if(state = '1' and tehb_ready = '1' and fifo_1_valid = '1') then --count the tokens output from in1
                 count_in1 := count_in1 + 1;
             end if;
-            if(pValidArray(0) = '1' and condition(0) = zero) then  --count the 0-condition received 
-                count := count - 1;
+            if(pValidArray(0) = '1' and condition(0) = zero and readyArray(0) = '1') then  --count the 0-condition received 
+                count_0_cond := count_0_cond + 1;
             end if;
-            if(pValidArray(0) = '1' and condition(0) = one) then --count the 1-condition received
+            if(pValidArray(0) = '1' and condition(0) = one and readyArray(0) = '1') then --count the 1-condition received
                 count_1_cond := count_1_cond + 1;
             end if;
-            if(state = '0' and (count = THRD_NUM or (count > 0 and fifo_0_valid = '0'))) then --transition to state 1
+            if(count_0_cond = count_in0 and count_in1 < count_1_cond) then
+                readyArray(0) <= '0';
+            else
+                readyArray(0) <= '1';
+            end if;
+            if(state = '0' and (count_in0 = THRD_NUM or (count_in0 > 0 and fifo_0_valid = '0'))) then --transition to state 1
                 state <= '1';
             end if;
-            if(state = '1' and count = 0 and count_in1 = count_1_cond) then --transition to state 0
+            if(state = '1' and count_in0 = count_0_cond and count_in1 = count_1_cond) then --transition to state 0
                 count_1_cond := 0;
                 count_in1 := 0;
+                count_in0 := 0;
+                count_0_cond := 0;
                 state <= '0';
             end if;
         end if;
@@ -2605,10 +2615,17 @@ begin
                     tmp_data_out  := unsigned(dataInArray(0));
                     tmp_valid_out := '1';
                 end if;
-                if ((tehb_ready = '1' and pValidArray(1) = '1') or pValidArray(1) = '0') then
-                    readyArray(1) <= '1';
+                --if ((tehb_ready = '1' and pValidArray(1) = '1') or pValidArray(1) = '0') then
+                --    readyArray(1) <= '1';
+                --else
+                --    readyArray(1) <= '0';
+                --end if;
+
+                --Due to synch, do not use pvalid!
+                if (tehb_ready = '1') then
+                   readyArray(1) <= '1';
                 else
-                    readyArray(1) <= '0';
+                   readyArray(1) <= '0';
                 end if;
                 if (pValidArray(2) = '0') then
                     readyArray(2) <= '1';
@@ -2622,11 +2639,14 @@ begin
                     tmp_valid_out := '1';
                 end if;
 
-                if (pValidArray(1) = '0') then
-                    readyArray(1) <= '1';
-                else
-                    readyArray(1) <= '0';
-                end if;
+                --if (pValidArray(1) = '0') then
+                --    readyArray(1) <= '1';
+                --else
+                --    readyArray(1) <= '0';
+                --end if;
+                
+                --Due to synch, do not use pvalid!
+                readyArray(1) <= '0';
 
                 if ((tehb_ready = '1' and pValidArray(2) = '1') or pValidArray(2) = '0') then
                     readyArray(2) <= '1';
@@ -2680,7 +2700,7 @@ begin
             if(pValidArray(0) = '1' and to_integer(unsigned(condition(0))) = 1 and readyArray(0) = '1') then --count the 1-condition received
                 count_1_cond := count_1_cond + 1;
             end if;
-            if(count_0_cond > 0 and count_in1 < count_1_cond) then
+            if(count_0_cond = count_in0 and count_in1 < count_1_cond) then
                 readyArray(0) <= '0';
             else
                 readyArray(0) <= '1';
@@ -3198,9 +3218,9 @@ begin
 
     dataOutArray <= dataInArray;
 
-    process(join_valid)
+    process(join_valid, nReadyArray)
     begin
-        if(join_valid = '1') then
+        if(join_valid = '1' and nReadyArray = all_one) then
             validArray <= (others => '1');
         else
             validArray <= (others => '0');

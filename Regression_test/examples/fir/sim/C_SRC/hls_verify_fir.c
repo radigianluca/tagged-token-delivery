@@ -4294,13 +4294,10 @@ int fir(in_int_t arg_1) {
 
 
 
- int acc = 5;
- for(int i = 0; i < 3; i++) {
-
-
-
-   arg_1 *= 5;
-
+ int acc = 3;
+ for(int i = 0; i < 10; i++) {
+  for(int j = 0; j < 10; j++)
+   arg_1 *= (i+j);
  }
     
 	{
@@ -4318,7 +4315,7 @@ int fir(in_int_t arg_1) {
 
 int main() {
 
-    for(int i = 0; i < 1; ++i){
+    for(int i = 0; i < 100; ++i){
       fir(i);
     }
 }

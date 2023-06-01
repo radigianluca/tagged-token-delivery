@@ -1501,7 +1501,19 @@ string get_generic ( int node_id )
         generic += COMMA;
         generic += to_string(nodes[node_id].inputs.input[0].bit_size); // condition size inputs.input[input_indx].type
         generic += COMMA;
-        generic += to_string(3); //  AYA: 03/04/2023: for now hardcoding the pragma that controls the number of threads running concurrently 
+
+        string N;
+
+        // Read from the text file
+        ifstream file_N("/home/dynamatic/Dynamatic/etc/dynamatic/dot2vhdl/src/gian_N.txt");
+
+        // Use a while loop together with the getline() function to read the file line by line
+        while (getline (file_N, N)) {
+
+        }
+
+        generic += to_string(std::stoi(N)); //  AYA: 03/04/2023: for now hardcoding the pragma that controls the number of threads running concurrently 
+        //generic += to_string(1);
         /*
          *         
          * generic += COMMA;

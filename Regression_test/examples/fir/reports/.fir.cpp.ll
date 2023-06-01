@@ -9,31 +9,53 @@ entry:
   %arg_1.addr = alloca i32, align 4
   %acc = alloca i32, align 4
   %i = alloca i32, align 4
+  %j = alloca i32, align 4
   store i32 %arg_1, i32* %arg_1.addr, align 4
-  store i32 5, i32* %acc, align 4
+  store i32 3, i32* %acc, align 4
   store i32 0, i32* %i, align 4
   br label %for.cond
 
-for.cond:                                         ; preds = %for.inc, %entry
+for.cond:                                         ; preds = %for.inc4, %entry
   %0 = load i32, i32* %i, align 4
-  %cmp = icmp slt i32 %0, 3
-  br i1 %cmp, label %for.body, label %for.end
+  %cmp = icmp slt i32 %0, 10
+  br i1 %cmp, label %for.body, label %for.end6
 
 for.body:                                         ; preds = %for.cond
-  %1 = load i32, i32* %arg_1.addr, align 4
-  %mul = mul nsw i32 %1, 5
+  store i32 0, i32* %j, align 4
+  br label %for.cond1
+
+for.cond1:                                        ; preds = %for.inc, %for.body
+  %1 = load i32, i32* %j, align 4
+  %cmp2 = icmp slt i32 %1, 10
+  br i1 %cmp2, label %for.body3, label %for.end
+
+for.body3:                                        ; preds = %for.cond1
+  %2 = load i32, i32* %i, align 4
+  %3 = load i32, i32* %j, align 4
+  %add = add nsw i32 %2, %3
+  %4 = load i32, i32* %arg_1.addr, align 4
+  %mul = mul nsw i32 %4, %add
   store i32 %mul, i32* %arg_1.addr, align 4
   br label %for.inc
 
-for.inc:                                          ; preds = %for.body
-  %2 = load i32, i32* %i, align 4
-  %inc = add nsw i32 %2, 1
-  store i32 %inc, i32* %i, align 4
+for.inc:                                          ; preds = %for.body3
+  %5 = load i32, i32* %j, align 4
+  %inc = add nsw i32 %5, 1
+  store i32 %inc, i32* %j, align 4
+  br label %for.cond1
+
+for.end:                                          ; preds = %for.cond1
+  br label %for.inc4
+
+for.inc4:                                         ; preds = %for.end
+  %6 = load i32, i32* %i, align 4
+  %inc5 = add nsw i32 %6, 1
+  store i32 %inc5, i32* %i, align 4
   br label %for.cond
 
-for.end:                                          ; preds = %for.cond
-  %3 = load i32, i32* %arg_1.addr, align 4
-  ret i32 %3
+for.end6:                                         ; preds = %for.cond
+  %7 = load i32, i32* %arg_1.addr, align 4
+  ret i32 %7
 }
 
 ; Function Attrs: noinline norecurse nounwind uwtable
@@ -47,7 +69,7 @@ entry:
 
 for.cond:                                         ; preds = %for.inc, %entry
   %0 = load i32, i32* %i, align 4
-  %cmp = icmp slt i32 %0, 1
+  %cmp = icmp slt i32 %0, 100
   br i1 %cmp, label %for.body, label %for.end
 
 for.body:                                         ; preds = %for.cond

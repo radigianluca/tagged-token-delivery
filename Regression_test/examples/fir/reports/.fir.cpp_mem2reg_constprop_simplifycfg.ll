@@ -8,16 +8,28 @@ define i32 @_Z3firi(i32 %arg_1) #0 {
 entry:
   br label %for.body
 
-for.body:                                         ; preds = %for.body, %entry
-  %arg_1.addr.02 = phi i32 [ %arg_1, %entry ], [ %mul, %for.body ]
-  %i.01 = phi i32 [ 0, %entry ], [ %inc, %for.body ]
-  %mul = mul nsw i32 %arg_1.addr.02, 5
-  %inc = add nsw i32 %i.01, 1
-  %cmp = icmp slt i32 %inc, 3
-  br i1 %cmp, label %for.body, label %for.end
+for.body:                                         ; preds = %for.inc4, %entry
+  %arg_1.addr.04 = phi i32 [ %arg_1, %entry ], [ %arg_1.addr.1.lcssa, %for.inc4 ]
+  %i.03 = phi i32 [ 0, %entry ], [ %inc5, %for.inc4 ]
+  br label %for.body3
 
-for.end:                                          ; preds = %for.body
-  %arg_1.addr.0.lcssa = phi i32 [ %mul, %for.body ]
+for.body3:                                        ; preds = %for.body3, %for.body
+  %arg_1.addr.12 = phi i32 [ %arg_1.addr.04, %for.body ], [ %mul, %for.body3 ]
+  %j.01 = phi i32 [ 0, %for.body ], [ %inc, %for.body3 ]
+  %add = add nsw i32 %i.03, %j.01
+  %mul = mul nsw i32 %arg_1.addr.12, %add
+  %inc = add nsw i32 %j.01, 1
+  %cmp2 = icmp slt i32 %inc, 10
+  br i1 %cmp2, label %for.body3, label %for.inc4
+
+for.inc4:                                         ; preds = %for.body3
+  %arg_1.addr.1.lcssa = phi i32 [ %mul, %for.body3 ]
+  %inc5 = add nsw i32 %i.03, 1
+  %cmp = icmp slt i32 %inc5, 10
+  br i1 %cmp, label %for.body, label %for.end6
+
+for.end6:                                         ; preds = %for.inc4
+  %arg_1.addr.0.lcssa = phi i32 [ %arg_1.addr.1.lcssa, %for.inc4 ]
   ret i32 %arg_1.addr.0.lcssa
 }
 
@@ -30,7 +42,7 @@ for.body:                                         ; preds = %for.body, %entry
   %i.01 = phi i32 [ 0, %entry ], [ %inc, %for.body ]
   %call = call i32 @_Z3firi(i32 %i.01)
   %inc = add nsw i32 %i.01, 1
-  %cmp = icmp slt i32 %inc, 1
+  %cmp = icmp slt i32 %inc, 100
   br i1 %cmp, label %for.body, label %for.end
 
 for.end:                                          ; preds = %for.body

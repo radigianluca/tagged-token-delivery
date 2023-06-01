@@ -12,7 +12,7 @@ Consumer of type LLVM Phi!!
 ======================================================
 
 
-New (Producer,Consumer) pair: (BB2, BB2)
+New (Producer,Consumer) pair: (BB3, BB2)
 
 Consumer of type LLVM Phi!!
 
@@ -39,7 +39,7 @@ Consumer of type LLVM Phi!!
 ======================================================
 
 
-New (Producer,Consumer) pair: (BB2, BB2)
+New (Producer,Consumer) pair: (BB4, BB2)
 
 Consumer of type LLVM Phi!!
 
@@ -59,6 +59,69 @@ Consumer of type LLVM Phi!!
 
 New (Producer,Consumer) pair: (BB2, BB3)
 
+Consumer of type LLVM Phi!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB3)
+
+Consumer of type LLVM Phi!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB3)
+
+Consumer of type LLVM Phi!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB3)
+
+Consumer of type LLVM Phi!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB3)
+
+Consumer of type LLVM Phi!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB3)
+
+Consumer of type LLVM Phi!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB4)
+
+Consumer of type type = "Operator!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB5)
+
 Consumer of type type = "Operator!!
 
 
@@ -67,7 +130,48 @@ Considering f_prod =  1
 
 
 
-And f_cons =  not C2 &  + 
+And f_cons =  not C3 &  not C4 &  + 
 
-The outcome of negating the product number 0is: 	 C2 +  & 
+The outcome of negating the product number 0is: 	 C3 +  C4 +  & 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB3)
+
+Consumer of type type = "Merge!!
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB3, BB3)
+
+Consumer of type type = "Merge!!
+
+
+		 Triggering the producer == consumer case!!!!
+
+	 NEW DEUBUG INFO: The original producer is in BB2
+
+
+Considering f_prod =  1 
+
+
+
+And f_cons =  C3 &  + 
+
+The outcome of negating the product number 0is: 	 not C3 +  & 
+
+
+
+======================================================
+
+
+New (Producer,Consumer) pair: (BB2, BB3)
+
+Consumer of type type = "Mux!!
 

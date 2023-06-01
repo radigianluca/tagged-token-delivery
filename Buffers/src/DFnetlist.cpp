@@ -32,7 +32,9 @@ map<BlockType,string> DFnetlist_Impl::BlockType2String = {
     {MC, "MC"},
 	{SELECTOR, "Selector"},
 	{DISTRIBUTOR, "Distributor"},
-    {LOOPMUX, "LoopMux"}  // Aya: 28/02/2023
+    {LOOPMUX, "LoopMux"},  // Aya: 28/02/2023
+    {SYNCH, "Synch"},
+    {TMFO, "TMFO"}  // Aya: 14/05/2023
 };
 
 map<PortType,string> DFnetlist_Impl::PortType2String = {
