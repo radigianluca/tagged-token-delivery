@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include "histogram.h"
 
-#define AMOUNT_OF_TEST 1
+#define AMOUNT_OF_TEST 100
 
 int histogram(in_int_t feature[1000], in_int_t weight[1000], inout_int_t hist[1000], in_int_t n) 
 {
@@ -106,9 +106,8 @@ int main(void){
     }
 	}
 
-	//for(int i = 0; i < AMOUNT_OF_TEST; ++i){
-		int i = 0; 
+	for(int i = 0; i < AMOUNT_OF_TEST; ++i){
 		histogram(feature[i], weight[i], hist[i], n[i]);
-	//}
+	}
 }
 

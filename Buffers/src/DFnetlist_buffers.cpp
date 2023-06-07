@@ -53,6 +53,10 @@ using namespace std;
  *
 */
 
+
+//gian variable for multithreading buff placement
+bool multithread = true;
+
 void DFnetlist_Impl::createMilpVarsEB(Milp_Model& milp, milpVarsEB& vars, bool max_throughput, bool first_MG)
 {
     vars.buffer_flop = vector<int>(vecChannelsSize(), -1);
@@ -661,10 +665,48 @@ bool DFnetlist_Impl::addElasticBuffersBB_sc(double Period, double BufferDelay, b
             int slots = milp[milpVars_sc[i].buffer_slots[c]] + 0.5; // Automatically truncated
             bool transparent = milp.isFalse(milpVars_sc[i].buffer_flop[c]);
             setChannelTransparency(c, transparent);
-            setChannelBufferSize(c, slots);
-
-            printChannelInfo(c, slots, transparent);
+            /*Gian add a slot more if it is transparent*/
+            if(transparent)
+            { 
+                setChannelBufferSize(c, slots+1);
+                printChannelInfo(c, slots+1, transparent);
+            }
+            else
+            {
+                setChannelBufferSize(c, slots);
+                printChannelInfo(c, slots, transparent);
+            }
         }
+
+        int N = 0;
+        if(multithread)
+        {
+            int new_N = 0;
+            for (auto sub_mg: components[i]) {
+                new_N = find_N_multithread(MG[sub_mg], true);
+                if(N == 0 || new_N < N) /* take smallest N (correctness reasons) */
+                    N = new_N;
+            }
+            if(N > 5)
+                N = 5;
+            if(N <= 0)
+                N = 1;
+        }
+        else
+        {
+            N = 1;
+        }
+
+        cout << "gian : New N found is : " << N << "\n";
+
+        ofstream myfile;
+        myfile.open ("/home/dynamatic/Dynamatic/etc/dynamatic/dot2vhdl/src/gian_N.txt");
+        if(!myfile)
+            cout << "Problem opening file\n";
+        myfile << to_string(N);
+        myfile.close();
+        
+
 
         //write retiming diffs
         writeRetimingDiffs(milp, milpVars_sc[i]);
@@ -1365,9 +1407,13 @@ bool DFnetlist_Impl::createThroughputConstraints(Milp_Model& milp, milpVarsEB& V
         int th_mg = Vars.th_MG[mg]; // Throughput of the marked graph.
 
         //gian 24.05.2023
-        int N = find_N_multithread(MG[mg], Vars) + 1; //+1 just to be sure
+        if(multithread)
+        {
+        int N = find_N_multithread(MG[mg], false); //+1 just to be sure
         if(N <= 0)
             N = 1;
+        }
+        
 
         for (channelID c: MG[mg].getChannels()) {
 
@@ -1441,7 +1487,7 @@ vector<int> DFnetlist_Impl::find_next_channel(channelID prev_ch, subNetlist ntl)
     return nexts;
 }
 
-int DFnetlist_Impl::get_latency_rec(subNetlist ntl, channelID start, int latency, vector<int>& visited, milpVarsEB &Vars)
+int DFnetlist_Impl::get_latency_rec(subNetlist ntl, channelID start, int latency, vector<int>& visited, bool after_milp)
 {
     if(isBackEdge(start))
         return latency;
@@ -1449,15 +1495,14 @@ int DFnetlist_Impl::get_latency_rec(subNetlist ntl, channelID start, int latency
     if(getBlockType(getDstBlock(start)) == LOOPMUX && getBlockType(getSrcBlock(start)) != SYNCH)
         return latency;
     latency += getLatency(b);
-    //if(Vars.buffer_flop[start])
-    //    latency += 1;
-    //visited.push_back(start);
+    if(after_milp && getChannelBufferSize(start) > 0 && !isChannelTransparent(start))
+        latency += 1;
     cout << "rec inside " << getChannelName(start) << " latency " << getLatency(b) << " total latency is " << latency << "\n";
     int max = 0;
     for(auto nxt : find_next_channel(start, ntl))
     {
         //if(find(visited.begin(), visited.end(), nxt) == visited.end())
-        int child_lat = get_latency_rec(ntl, nxt, latency, visited, Vars);
+        int child_lat = get_latency_rec(ntl, nxt, latency, visited, after_milp);
         if(max < child_lat)
             max = child_lat;
     }
@@ -1466,7 +1511,7 @@ int DFnetlist_Impl::get_latency_rec(subNetlist ntl, channelID start, int latency
 }
 
 /*Find the value of N (maximum number of threads to overlap)*/
-int DFnetlist_Impl::find_N_multithread(subNetlist ntl, milpVarsEB &Vars)
+int DFnetlist_Impl::find_N_multithread(subNetlist ntl, bool after_milp)
 {
     int max = -1;
     int latency;
@@ -1477,7 +1522,7 @@ int DFnetlist_Impl::find_N_multithread(subNetlist ntl, milpVarsEB &Vars)
 
     for (channelID c: ntl.getChannels()) 
     {
-        if(validChannel(c) && (getBlockType(getSrcBlock(c)) == MUX || getBlockType(getSrcBlock(c)) == LOOPMUX))
+        if(validChannel(c) && ((getBlockType(getSrcBlock(c)) == MUX && !multithread) || ( getBlockType(getSrcBlock(c)) == LOOPMUX && multithread)))
         {
             loopmuxs.push_back(c);
             cout << "inside " << getChannelName(c) << "\n";
@@ -1486,7 +1531,7 @@ int DFnetlist_Impl::find_N_multithread(subNetlist ntl, milpVarsEB &Vars)
 
     for(auto lpmux : loopmuxs)
     {
-        int lat_loop = get_latency_rec(ntl, lpmux, 0, visited, Vars);
+        int lat_loop = get_latency_rec(ntl, lpmux, 0, visited, after_milp);
         if(max < lat_loop )
             max = lat_loop;
     }
@@ -1504,23 +1549,22 @@ bool DFnetlist_Impl::createThroughputConstraints_sc(Milp_Model &milp, milpVarsEB
         int th_mg = Vars.th_MG[sub_mg]; // Throughput of the marked graph.
                 
         
+        
         //gian 24.05.2023
-        int N = find_N_multithread(MG[sub_mg], Vars); //
-        if(N > 10) //simple threshold
-            N = 10;
-        if(N <= 0)
-            N = 1;
-
-        ofstream myfile;
-        myfile.open ("/home/dynamatic/Dynamatic/etc/dynamatic/dot2vhdl/src/gian_N.txt");
-        if(!myfile)
-            cout << "Problem opening file\n";
-        if(N > 1)
-            myfile << to_string(N+1);
+        int N;
+        if(multithread){
+            N = find_N_multithread(MG[sub_mg], false);
+            if(N > 5) //simple threshold
+                N = 5;
+            if(N <= 0)
+                N = 1;
+        }
         else
-            myfile << to_string(N);
-        myfile.close();
-
+        {
+            N = 1;
+        }
+         
+        
         //gian 24.05.2023
         cout << "Gian: total N is " << N << "\n\n";
 
@@ -1558,6 +1602,7 @@ bool DFnetlist_Impl::createThroughputConstraints_sc(Milp_Model &milp, milpVarsEB
             // Initial token
             int token = isBackEdge(c) ? 1 : 0;
             //int token = 0;
+            /* gian: back edge cond mux */
             if(token == 0 && ((getBlockType(getDstBlock(c)) == LOOPMUX && getBlockType(getSrcBlock(c)) != SYNCH))) 
             //|| (getBlockType(getDstBlock(c)) == BRANCH && getPortType(getDstBlock(c)) == SELECTION_PORT)))
             {
@@ -1565,48 +1610,18 @@ bool DFnetlist_Impl::createThroughputConstraints_sc(Milp_Model &milp, milpVarsEB
                 token = 1; 
             }
 
-            //Nested Loop
-            if(token == 0 && getBlockType(getSrcBlock(c)) == FORK)
+            if(multithread)
             {
-                if( getBasicBlock(getSrcBlock(c)) > getBasicBlock(getDstBlock(c)) )
+                //Nested Loop
+                if(token == 0 && getBlockType(getSrcBlock(c)) == FORK)
                 {
-                    cout << "Gian: back edge is " << getChannelName(c) << "\n";
-                    token = 1;
-                }    
-            }
-            /*if(getBlockType(getDstBlock(c)) == FORK)
-            {
-                bool fork_cond = true;
-                for(auto nxt : find_next_channel(c, MG[sub_mg]))
-                {
-                    if(getBlockType(getDstBlock(nxt)) != LOOPMUX && getBlockType(getDstBlock(nxt)) != BRANCH && getBlockType(getDstBlock(nxt)) != MUX)
-                        fork_cond = false;
-                }
-                if(fork_cond)
-                {
-                    cout << "Gian: back edge is " << getChannelName(c) << "\n";
-                    token = 1;
-                }
-            }*/
-            /* if(token == 0 && getBlockType(getSrcBlock(c)) == FORK)
-            {
-                if( getBlockType(getDstBlock(c) == BRANCH) )
-                {
-                    bool fork_cond = true;
-                    for (channelID ch: MG[sub_mg].getChannels()) {
-                        if( getSrcBlock(ch) == getSrcBlock(c) )
-                        {
-                            if( getBlockType(getDstBlock(ch)) != LOOPMUX && getBlockType(getDstBlock(ch)) != BRANCH )
-                                fork_cond = false;
-                        }
-                    }
-                    if(fork_cond && getBlockType(getDstBlock(c) == BRANCH))
+                    if( getBasicBlock(getSrcBlock(c)) > getBasicBlock(getDstBlock(c)) )
                     {
                         cout << "Gian: back edge is " << getChannelName(c) << "\n";
                         token = 1;
-                    }  
-                }  
-            }*/
+                    }    
+                }
+            }
 
             // Token + ret_dst - ret_src = Th_channel
 
@@ -1752,6 +1767,7 @@ void DFnetlist_Impl::instantiateElasticBuffers()
 
     for (channelID c: ebs) {
         // Lana 03/05/20 Muxes and merges have internal buffers, instantiate only if size/transparency changed by milp
+        //gian no transp
         if ((getBlockType(getSrcBlock(c)) == MUX)
             || (getBlockType(getSrcBlock(c)) == MERGE && getPorts(getSrcBlock(c), INPUT_PORTS).size() > 1)) {
             if (getChannelBufferSize(c) == 1 & isChannelTransparent(c))

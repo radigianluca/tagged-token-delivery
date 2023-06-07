@@ -6,37 +6,22 @@ target triple = "x86_64-unknown-linux-gnu"
 ; Function Attrs: noinline nounwind uwtable
 define i32 @_Z3firi(i32 %arg_1) #0 {
 entry:
-  br label %for.body
+  br label %do.body
 
-for.body:                                         ; preds = %entry, %for.inc4
-  %arg_1.addr.04 = phi i32 [ %arg_1, %entry ], [ %arg_1.addr.1.lcssa, %for.inc4 ]
-  %i.03 = phi i32 [ 0, %entry ], [ %inc5, %for.inc4 ]
-  br label %for.body3
+do.body:                                          ; preds = %do.cond, %entry
+  %fact.0 = phi i32 [ 1, %entry ], [ %mul, %do.cond ]
+  %arg_1.addr.0 = phi i32 [ %arg_1, %entry ], [ %dec, %do.cond ]
+  %mul = mul nsw i32 %fact.0, %arg_1.addr.0
+  %dec = add nsw i32 %arg_1.addr.0, -1
+  br label %do.cond
 
-for.body3:                                        ; preds = %for.body, %for.inc
-  %arg_1.addr.12 = phi i32 [ %arg_1.addr.04, %for.body ], [ %mul, %for.inc ]
-  %j.01 = phi i32 [ 0, %for.body ], [ %inc, %for.inc ]
-  %add = add nsw i32 %i.03, %j.01
-  %mul = mul nsw i32 %arg_1.addr.12, %add
-  br label %for.inc
+do.cond:                                          ; preds = %do.body
+  %cmp = icmp sgt i32 %dec, 0
+  br i1 %cmp, label %do.body, label %do.end
 
-for.inc:                                          ; preds = %for.body3
-  %inc = add nsw i32 %j.01, 1
-  %cmp2 = icmp slt i32 %inc, 10
-  br i1 %cmp2, label %for.body3, label %for.end
-
-for.end:                                          ; preds = %for.inc
-  %arg_1.addr.1.lcssa = phi i32 [ %mul, %for.inc ]
-  br label %for.inc4
-
-for.inc4:                                         ; preds = %for.end
-  %inc5 = add nsw i32 %i.03, 1
-  %cmp = icmp slt i32 %inc5, 10
-  br i1 %cmp, label %for.body, label %for.end6
-
-for.end6:                                         ; preds = %for.inc4
-  %arg_1.addr.0.lcssa = phi i32 [ %arg_1.addr.1.lcssa, %for.inc4 ]
-  ret i32 %arg_1.addr.0.lcssa
+do.end:                                           ; preds = %do.cond
+  %mul.lcssa = phi i32 [ %mul, %do.cond ]
+  ret i32 %mul.lcssa
 }
 
 ; Function Attrs: noinline norecurse nounwind uwtable
@@ -45,13 +30,13 @@ entry:
   br label %for.body
 
 for.body:                                         ; preds = %entry, %for.inc
-  %i.01 = phi i32 [ 0, %entry ], [ %inc, %for.inc ]
+  %i.01 = phi i32 [ 10, %entry ], [ %inc, %for.inc ]
   %call = call i32 @_Z3firi(i32 %i.01)
   br label %for.inc
 
 for.inc:                                          ; preds = %for.body
   %inc = add nsw i32 %i.01, 1
-  %cmp = icmp slt i32 %inc, 100
+  %cmp = icmp slt i32 %inc, 110
   br i1 %cmp, label %for.body, label %for.end
 
 for.end:                                          ; preds = %for.inc

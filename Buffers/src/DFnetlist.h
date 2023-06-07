@@ -2009,9 +2009,9 @@ private:
      * @param ntl subnetlist.
      * @return N.
      */
-    int find_N_multithread(subNetlist ntl, milpVarsEB &Vars);
+    int find_N_multithread(subNetlist ntl, bool after_milp);
     std::vector<int> find_next_channel(channelID prev_ch, subNetlist ntl);
-    int get_latency_rec(subNetlist ntl, channelID start, int latency, vector<int>& visited, milpVarsEB &Vars);
+    int get_latency_rec(subNetlist ntl, channelID start, int latency, vector<int>& visited, bool after_milp);
 
     bool channelIsInMGs(channelID c);
     bool blockIsInMGs(blockID b);

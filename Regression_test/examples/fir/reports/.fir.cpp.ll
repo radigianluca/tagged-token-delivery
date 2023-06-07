@@ -7,55 +7,29 @@ target triple = "x86_64-unknown-linux-gnu"
 define i32 @_Z3firi(i32 %arg_1) #0 {
 entry:
   %arg_1.addr = alloca i32, align 4
-  %acc = alloca i32, align 4
-  %i = alloca i32, align 4
-  %j = alloca i32, align 4
+  %fact = alloca i32, align 4
   store i32 %arg_1, i32* %arg_1.addr, align 4
-  store i32 3, i32* %acc, align 4
-  store i32 0, i32* %i, align 4
-  br label %for.cond
+  store i32 1, i32* %fact, align 4
+  br label %do.body
 
-for.cond:                                         ; preds = %for.inc4, %entry
-  %0 = load i32, i32* %i, align 4
-  %cmp = icmp slt i32 %0, 10
-  br i1 %cmp, label %for.body, label %for.end6
+do.body:                                          ; preds = %do.cond, %entry
+  %0 = load i32, i32* %arg_1.addr, align 4
+  %1 = load i32, i32* %fact, align 4
+  %mul = mul nsw i32 %1, %0
+  store i32 %mul, i32* %fact, align 4
+  %2 = load i32, i32* %arg_1.addr, align 4
+  %dec = add nsw i32 %2, -1
+  store i32 %dec, i32* %arg_1.addr, align 4
+  br label %do.cond
 
-for.body:                                         ; preds = %for.cond
-  store i32 0, i32* %j, align 4
-  br label %for.cond1
+do.cond:                                          ; preds = %do.body
+  %3 = load i32, i32* %arg_1.addr, align 4
+  %cmp = icmp sgt i32 %3, 0
+  br i1 %cmp, label %do.body, label %do.end
 
-for.cond1:                                        ; preds = %for.inc, %for.body
-  %1 = load i32, i32* %j, align 4
-  %cmp2 = icmp slt i32 %1, 10
-  br i1 %cmp2, label %for.body3, label %for.end
-
-for.body3:                                        ; preds = %for.cond1
-  %2 = load i32, i32* %i, align 4
-  %3 = load i32, i32* %j, align 4
-  %add = add nsw i32 %2, %3
-  %4 = load i32, i32* %arg_1.addr, align 4
-  %mul = mul nsw i32 %4, %add
-  store i32 %mul, i32* %arg_1.addr, align 4
-  br label %for.inc
-
-for.inc:                                          ; preds = %for.body3
-  %5 = load i32, i32* %j, align 4
-  %inc = add nsw i32 %5, 1
-  store i32 %inc, i32* %j, align 4
-  br label %for.cond1
-
-for.end:                                          ; preds = %for.cond1
-  br label %for.inc4
-
-for.inc4:                                         ; preds = %for.end
-  %6 = load i32, i32* %i, align 4
-  %inc5 = add nsw i32 %6, 1
-  store i32 %inc5, i32* %i, align 4
-  br label %for.cond
-
-for.end6:                                         ; preds = %for.cond
-  %7 = load i32, i32* %arg_1.addr, align 4
-  ret i32 %7
+do.end:                                           ; preds = %do.cond
+  %4 = load i32, i32* %fact, align 4
+  ret i32 %4
 }
 
 ; Function Attrs: noinline norecurse nounwind uwtable
@@ -64,12 +38,12 @@ entry:
   %retval = alloca i32, align 4
   %i = alloca i32, align 4
   store i32 0, i32* %retval, align 4
-  store i32 0, i32* %i, align 4
+  store i32 10, i32* %i, align 4
   br label %for.cond
 
 for.cond:                                         ; preds = %for.inc, %entry
   %0 = load i32, i32* %i, align 4
-  %cmp = icmp slt i32 %0, 100
+  %cmp = icmp slt i32 %0, 110
   br i1 %cmp, label %for.body, label %for.end
 
 for.body:                                         ; preds = %for.cond

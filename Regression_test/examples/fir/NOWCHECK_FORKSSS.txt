@@ -1,49 +1,23 @@
 
 Node Name: "arg_1"
 
-Node Name: "phi_0"
-
 Node Name: "cst_0"
+
+Node Name: "phi_0"
 
 Node Name: "phi_1"
 Entered the big if_condition
 Didn't enter the enode->CntrlSuccs->size() == 0 condition
 
-Node Name: "phi_2"
+Node Name: "mul_3"
 
 Node Name: "cst_1"
 
-Node Name: "phi_3"
-Entered the big if_condition
-Didn't enter the enode->CntrlSuccs->size() == 0 condition
-
-Node Name: "add_6"
-
-Node Name: "mul_7"
-Entered the big if_condition
-Didn't enter the enode->CntrlSuccs->size() == 0 condition
+Node Name: "add_4"
 
 Node Name: "cst_2"
 
-Node Name: "add_8"
-Entered the big if_condition
-Didn't enter the enode->CntrlSuccs->size() == 0 condition
-
-Node Name: "cst_3"
-
-Node Name: "icmp_9"
-Entered the big if_condition
-Didn't enter the enode->CntrlSuccs->size() == 0 condition
-
-Node Name: "cst_4"
-
-Node Name: "add_11"
-Entered the big if_condition
-Didn't enter the enode->CntrlSuccs->size() == 0 condition
-
-Node Name: "cst_5"
-
-Node Name: "icmp_12"
+Node Name: "icmp_5"
 Entered the big if_condition
 Didn't enter the enode->CntrlSuccs->size() == 0 condition
 
@@ -53,43 +27,11 @@ Node Name: "source_0"
 
 Node Name: "source_1"
 
-Node Name: "source_2"
-
-Node Name: "source_3"
-
 Node Name: "start_0"
-Entered the big if_condition
-Entered the enode->CntrlSuccs->size() == 0 condition
-
-Node Name: "phi_4"
-Entered the big if_condition
-Didn't enter the enode->CntrlSuccs->size() == 0 condition
-
-Node Name: "phiC_5"
-Entered the big if_condition
-Entered the enode->CntrlSuccs->size() == 0 condition
 
 Node Name: "branch_0"
 
 Node Name: "branch_1"
 
-Node Name: "branch_2"
-
-Node Name: "branch_4"
-
-Node Name: "phi_n4"
-
-Node Name: "cst_7"
-
-Node Name: "source_4"
-
-Node Name: "branch_5"
-
-Node Name: "branch_6"
-
-Node Name: "branchC_7"
-
 Node Name: "Synch_0"
-
-Node Name: "Synch_1"
 Finished looping, about to go to Redundant things function

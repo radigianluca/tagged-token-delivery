@@ -27,19 +27,13 @@ Printing path number 0 details
 Consumer of type LLVM Phi!!
 
 
-	New (Producer,Consumer) pair: (BB3, BB2)
+	New (Producer,Consumer) pair: (BB2, BB2)
 
 *******************************************
 
 Found 1 paths
 Printing path number 0 details
-2 -> 4 -> 3 -> 
-
-*******************************************
-
-Found 1 paths
-Printing path number 0 details
-2 -> 4 -> 3 -> 
+2 -> 
 
 
 ======================================================
@@ -90,13 +84,13 @@ Printing path number 0 details
 Consumer of type LLVM Phi!!
 
 
-	New (Producer,Consumer) pair: (BB4, BB2)
+	New (Producer,Consumer) pair: (BB2, BB2)
 
 *******************************************
 
 Found 1 paths
 Printing path number 0 details
-2 -> 4 -> 
+2 -> 
 
 
 ======================================================
@@ -118,120 +112,6 @@ Printing path number 0 details
 Found 1 paths
 Printing path number 0 details
 1 -> 
-
-
-======================================================
-
-
-Consumer of type LLVM Phi!!
-
-
-	New (Producer,Consumer) pair: (BB2, BB3)
-
-*******************************************
-
-Found 1 paths
-Printing path number 0 details
-3 -> 2 -> 1 -> 
-
-*******************************************
-
-Found 1 paths
-Printing path number 0 details
-2 -> 1 -> 
-
-
-======================================================
-
-
-Consumer of type LLVM Phi!!
-
-
-	New (Producer,Consumer) pair: (BB3, BB3)
-
-*******************************************
-
-Found 1 paths
-Printing path number 0 details
-3 -> 
-
-
-======================================================
-
-
-Consumer of type LLVM Phi!!
-
-
-	New (Producer,Consumer) pair: (BB2, BB3)
-
-*******************************************
-
-Found 1 paths
-Printing path number 0 details
-3 -> 2 -> 1 -> 
-
-*******************************************
-
-Found 1 paths
-Printing path number 0 details
-2 -> 1 -> 
-
-
-======================================================
-
-
-Consumer of type LLVM Phi!!
-
-
-	New (Producer,Consumer) pair: (BB2, BB3)
-
-*******************************************
-
-Found 1 paths
-Printing path number 0 details
-3 -> 2 -> 1 -> 
-
-*******************************************
-
-Found 1 paths
-Printing path number 0 details
-2 -> 1 -> 
-
-
-======================================================
-
-
-Consumer of type LLVM Phi!!
-
-
-	New (Producer,Consumer) pair: (BB3, BB3)
-
-*******************************************
-
-Found 1 paths
-Printing path number 0 details
-3 -> 
-
-
-======================================================
-
-
-Consumer of type LLVM Phi!!
-
-
-	New (Producer,Consumer) pair: (BB2, BB3)
-
-*******************************************
-
-Found 1 paths
-Printing path number 0 details
-3 -> 2 -> 1 -> 
-
-*******************************************
-
-Found 1 paths
-Printing path number 0 details
-2 -> 1 -> 
 
 
 ======================================================
@@ -240,42 +120,6 @@ Printing path number 0 details
 Consumer of type type = "Operator!!
 
 
-	New (Producer,Consumer) pair: (BB2, BB4)
-
-*******************************************
-
-Found 1 paths
-Printing path number 0 details
-4 -> 3 -> 2 -> 1 -> 
-
-*******************************************
-
-Found 1 paths
-Printing path number 0 details
-2 -> 1 -> 
-
-
-======================================================
-
-
-Consumer of type type = "Operator!!
-
-
-	New (Producer,Consumer) pair: (BB3, BB5)
-
-*******************************************
-
-Found 1 paths
-Printing path number 0 details
-5 -> 4 -> 3 -> 2 -> 1 -> 
-
-
-======================================================
-
-
-Consumer of type type = "Merge!!
-
-
 	New (Producer,Consumer) pair: (BB2, BB3)
 
 *******************************************
@@ -283,45 +127,3 @@ Consumer of type type = "Merge!!
 Found 1 paths
 Printing path number 0 details
 3 -> 2 -> 1 -> 
-
-*******************************************
-
-Found 1 paths
-Printing path number 0 details
-2 -> 1 -> 
-
-
-======================================================
-
-
-Consumer of type type = "Merge!!
-
-
-	New (Producer,Consumer) pair: (BB3, BB3)
-
-*******************************************
-
-Found 1 paths
-Printing path number 0 details
-3 -> 
-
-
-======================================================
-
-
-Consumer of type type = "Mux!!
-
-
-	New (Producer,Consumer) pair: (BB2, BB3)
-
-*******************************************
-
-Found 1 paths
-Printing path number 0 details
-3 -> 2 -> 1 -> 
-
-*******************************************
-
-Found 1 paths
-Printing path number 0 details
-2 -> 1 -> 

@@ -4270,9 +4270,9 @@ enum
 # 1263 "/usr/include/math.h" 3 4
 
 # 15 "../C_SRC/fir.cpp.tmp.c" 2
-# 45 "../C_SRC/fir.cpp.tmp.c"
+# 48 "../C_SRC/fir.cpp.tmp.c"
 
-# 45 "../C_SRC/fir.cpp.tmp.c"
+# 48 "../C_SRC/fir.cpp.tmp.c"
 
 int hlsv_transaction_id = -1;
 
@@ -4294,14 +4294,16 @@ int fir(in_int_t arg_1) {
 
 
 
- int acc = 3;
- for(int i = 0; i < 10; i++) {
-  for(int j = 0; j < 10; j++)
-   arg_1 *= (i+j);
- }
-    
+
+ int fact = 1;
+ do{
+  fact *= arg_1;
+  arg_1--;
+ } while ( arg_1 > 0 );
+
+ 
 	{
-		hlsv_return =  arg_1;
+		hlsv_return =  fact;
 		hlsv_of_return = fopen("../C_OUT/output_end.dat", "a");
 		fprintf(hlsv_of_return, "[[transaction]] %d\n", hlsv_transaction_id);
 		fprintf(hlsv_of_return, "0x%08llx\n", (long long)hlsv_return);
@@ -4311,11 +4313,12 @@ int fir(in_int_t arg_1) {
 		return hlsv_return;
 	}
 
+
 }
 
 int main() {
 
-    for(int i = 0; i < 100; ++i){
+    for(int i = 10; i < 100 +10; ++i){
       fir(i);
     }
 }

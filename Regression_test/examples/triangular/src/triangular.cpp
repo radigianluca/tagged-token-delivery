@@ -34,10 +34,9 @@ int main(void){
 	    }
     }
     
-	//for(int i = 0; i < AMOUNT_OF_TEST; ++i){
-    int i = 0;
-	triangular(xArray[i], A[i], n[i]);
-	//}
+	for(int i = 0; i < AMOUNT_OF_TEST; ++i){
+		triangular(xArray[i], A[i], n[i]);
+	}
 }
 
 

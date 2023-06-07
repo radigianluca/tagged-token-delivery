@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include "fixed.h"
 
-#define AMOUNT_OF_TEST 1
+#define AMOUNT_OF_TEST 100
 
-int fixed(in_float_t y){
+int fixed(in_int_t y){
 
 	int c = 1000;//1000.0;
 	int x1;

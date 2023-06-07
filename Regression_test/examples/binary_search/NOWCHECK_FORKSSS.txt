@@ -1,11 +1,13 @@
 
-Node Name: "arg_1"
-
-Node Name: "phi_0"
+Node Name: "searchVal"
 Entered the big if_condition
 Didn't enter the enode->CntrlSuccs->size() == 0 condition
 
 Node Name: "cst_0"
+
+Node Name: "phi_0"
+
+Node Name: "cst_1"
 
 Node Name: "phi_1"
 Entered the big if_condition
@@ -13,41 +15,57 @@ Didn't enter the enode->CntrlSuccs->size() == 0 condition
 
 Node Name: "load_5"
 
-Node Name: "cst_1"
+Node Name: "icmp_6"
 
-Node Name: "and_6"
+Node Name: "select_0"
 
 Node Name: "cst_2"
 
-Node Name: "icmp_7"
+Node Name: "add_7"
 Entered the big if_condition
 Didn't enter the enode->CntrlSuccs->size() == 0 condition
 
 Node Name: "cst_3"
 
-Node Name: "add_9"
+Node Name: "icmp_8"
+Entered the big if_condition
+Didn't enter the enode->CntrlSuccs->size() == 0 condition
 
-Node Name: "load_12"
-
-Node Name: "mul_13"
-
-Node Name: "load_17"
-
-Node Name: "add_18"
-
-Node Name: "phi_20"
+Node Name: "brCst_block3"
 
 Node Name: "cst_4"
 
-Node Name: "add_21"
+Node Name: "phi_2"
 Entered the big if_condition
 Didn't enter the enode->CntrlSuccs->size() == 0 condition
 
 Node Name: "cst_5"
 
-Node Name: "icmp_22"
+Node Name: "phi_3"
+
+Node Name: "load_15"
+
+Node Name: "icmp_16"
+
+Node Name: "select_1"
+
+Node Name: "cst_6"
+
+Node Name: "add_17"
 Entered the big if_condition
 Didn't enter the enode->CntrlSuccs->size() == 0 condition
+
+Node Name: "cst_7"
+
+Node Name: "icmp_18"
+Entered the big if_condition
+Didn't enter the enode->CntrlSuccs->size() == 0 condition
+
+Node Name: "cst_8"
+
+Node Name: "icmp_20"
+
+Node Name: "select_2"
 
 Node Name: "ret_0"
 
@@ -62,8 +80,18 @@ Node Name: "source_3"
 Node Name: "source_4"
 
 Node Name: "start_0"
+Entered the big if_condition
+Entered the enode->CntrlSuccs->size() == 0 condition
 
 Node Name: "MC_A"
+
+Node Name: "phi_4"
+Entered the big if_condition
+Didn't enter the enode->CntrlSuccs->size() == 0 condition
+
+Node Name: "phi_5"
+Entered the big if_condition
+Didn't enter the enode->CntrlSuccs->size() == 0 condition
 
 Node Name: "branch_0"
 
@@ -73,5 +101,11 @@ Node Name: "branch_2"
 
 Node Name: "branch_3"
 
+Node Name: "branch_7"
+
+Node Name: "branch_8"
+
 Node Name: "Synch_0"
+
+Node Name: "Synch_1"
 Finished looping, about to go to Redundant things function

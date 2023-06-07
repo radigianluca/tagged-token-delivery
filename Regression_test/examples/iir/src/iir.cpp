@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include "iir.h"
 
-#define AMOUNT_OF_TEST 1
+#define AMOUNT_OF_TEST 10
 
 int iir (in_int_t y[1000], in_int_t x[1000], in_int_t a, in_int_t b) {
 	int i;
@@ -15,7 +15,7 @@ int iir (in_int_t y[1000], in_int_t x[1000], in_int_t a, in_int_t b) {
 
 	for (i=1;i<1000;i++) {
 		tmp = a*tmp + b*x[i];
-		y[i] = tmp;
+		//y[i] = tmp;
 
 	}
 	return tmp;
@@ -38,10 +38,9 @@ int main(void){
 		}
 	}
 
-	//for(int i = 0; i < AMOUNT_OF_TEST; ++i){
-		int i = 0;
+	for(int i = 0; i < AMOUNT_OF_TEST; ++i){
 		iir(y[i], x[i], a[i], b[i]);
-	//}
+	}
 }
 
 

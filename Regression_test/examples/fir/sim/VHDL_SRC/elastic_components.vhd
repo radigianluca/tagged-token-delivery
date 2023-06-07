@@ -2596,6 +2596,10 @@ architecture arch of LoopMux is
 signal tehb_data_in  : std_logic_vector(DATA_SIZE_IN - 1 downto 0);
 signal tehb_pvalid : std_logic;
 signal tehb_ready : std_logic;
+signal count_in0    : unsigned(31 downto 0);
+signal count_in1    : unsigned(31 downto 0); 
+signal count_0_cond : unsigned(31 downto 0);
+signal count_1_cond : unsigned(31 downto 0);
 type state_type is (INIT, ITER);
 signal state : state_type;
 constant zero : std_logic_vector(COND_SIZE-1 downto 0) := (others => '0');
@@ -2603,7 +2607,7 @@ constant zero : std_logic_vector(COND_SIZE-1 downto 0) := (others => '0');
 
 begin
 
-    process(state, dataInArray, pValidArray, nReadyArray, condition, tehb_ready) 
+    process(state, dataInArray, pValidArray, nReadyArray, condition, tehb_ready, count_in0) 
         variable tmp_data_out  : unsigned(DATA_SIZE_IN - 1 downto 0);
         variable tmp_valid_out : std_logic;
     begin
@@ -2611,7 +2615,7 @@ begin
         tmp_valid_out := '0';
         case state is
             when INIT =>
-                if(pValidArray(1) = '1') then
+                if(pValidArray(1) = '1' and not((count_in0 = THRD_NUM or (count_in0 > 0 and pValidArray(1) = '0')))) then
                     tmp_data_out  := unsigned(dataInArray(0));
                     tmp_valid_out := '1';
                 end if;
@@ -2622,7 +2626,7 @@ begin
                 --end if;
 
                 --Due to synch, do not use pvalid!
-                if (tehb_ready = '1') then
+                if (tehb_ready = '1' and not((count_in0 = THRD_NUM or (count_in0 > 0 and pValidArray(1) = '0')))) then
                    readyArray(1) <= '1';
                 else
                    readyArray(1) <= '0';
@@ -2656,7 +2660,7 @@ begin
                          
         end case;
         tehb_data_in <= std_logic_vector(resize(tmp_data_out,DATA_SIZE_OUT));
-        tehb_pvalid     <= tmp_valid_out;
+        tehb_pvalid  <= tmp_valid_out;
     end process;
 
 
@@ -2675,48 +2679,130 @@ begin
         );
 
 
-    count_state_process : process(clk, rst)
-    variable count_in0 : integer := 0;
-    variable count_0_cond : integer := 0;
-    variable count_1_cond : integer := 0;
-    variable count_in1 : integer := 0;
+    count_in0_proc : process (clk, rst)
+    begin
+        if(rst = '1') then
+            count_in0 <= (others => '0');
+        elsif rising_edge(clk) then
+            if(state = INIT and tehb_ready = '1' and tehb_pvalid = '1') then --count the tokens output from in0
+                count_in0 <= count_in0 + 1;
+            end if;
+            if(state = ITER and count_in0 = count_0_cond and count_in1 = count_1_cond) then --transition to state 0
+                count_in0 <= (others => '0');
+            end if;
+        end if;
+    end process;
+
+    count_in1_proc : process (clk, rst)
+    begin
+        if(rst = '1') then
+            count_in1 <= (others => '0');
+        elsif rising_edge(clk) then
+            if(state = ITER and tehb_ready = '1' and tehb_pvalid = '1') then --count the tokens output from in1
+                count_in1 <= count_in1 + 1;
+            end if;
+            if(state = ITER and count_in0 = count_0_cond and count_in1 = count_1_cond) then --transition to state 0
+                count_in1 <= (others => '0');
+            end if;
+        end if;
+    end process;
+
+    count_0_cond_proc : process (clk, rst)
+    begin
+        if(rst = '1') then
+            count_0_cond <= (others => '0');
+        elsif rising_edge(clk) then
+            if(pValidArray(0) = '1' and condition(0) = zero and readyArray(0) = '1') then  --count the 0-condition received 
+                count_0_cond <= count_0_cond + 1;
+            end if;
+            if(state = ITER and count_in0 = count_0_cond and count_in1 = count_1_cond) then --transition to state 0
+                count_0_cond <= (others => '0');
+            end if;
+        end if;
+    end process;
+
+    count_1_cond_proc : process (clk, rst)
+    begin
+        if(rst = '1') then
+            count_1_cond <= (others => '0');
+        elsif rising_edge(clk) then
+            if(pValidArray(0) = '1' and to_integer(unsigned(condition(0))) = 1 and readyArray(0) = '1') then --count the 1-condition received
+            count_1_cond <= count_1_cond + 1;
+            end if;
+            if(state = ITER and count_in0 = count_0_cond and count_in1 = count_1_cond) then --transition to state 0
+                count_1_cond <= (others => '0');
+            end if;
+        end if;
+    end process;
+
+    state_proc : process (clk, rst)
     begin
         if(rst = '1') then
             state <= INIT;
-            count_0_cond := 0;
-            count_1_cond := 0;
-            count_in0 := 0;
-            count_in1 := 0;
         elsif rising_edge(clk) then
-            if(state = INIT and tehb_ready = '1' and tehb_pvalid = '1') then --count the tokens output from in0
-                count_in0 := count_in0 + 1;
-            end if;
-            if(state = ITER and tehb_ready = '1' and tehb_pvalid = '1') then --count the tokens output from in1
-                count_in1 := count_in1 + 1;
-            end if;
-            if(pValidArray(0) = '1' and condition(0) = zero and readyArray(0) = '1') then  --count the 0-condition received 
-                count_0_cond := count_0_cond + 1;
-            end if;
-            if(pValidArray(0) = '1' and to_integer(unsigned(condition(0))) = 1 and readyArray(0) = '1') then --count the 1-condition received
-                count_1_cond := count_1_cond + 1;
-            end if;
-            if(count_0_cond = count_in0 and count_in1 < count_1_cond) then
-                readyArray(0) <= '0';
-            else
-                readyArray(0) <= '1';
-            end if;
             if(state = INIT and (count_in0 = THRD_NUM or (count_in0 > 0 and pValidArray(1) = '0'))) then --transition to state 1
                 state <= ITER;
             end if;
             if(state = ITER and count_in0 = count_0_cond and count_in1 = count_1_cond) then --transition to state 0
-                count_0_cond := 0;
-                count_1_cond := 0;
-                count_in1 := 0;
-                count_in0 := 0;
                 state <= INIT;
             end if;
         end if;
     end process;
+
+    ready_0_proc : process(count_0_cond, count_in0, count_in1, count_1_cond, state)
+    begin
+        if((count_0_cond = count_in0 and count_in1 < count_1_cond) or (count_0_cond = count_in0 and count_in1 = count_1_cond and state = ITER)) then
+            readyArray(0) <= '0';
+        else
+            readyArray(0) <= '1';
+        end if;
+    end process;
+
+
+                
+
+    --count_state_process : process(clk, rst)
+    --variable count_in0 : integer := 0;
+    --variable count_0_cond : integer := 0;
+    --variable count_1_cond : integer := 0;
+    --variable count_in1 : integer := 0;
+    --begin
+    --    if(rst = '1') then
+    --        state <= INIT;
+    --        count_0_cond := 0;
+    --        count_1_cond := 0;
+    --        count_in0 := 0;
+    --        count_in1 := 0;
+    --    elsif rising_edge(clk) then
+    --        if(state = INIT and tehb_ready = '1' and tehb_pvalid = '1') then --count the tokens output from in0
+    --            count_in0 := count_in0 + 1;
+    --        end if;
+    --        if(state = ITER and tehb_ready = '1' and tehb_pvalid = '1') then --count the tokens output from in1
+    --            count_in1 := count_in1 + 1;
+    --        end if;
+    --        if(pValidArray(0) = '1' and condition(0) = zero and readyArray(0) = '1') then  --count the 0-condition received 
+    --            count_0_cond := count_0_cond + 1;
+    --        end if;
+    --        if(pValidArray(0) = '1' and to_integer(unsigned(condition(0))) = 1 and readyArray(0) = '1') then --count the 1-condition received
+    --            count_1_cond := count_1_cond + 1;
+    --        end if;
+    --        if(count_0_cond = count_in0 and count_in1 < count_1_cond) then
+    --            readyArray(0) <= '0';
+    --        else
+    --            readyArray(0) <= '1';
+    --        end if;
+    --        if(state = INIT and (count_in0 = THRD_NUM or (count_in0 > 0 and pValidArray(1) = '0'))) then --transition to state 1
+    --            state <= ITER;
+    --        end if;
+    --        if(state = ITER and count_in0 = count_0_cond and count_in1 = count_1_cond) then --transition to state 0
+    --            count_0_cond := 0;
+    --            count_1_cond := 0;
+    --            count_in1 := 0;
+    --            count_in0 := 0;
+    --            state <= INIT;
+    --        end if;
+    --    end if;
+    --end process;
 
 end;
 
